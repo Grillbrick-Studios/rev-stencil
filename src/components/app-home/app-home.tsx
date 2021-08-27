@@ -3,26 +3,29 @@ import { Component, h } from '@stencil/core';
 @Component({
   tag: 'app-home',
   styleUrl: 'app-home.css',
+  scoped: true,
 })
 export class AppHome {
   render() {
-    return [
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-title>Home</ion-title>
-        </ion-toolbar>
-      </ion-header>,
+    return (
+      <ion-app>
+        <rev-menu />
 
-      <ion-content class="ion-padding">
-        <p>
-          Welcome to the PWA Toolkit. You can use this starter to build entire apps with web components using Stencil and ionic/core! Check out the README for everything that comes
-          in this starter out of the box and check out our docs on <a href="https://stenciljs.com">stenciljs.com</a> to get started.
-        </p>
+        <div class="ion-page" id="main-content">
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-menu-button menu="main"></ion-menu-button>
+              </ion-buttons>
+              <ion-title>REV App</ion-title>
+            </ion-toolbar>
+          </ion-header>
 
-        <ion-button href="/profile/ionic" expand="block">
-          Profile page
-        </ion-button>
-      </ion-content>,
-    ];
+          <ion-content class="ion-padding">
+            <p class="content"></p>
+          </ion-content>
+        </div>
+      </ion-app>
+    );
   }
 }

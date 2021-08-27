@@ -4,7 +4,7 @@ import { Bible } from '../../models';
 @Component({
   tag: 'chapter-view',
   styleUrl: 'chapter-view.css',
-  shadow: false,
+  scoped: true,
 })
 export class ChapterView {
   @Prop() book: string;
@@ -18,13 +18,14 @@ export class ChapterView {
   render() {
     return (
       <Host>
-        <ion-title>{this.book}</ion-title>
-        <ion-content
+        <ion-title class="title">{this.book}</ion-title>
+        <p
+          class="content"
           innerHTML={this.bible
             .getVerses(this.book, this.chapter)
             .map(v => v.html())
             .join('\n')}
-        ></ion-content>
+        ></p>
       </Host>
     );
   }

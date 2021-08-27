@@ -17,6 +17,9 @@ export namespace Components {
         "book": string;
         "chapter": number;
     }
+    interface RevMenu {
+        "open": boolean;
+    }
 }
 declare global {
     interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {
@@ -43,11 +46,18 @@ declare global {
         prototype: HTMLChapterViewElement;
         new (): HTMLChapterViewElement;
     };
+    interface HTMLRevMenuElement extends Components.RevMenu, HTMLStencilElement {
+    }
+    var HTMLRevMenuElement: {
+        prototype: HTMLRevMenuElement;
+        new (): HTMLRevMenuElement;
+    };
     interface HTMLElementTagNameMap {
         "app-home": HTMLAppHomeElement;
         "app-profile": HTMLAppProfileElement;
         "app-root": HTMLAppRootElement;
         "chapter-view": HTMLChapterViewElement;
+        "rev-menu": HTMLRevMenuElement;
     }
 }
 declare namespace LocalJSX {
@@ -62,11 +72,15 @@ declare namespace LocalJSX {
         "book"?: string;
         "chapter"?: number;
     }
+    interface RevMenu {
+        "open"?: boolean;
+    }
     interface IntrinsicElements {
         "app-home": AppHome;
         "app-profile": AppProfile;
         "app-root": AppRoot;
         "chapter-view": ChapterView;
+        "rev-menu": RevMenu;
     }
 }
 export { LocalJSX as JSX };
@@ -77,6 +91,7 @@ declare module "@stencil/core" {
             "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "chapter-view": LocalJSX.ChapterView & JSXBase.HTMLAttributes<HTMLChapterViewElement>;
+            "rev-menu": LocalJSX.RevMenu & JSXBase.HTMLAttributes<HTMLRevMenuElement>;
         }
     }
 }
