@@ -1,7 +1,7 @@
-import { iData } from "./interfaces";
+import { Storage } from '@capacitor/storage';
+import { iData } from './interfaces';
 
-const URL =
-  "https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=commentary";
+const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=commentary';
 
 export interface iCommentary {
   book: string;
@@ -10,26 +10,48 @@ export interface iCommentary {
   commentary: string;
 }
 
-interface CommentaryJson {
-  date: Date;
+interface iCommentaryJson {
   REV_Commentary: iCommentary[];
+  updated?: Date;
 }
 
 export class Commentary implements iData<iCommentary> {
   private static _data: iCommentary[];
+  private static updated: Date;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  public static async save() {
+    const data: iCommentaryJson = {
+      REV_Commentary: Commentary._data,
+      updated: Commentary.updated,
+    };
+
+    await Storage.set({
+      key: 'Commentary',
+      value: JSON.stringify(data),
+    });
+  }
+
+  public static async load(): Promise<boolean> {
+    try {
+      const { value } = await Storage.get({ key: 'Commentary' });
+      const commentaryData: iCommentaryJson = JSON.parse(value);
+      Commentary._data = commentaryData.REV_Commentary;
+      Commentary.updated = new Date(commentaryData.updated);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   constructor(data: iCommentary[]) {
     Commentary._data = data;
   }
 
   public get path(): string {
-    if (this.selectedVerse)
-      return `Commentary for ${this.selectedBook} ${this.selectedChapter}:${this.selectedVerse}`;
-    if (this.selectedChapter)
-      return `Commentary for ${this.selectedBook} ${this.selectedChapter}`;
+    if (this.selectedVerse) return `Commentary for ${this.selectedBook} ${this.selectedChapter}:${this.selectedVerse}`;
+    if (this.selectedChapter) return `Commentary for ${this.selectedBook} ${this.selectedChapter}`;
     if (this.selectedBook) return `Commentary for ${this.selectedBook}`;
-    return "Commentary";
+    return 'Commentary';
   }
 
   public get data(): iCommentary[] {
@@ -43,48 +65,40 @@ export class Commentary implements iData<iCommentary> {
   private selectedVerse?: number;
 
   private static async fetch() {
-    console.log("Fetching commentary from web please wait...");
+    console.log('Fetching commentary from web please wait...');
     const res = await fetch(URL);
-    console.log("Commentary downloaded!");
-    const commentary: CommentaryJson = await res.json();
+    console.log('Commentary downloaded!');
+    const commentary: iCommentaryJson = await res.json();
     Commentary._data = commentary.REV_Commentary;
+    Commentary.updated = new Date();
+    Commentary.save();
   }
 
   static async onReady(): Promise<Commentary> {
     if (Commentary._data) return new Commentary(Commentary._data);
+    if (await Commentary.load()) return new Commentary(Commentary._data);
     await Commentary.fetch();
     return new Commentary(Commentary._data);
   }
 
   getBooks(): string[] {
-    const booksArray = Commentary._data.map((v) => v.book);
+    const booksArray = Commentary._data.map(v => v.book);
     const bookSet = new Set(booksArray);
     return Array.from(bookSet);
   }
 
   getChapters(book: string): string[] {
-    const chapterArray = Commentary._data
-      .filter((v) => v.book === book)
-      .map((v) => v.chapter);
+    const chapterArray = Commentary._data.filter(v => v.book === book).map(v => v.chapter);
     const chapterSet = new Set(chapterArray);
     return Array.from(chapterSet);
   }
 
   getVerses(book: string, chapter: number, verse?: number): string[] {
     if (verse) {
-      const verseArray = Commentary._data
-        .filter(
-          (v) =>
-            v.book === book &&
-            v.chapter === chapter.toString() &&
-            v.verse === verse.toString()
-        )
-        .map((v) => v.commentary);
+      const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter.toString() && v.verse === verse.toString()).map(v => v.commentary);
       return verseArray;
     }
-    const verseArray = Commentary._data
-      .filter((v) => v.book === book && v.chapter === chapter.toString())
-      .map((v) => v.verse);
+    const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter.toString()).map(v => v.verse);
     const verseSet = new Set(verseArray);
     return Array.from(verseSet);
   }
@@ -104,11 +118,7 @@ export class Commentary implements iData<iCommentary> {
 
   selectVerse(verse: number): void {
     if (!this.selectedBook || !this.selectedChapter) return;
-    if (
-      this.getVerses(this.selectedBook, this.selectedChapter).indexOf(
-        verse.toString()
-      ) >= 0
-    ) {
+    if (this.getVerses(this.selectedBook, this.selectedChapter).indexOf(verse.toString()) >= 0) {
       this.selectedVerse = verse;
     }
   }
