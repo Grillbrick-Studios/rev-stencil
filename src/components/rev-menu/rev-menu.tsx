@@ -1,4 +1,4 @@
-import { Component, h, Watch } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 import { menuController } from '@ionic/core';
 import { Appendices, Bible, Commentary, Resource } from '../../models';
 import { state } from '../../state';
@@ -18,23 +18,6 @@ export class RevMenu {
     this.bible = await Bible.onReady();
     this.commentary = await Commentary.onReady();
     this.appendix = await Appendices.onReady();
-  }
-
-  @Watch('resource') onResourceChange(_: Resource, newValue: Resource) {
-    switch (newValue) {
-      case Resource.Bible:
-        menuController.enable(true, 'bible');
-        menuController.open('bible');
-        break;
-      case Resource.Commentary:
-        menuController.enable(true, 'commentary');
-        menuController.open('commentary');
-        break;
-      case Resource.Appendix:
-        menuController.enable(true, 'appendix');
-        menuController.open('appendix');
-        break;
-    }
   }
 
   render() {
