@@ -1,4 +1,6 @@
-import { Component, h } from '@stencil/core';
+import { Component, h, Prop } from '@stencil/core';
+import { Resource } from '../../models';
+import { state } from '../../state';
 
 @Component({
   tag: 'app-home',
@@ -6,6 +8,16 @@ import { Component, h } from '@stencil/core';
   scoped: true,
 })
 export class AppHome {
+  @Prop() resource?: Resource;
+  @Prop() book?: string;
+  @Prop() chapter?: number;
+
+  componentWillRender() {
+    state.resource = this.resource;
+    state.book = this.book;
+    state.chapter = this.chapter;
+  }
+
   render() {
     return (
       <ion-app>
@@ -22,7 +34,7 @@ export class AppHome {
           </ion-header>
 
           <ion-content class="ion-padding">
-            <p class="content"></p>
+            <chapter-view />
           </ion-content>
         </div>
       </ion-app>
