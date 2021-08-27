@@ -1,6 +1,6 @@
 import { Component, h, Watch } from '@stencil/core';
 import { menuController } from '@ionic/core';
-import { Bible, Resource } from '../../models';
+import { Appendices, Bible, Commentary, Resource } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -10,10 +10,14 @@ import { state } from '../../state';
 })
 export class RevMenu {
   bible: Bible;
+  commentary: Commentary;
+  appendix: Appendices;
 
   async componentWillRender() {
     menuController.enable(true, 'main');
     this.bible = await Bible.onReady();
+    this.commentary = await Commentary.onReady();
+    this.appendix = await Appendices.onReady();
   }
 
   @Watch('resource') onResourceChange(_: Resource, newValue: Resource) {
@@ -116,10 +120,44 @@ export class RevMenu {
         <ion-content>
           <ion-list>
             <ion-button color="dark" onClick={() => (state.resource = undefined)}>
-              ..
+              {state.resource}
             </ion-button>
+            {state.book && (
+              <ion-button
+                color="dark"
+                onClick={() => {
+                  state.book = undefined;
+                }}
+              >
+                {state.book}
+              </ion-button>
+            )}
+            {state.chapter && (
+              <ion-button
+                color="dark"
+                onClick={() => {
+                  state.chapter = undefined;
+                }}
+              >
+                {state.chapter}
+              </ion-button>
+            )}
             <br />
-            TODO: Render commentary here{' '}
+            {!state.book
+              ? this.commentary.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>, <br />])
+              : !state.chapter
+              ? this.commentary.getChapters(state.book).map(c => [<ion-button onClick={() => (state.chapter = parseInt(c))}>{c}</ion-button>])
+              : this.commentary.getVerses(state.book, state.chapter).map(v => [
+                  <ion-button
+                    onClick={() => {
+                      state.verse = parseInt(v);
+                      menuController.close('main');
+                    }}
+                  >
+                    {v}
+                  </ion-button>,
+                  <br />,
+                ])}
           </ion-list>
         </ion-content>
       </ion-menu>
@@ -135,7 +173,7 @@ export class RevMenu {
         <ion-content>
           <ion-list>
             <ion-button color="dark" onClick={() => (state.resource = undefined)}>
-              ..
+              {state.resource}
             </ion-button>
             <br />
             TODO: Render appendix here{' '}

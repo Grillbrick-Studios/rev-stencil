@@ -5,7 +5,7 @@ import { state } from '../../state';
 @Component({
   tag: 'chapter-view',
   styleUrl: 'chapter-view.css',
-  scoped: true,
+  shadow: true,
 })
 export class ChapterView {
   bible: Bible;
