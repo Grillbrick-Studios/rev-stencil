@@ -76,7 +76,7 @@ export class RevMenu {
             )}
             <br />
             {!state.book
-              ? this.bible.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>, <br />])
+              ? this.bible.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>])
               : this.bible.getChapters(state.book).map(c => [
                   <ion-button
                     onClick={() => {
@@ -86,7 +86,6 @@ export class RevMenu {
                   >
                     {c}
                   </ion-button>,
-                  <br />,
                 ])}
           </ion-list>
         </ion-content>
@@ -127,7 +126,7 @@ export class RevMenu {
             )}
             <br />
             {!state.book
-              ? this.commentary.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>, <br />])
+              ? this.commentary.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>])
               : !state.chapter
               ? this.commentary.getChapters(state.book).map(c => [<ion-button onClick={() => (state.chapter = parseInt(c))}>{c}</ion-button>])
               : this.commentary.getVerses(state.book, state.chapter).map(v => [
@@ -139,7 +138,6 @@ export class RevMenu {
                   >
                     {v}
                   </ion-button>,
-                  <br />,
                 ])}
           </ion-list>
         </ion-content>

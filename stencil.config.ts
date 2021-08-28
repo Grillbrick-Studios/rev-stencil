@@ -6,8 +6,12 @@ export const config: Config = {
   globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.css',
   taskQueue: 'async',
-  outputTargets: [{
-    type: 'www',
-    serviceWorker: null
-  }],
+  outputTargets: [
+    {
+      type: 'www',
+      serviceWorker: {
+        globPatterns: ['**/*.{js,css,json,html,ico,png}', 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=*'],
+      },
+    },
+  ],
 };

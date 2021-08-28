@@ -73,7 +73,7 @@ export class Bible implements iData<iVerse> {
     const bible: iBibleJson = await fetch(URL).then(res => res.json());
     Bible.verses = bible.REV_Bible.map(v => new Verse(v));
     Bible.updated = new Date();
-    Bible.save();
+    //Bible.save();
     console.log('Bible downloaded!');
   }
 

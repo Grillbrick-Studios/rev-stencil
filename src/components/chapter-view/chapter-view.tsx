@@ -38,7 +38,9 @@ export class ChapterView {
 
     return (
       <Host>
-        <ion-title class="title">{state.book}</ion-title>
+        <ion-title class="title">
+          {state.book} {state.chapter}
+        </ion-title>
         <p
           class="content"
           innerHTML={this.bible

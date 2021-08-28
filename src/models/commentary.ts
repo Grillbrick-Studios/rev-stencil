@@ -71,7 +71,7 @@ export class Commentary implements iData<iCommentary> {
     const commentary: iCommentaryJson = await res.json();
     Commentary._data = commentary.REV_Commentary;
     Commentary.updated = new Date();
-    Commentary.save();
+    //Commentary.save();
   }
 
   static async onReady(): Promise<Commentary> {
