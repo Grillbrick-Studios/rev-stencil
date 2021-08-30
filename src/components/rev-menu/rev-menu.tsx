@@ -1,4 +1,4 @@
-import { Component, h } from '@stencil/core';
+import { Component, h, State } from '@stencil/core';
 import { menuController } from '@ionic/core';
 import { Appendices, Bible, Commentary, Resource } from '../../models';
 import { state } from '../../state';
@@ -9,15 +9,15 @@ import { state } from '../../state';
   scoped: true,
 })
 export class RevMenu {
-  bible: Bible;
-  commentary: Commentary;
-  appendix: Appendices;
+  @State() bible: Bible;
+  @State() commentary: Commentary;
+  @State() appendix: Appendices;
 
-  async componentWillRender() {
+  componentWillRender() {
     menuController.enable(true, 'main');
-    this.bible = await Bible.onReady();
-    this.commentary = await Commentary.onReady();
-    this.appendix = await Appendices.onReady();
+    Bible.onReady().then(b => (this.bible = b));
+    Commentary.onReady().then(c => (this.commentary = c));
+    Appendices.onReady().then(a => (this.appendix = a));
   }
 
   render() {

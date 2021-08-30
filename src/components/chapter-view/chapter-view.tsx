@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, State } from '@stencil/core';
 import { Bible } from '../../models';
 import { state } from '../../state';
 
@@ -8,10 +8,10 @@ import { state } from '../../state';
   shadow: true,
 })
 export class ChapterView {
-  bible: Bible;
+  @State() bible: Bible;
 
-  async componentWillLoad() {
-    this.bible = await Bible.onReady();
+  componentWillLoad() {
+    Bible.onReady().then(b => (this.bible = b));
   }
 
   render() {
