@@ -1,6 +1,6 @@
-import { Storage } from '@capacitor/storage';
-import { iData } from './interfaces';
+import { iData, iSerializeData, Asynclock } from './common';
 import { iVerse, Verse } from './verse';
+import { writeFile, readFile } from './filesystem';
 
 export const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=bible';
 
@@ -10,34 +10,46 @@ export interface iBibleJson {
   updated?: Date;
 }
 
-export class Bible implements iData<iVerse> {
+export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   private static verses: Verse[];
   private static updated: Date;
+  private static lock: Asynclock = new Asynclock();
+
+  private selectedBook?: string;
+  private selectedChapter?: number;
+  private selectedVerse?: number;
 
   public static get data(): iVerse[] {
     return Bible.verses.map(v => v.unwrap());
   }
 
+  public get updated(): Date {
+    return Bible.updated;
+  }
+
   public static async save() {
-    const data: iBibleJson = {
-      REV_Bible: Bible.data,
+    const data: iSerializeData<iVerse> = {
+      data: Bible.data,
       updated: Bible.updated,
     };
 
-    await Storage.set({
-      key: 'Bible',
-      value: JSON.stringify(data),
-    });
+    console.log('saving bible...');
+    await writeFile<iVerse>(data, 'Bible');
+    console.log('bible saved!');
   }
 
   public static async load(): Promise<boolean> {
     try {
-      const { value } = await Storage.get({ key: 'Bible' });
-      const bibleData: iBibleJson = JSON.parse(value);
-      Bible.verses = bibleData.REV_Bible.map(v => new Verse(v));
+      //const { value } = await Storage.get({ key: 'Bible' });
+      //const bibleData: iBibleJson = JSON.parse(value);
+      console.log('attempting to load bible from disk');
+      const bibleData = await readFile<iVerse>('Bible');
+      Bible.verses = bibleData.data.map(v => new Verse(v));
       Bible.updated = new Date(bibleData.updated);
+      console.log('Bible loaded from disk!');
       return true;
     } catch (e) {
+      console.log(`Error loading bible from disk: ${e}`);
       return false;
     }
   }
@@ -61,26 +73,23 @@ export class Bible implements iData<iVerse> {
     Bible.verses = verses.map(v => new Verse(v));
   }
 
-  private selectedBook?: string;
-
-  private selectedChapter?: number;
-
-  private selectedVerse?: number;
-
   private static async fetch() {
     console.log('Fetching bible from web. Please wait...');
 
     const bible: iBibleJson = await fetch(URL).then(res => res.json());
     Bible.verses = bible.REV_Bible.map(v => new Verse(v));
     Bible.updated = new Date();
-    //Bible.save();
+    Bible.save();
     console.log('Bible downloaded!');
   }
 
   static async onReady(): Promise<Bible> {
+    await this.lock.promise;
+    this.lock.enable();
     if (Bible.verses) return new Bible(Bible.verses);
     else if (await Bible.load()) return new Bible(Bible.verses);
     else await Bible.fetch();
+    this.lock.disable();
     return new Bible(Bible.verses);
   }
 

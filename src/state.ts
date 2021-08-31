@@ -1,5 +1,5 @@
 import { createStore } from '@stencil/store';
-import { Resource } from './models/interfaces';
+import { Resource } from './models';
 
 interface iStore {
   resource?: Resource;

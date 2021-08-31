@@ -1,5 +1,5 @@
-import { Storage } from '@capacitor/storage';
-import { iData } from './interfaces';
+import { iData, Asynclock, iSerializeData } from './common';
+import { writeFile, readFile } from './filesystem';
 
 const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=commentary';
 
@@ -18,24 +18,21 @@ interface iCommentaryJson {
 export class Commentary implements iData<iCommentary> {
   private static _data: iCommentary[];
   private static updated: Date;
+  private static lock = new Asynclock();
 
-  public static async save() {
-    const data: iCommentaryJson = {
-      REV_Commentary: Commentary._data,
+  private static async save() {
+    const data: iSerializeData<iCommentary> = {
+      data: Commentary._data,
       updated: Commentary.updated,
     };
 
-    await Storage.set({
-      key: 'Commentary',
-      value: JSON.stringify(data),
-    });
+    await writeFile(data, 'Commentary');
   }
 
-  public static async load(): Promise<boolean> {
+  private static async load(): Promise<boolean> {
     try {
-      const { value } = await Storage.get({ key: 'Commentary' });
-      const commentaryData: iCommentaryJson = JSON.parse(value);
-      Commentary._data = commentaryData.REV_Commentary;
+      const commentaryData: iSerializeData<iCommentary> = await readFile('Commentary');
+      Commentary._data = commentaryData.data;
       Commentary.updated = new Date(commentaryData.updated);
       return true;
     } catch (e) {
@@ -71,13 +68,16 @@ export class Commentary implements iData<iCommentary> {
     const commentary: iCommentaryJson = await res.json();
     Commentary._data = commentary.REV_Commentary;
     Commentary.updated = new Date();
-    //Commentary.save();
+    Commentary.save();
   }
 
   static async onReady(): Promise<Commentary> {
+    await this.lock.promise;
+    this.lock.enable();
     if (Commentary._data) return new Commentary(Commentary._data);
     if (await Commentary.load()) return new Commentary(Commentary._data);
     await Commentary.fetch();
+    this.lock.disable();
     return new Commentary(Commentary._data);
   }
 

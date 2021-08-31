@@ -1,5 +1,5 @@
 import { Storage } from '@capacitor/storage';
-import { iData } from './interfaces';
+import { iData, Asynclock } from './common';
 
 const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=appendices';
 
@@ -17,6 +17,7 @@ export class Appendices implements iData<iAppendices> {
   private static _data: iAppendices[];
   private static updated: Date;
   private _selectedTitle?: string;
+  private static lock = new Asynclock();
 
   public static async save() {
     const data: iAppendicesJson = {
@@ -105,9 +106,12 @@ export class Appendices implements iData<iAppendices> {
   }
 
   static async onReady(): Promise<Appendices> {
+    await this.lock.promise;
+    this.lock.enable();
     if (Appendices.data) return new Appendices(Appendices.data);
     if (await Appendices.load()) return new Appendices(Appendices._data);
     await Appendices.fetch();
+    this.lock.disable();
     return new Appendices(Appendices.data);
   }
 

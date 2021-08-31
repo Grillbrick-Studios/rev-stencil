@@ -21,12 +21,12 @@ export class RevMenu {
   }
 
   render() {
-    if (!this.bible)
+    if (!this.bible || !this.commentary || !this.appendix)
       return (
         <ion-menu side="start" menuId="main" contentId="main-content">
           <ion-header>
             <ion-toolbar color="primary">
-              <ion-title>Please wait while bible loads.</ion-title>
+              <ion-title>Loading Resources...</ion-title>
             </ion-toolbar>
           </ion-header>
         </ion-menu>
