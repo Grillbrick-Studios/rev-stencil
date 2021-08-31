@@ -5,7 +5,7 @@ import { state } from '../../state';
 @Component({
   tag: 'chapter-view',
   styleUrl: 'chapter-view.css',
-  shadow: true,
+  shadow: false,
 })
 export class ChapterView {
   @Prop() bible: Bible;
@@ -21,14 +21,14 @@ export class ChapterView {
     if (!state.book)
       return (
         <Host>
-          <ion-title> Please select a book.</ion-title>
+          <ion-title class="title"> Please select a book.</ion-title>
         </Host>
       );
 
     if (!state.chapter)
       return (
         <Host>
-          <ion-title> Please select a chapter.</ion-title>
+          <ion-title class="title"> Please select a chapter.</ion-title>
         </Host>
       );
 

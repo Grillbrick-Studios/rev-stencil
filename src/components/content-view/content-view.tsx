@@ -5,7 +5,7 @@ import { state } from '../../state';
 @Component({
   tag: 'content-view',
   styleUrl: 'content-view.css',
-  shadow: true,
+  shadow: false,
 })
 export class ContentView {
   @State() bible: Bible;
@@ -27,7 +27,7 @@ export class ContentView {
       case Resource.Commentary:
         return <commentary-view commentary={this.commentary} />;
       default:
-        return <ion-title> Please select a resource.</ion-title>;
+        return <ion-title class="title"> Please select a resource.</ion-title>;
     }
   }
 }

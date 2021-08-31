@@ -5,7 +5,7 @@ import { state } from '../../state';
 @Component({
   tag: 'appendix-view',
   styleUrl: 'appendix-view.css',
-  shadow: true,
+  shadow: false,
 })
 export class AppendixView {
   @Prop() appendix: Appendices;
@@ -21,7 +21,7 @@ export class AppendixView {
     if (!state.book)
       return (
         <Host>
-          <ion-title> Please select an Appendix</ion-title>
+          <ion-title class="title"> Please select an Appendix</ion-title>
         </Host>
       );
 

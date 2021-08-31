@@ -5,7 +5,7 @@ import { state } from '../../state';
 @Component({
   tag: 'commentary-view',
   styleUrl: 'commentary-view.css',
-  shadow: true,
+  shadow: false,
 })
 export class CommentaryView {
   @Prop() commentary: Commentary;
@@ -21,21 +21,21 @@ export class CommentaryView {
     if (!state.book)
       return (
         <Host>
-          <ion-title> Please select a book.</ion-title>
+          <ion-title class="title"> Please select a book.</ion-title>
         </Host>
       );
 
     if (!state.chapter)
       return (
         <Host>
-          <ion-title> Please select a chapter.</ion-title>
+          <ion-title class="title"> Please select a chapter.</ion-title>
         </Host>
       );
 
     if (!state.verse)
       return (
         <Host>
-          <ion-title> Please select a verse.</ion-title>
+          <ion-title class="title"> Please select a verse.</ion-title>
         </Host>
       );
 
