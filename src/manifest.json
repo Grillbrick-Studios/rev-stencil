@@ -1,8 +1,8 @@
 {
-  "name": "rev-stencil",
+  "name": "Revised English Version Bible - Offline",
   "manifest_version": 2,
   "version": "0.0.1",
-  "short_name": "rev-stencil",
+  "short_name": "REV Offline",
   "start_url": "/",
   "display": "standalone",
   "icons": [{
