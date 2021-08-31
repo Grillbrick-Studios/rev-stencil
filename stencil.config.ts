@@ -13,6 +13,8 @@ export const config: Config = {
         globPatterns: [
           // The basics to cache everything?
           '**/*.{js,css,json,html,ico,png}',
+          'build/app.css',
+          'build/app.esm.js',
           //'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=*'
         ],
       },
