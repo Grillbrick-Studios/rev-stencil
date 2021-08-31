@@ -16,6 +16,6 @@ export async function readFile<T>(path: string): Promise<iSerializeData<T>> {
     directory: Directory.Documents,
     encoding: Encoding.UTF8,
   });
-  console.log(JSON.parse(content.data) as iSerializeData<T>);
+
   return JSON.parse(content.data);
 }
