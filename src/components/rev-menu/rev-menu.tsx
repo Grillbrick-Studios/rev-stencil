@@ -13,13 +13,6 @@ export class RevMenu {
   @State() commentary: Commentary;
   @State() appendix: Appendices;
 
-  componentWillRender() {
-    menuController.enable(true, 'main');
-    Bible.onReady().then(b => (this.bible = b));
-    Commentary.onReady().then(c => (this.commentary = c));
-    Appendices.onReady().then(a => (this.appendix = a));
-  }
-
   render() {
     if (!this.bible || !this.commentary || !this.appendix)
       return (
@@ -29,6 +22,11 @@ export class RevMenu {
               <ion-title>Loading Resources...</ion-title>
             </ion-toolbar>
           </ion-header>
+          <ion-content>
+            {this.bible ? <ion-title>Bible Loaded!</ion-title> : Bible.onReady().then(b => (this.bible = b)) && <ion-title>Loading Bible...</ion-title>}
+            {this.commentary ? <ion-title>Commentary Loaded!</ion-title> : Commentary.onReady().then(c => (this.commentary = c)) && <ion-title>Loading Commentary...</ion-title>}
+            {this.appendix ? <ion-title>Appendices Loaded!</ion-title> : Appendices.onReady().then(a => (this.appendix = a)) || <ion-title>Loading Appendices...</ion-title>}
+          </ion-content>
         </ion-menu>
       );
 
