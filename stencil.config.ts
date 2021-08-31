@@ -10,7 +10,11 @@ export const config: Config = {
     {
       type: 'www',
       serviceWorker: {
-        globPatterns: ['**/*.{js,css,json,html,ico,png}', 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=*'],
+        globPatterns: [
+          // The basics to cache everything?
+          '**/*.{js,css,json,html,ico,png}',
+          //'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=*'
+        ],
       },
     },
   ],

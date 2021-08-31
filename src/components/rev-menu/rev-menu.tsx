@@ -157,7 +157,16 @@ export class RevMenu {
               {state.resource}
             </ion-button>
             <br />
-            TODO: Render appendix here{' '}
+            {this.appendix.getTitles().map(a => [
+              <ion-button
+                onClick={() => {
+                  state.book = a;
+                  menuController.close('main');
+                }}
+              >
+                {a}
+              </ion-button>,
+            ])}{' '}
           </ion-list>
         </ion-content>
       </ion-menu>
