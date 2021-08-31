@@ -11,11 +11,13 @@ export class AppHome {
   @Prop() resource?: Resource;
   @Prop() book?: string;
   @Prop() chapter?: number;
+  @Prop() verse?: number;
 
   componentWillRender() {
     state.resource = this.resource;
     state.book = this.book;
     state.chapter = this.chapter;
+    state.verse = this.verse;
   }
 
   render() {
@@ -34,7 +36,7 @@ export class AppHome {
           </ion-header>
 
           <ion-content class="ion-padding">
-            <chapter-view />
+            <content-view />
           </ion-content>
         </div>
       </ion-app>
