@@ -27,7 +27,6 @@ export class AppendixView {
 
     return (
       <Host>
-        <ion-title class="title">{state.book}</ion-title>
         <p class="content" innerHTML={this.appendix.getAppendix(state.book)}></p>
       </Host>
     );
