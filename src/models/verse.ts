@@ -83,7 +83,7 @@ export class Verse implements iVerse {
     result = result?.replace(/\]\]/g, '</em>');
     result = result?.replace(/\[/g, "<em style='font-weight: lighter;'>");
     result = result?.replace(/\]/g, '</em>');
-    if (this.hasCommentary) return `<sup><a href="/Commentary/${this.book}/${this.chapter}/${this.verse}">${this.verse}</a></sup> ${result}`;
+    if (this.hasCommentary) return `<sup><ion-router-link href="/Commentary/${this.book}/${this.chapter}/${this.verse}">${this.verse}</ion-router-link></sup> ${result}`;
     return `<sup>${this.verse}</sup> ${result}`;
   }
 }

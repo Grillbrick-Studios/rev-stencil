@@ -15,10 +15,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   private static updated: Date;
   private static lock: Asynclock = new Asynclock();
 
-  private selectedBook?: string;
-  private selectedChapter?: number;
-  private selectedVerse?: number;
-
   public static get data(): iVerse[] {
     return Bible.verses.map(v => v.unwrap());
   }
@@ -34,16 +30,14 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     };
 
     console.log('saving bible...');
-    await writeFile<iVerse>(data, 'Bible');
+    await writeFile(data, 'Bible');
     console.log('bible saved!');
   }
 
   public static async load(): Promise<boolean> {
     try {
-      //const { value } = await Storage.get({ key: 'Bible' });
-      //const bibleData: iBibleJson = JSON.parse(value);
       console.log('attempting to load bible from disk');
-      const bibleData = await readFile<iVerse>('Bible');
+      const bibleData: iSerializeData<iVerse> = await readFile('Bible');
       Bible.verses = bibleData.data.map(v => new Verse(v));
       Bible.updated = new Date(bibleData.updated);
       console.log('Bible loaded from disk!');
@@ -60,13 +54,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
   public get data(): iVerse[] {
     return Bible.verses;
-  }
-
-  public get path(): string {
-    if (this.selectedVerse) return `${this.selectedBook} ${this.selectedChapter}:${this.selectedVerse}`;
-    if (this.selectedChapter) return `${this.selectedBook} ${this.selectedChapter}`;
-    if (this.selectedBook) return `${this.selectedBook}`;
-    return 'Bible';
   }
 
   constructor(verses: iVerse[]) {
@@ -86,11 +73,16 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   static async onReady(): Promise<Bible> {
     await this.lock.promise;
     this.lock.enable();
-    if (Bible.verses) return new Bible(Bible.verses);
-    else if (await Bible.load()) return new Bible(Bible.verses);
-    else await Bible.fetch();
-    this.lock.disable();
-    return new Bible(Bible.verses);
+    try {
+      if (Bible.verses) return new Bible(Bible.verses);
+      else if (await Bible.load()) return new Bible(Bible.verses);
+      else await Bible.fetch();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.lock.disable();
+    }
+    return new Bible(Bible.data);
   }
 
   getFunnyVerses(): string[] {
@@ -127,51 +119,5 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
   numVerses(book: string, chapter: number): number {
     return this.getVerses(book, chapter).length;
-  }
-
-  ls(): string[] {
-    if (this.selectedVerse && this.selectedChapter && this.selectedBook) return this.getVerses(this.selectedBook, this.selectedChapter, this.selectedVerse).map(v => v.html());
-    if (this.selectedChapter && this.selectedBook) return this.getVerses(this.selectedBook, this.selectedChapter).map(v => v.html());
-    if (this.selectedBook) return this.getChapters(this.selectedBook).map(v => v.toString());
-    return this.getBooks();
-  }
-
-  selectBook(book: string): void {
-    this.getBooks().forEach(bk => {
-      if (bk === book) this.selectedBook = book;
-    });
-  }
-
-  selectChapter(chapter: number): void {
-    if (!this.selectedBook) return;
-    if (chapter > this.numChapters(this.selectedBook)) return;
-    this.selectedChapter = chapter;
-  }
-
-  selectVerse(verse: number): void {
-    if (!this.selectedBook || !this.selectedChapter) return;
-    if (verse > this.numVerses(this.selectedBook, this.selectedChapter)) return;
-    this.selectedVerse = verse;
-  }
-
-  up(): boolean {
-    if (this.selectedVerse) {
-      this.selectedVerse = undefined;
-      return true;
-    } else if (this.selectedChapter) {
-      this.selectedChapter = undefined;
-      return true;
-    } else if (this.selectedBook) {
-      this.selectedBook = undefined;
-      return true;
-    }
-    return false;
-  }
-
-  select(target: string): void {
-    if (this.selectedVerse) this.selectVerse(parseInt(target));
-    else if (this.selectedChapter) this.selectVerse(parseInt(target));
-    else if (this.selectedBook) this.selectChapter(parseInt(target));
-    else this.selectBook(target);
   }
 }

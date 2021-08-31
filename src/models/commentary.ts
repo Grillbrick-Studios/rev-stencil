@@ -74,10 +74,15 @@ export class Commentary implements iData<iCommentary> {
   static async onReady(): Promise<Commentary> {
     await this.lock.promise;
     this.lock.enable();
-    if (Commentary._data) return new Commentary(Commentary._data);
-    if (await Commentary.load()) return new Commentary(Commentary._data);
-    await Commentary.fetch();
-    this.lock.disable();
+    try {
+      if (Commentary._data) return new Commentary(Commentary._data);
+      else if (await Commentary.load()) return new Commentary(Commentary._data);
+      else await Commentary.fetch();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.lock.disable();
+    }
     return new Commentary(Commentary._data);
   }
 
