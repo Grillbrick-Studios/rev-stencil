@@ -25,6 +25,9 @@
     "puppeteer": "^10.0.0",
     "workbox-build": "4.3.1"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@capacitor/app": "1.0.2",
     "@capacitor/core": "3.2.0",
