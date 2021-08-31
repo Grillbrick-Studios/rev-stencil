@@ -29,6 +29,7 @@ UserInterfaceState.xcuserstate
 # https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored
 
 .yarn/*
+!yarn.lock
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks
