@@ -35,11 +35,23 @@ export class ContentView {
       );
     switch (state.resource) {
       case Resource.Bible:
-        return <chapter-view bible={this.bible} />;
+        return (
+          <Host>
+            <chapter-view bible={this.bible} />
+          </Host>
+        );
       case Resource.Appendix:
-        return <appendix-view appendix={this.appendix} />;
+        return (
+          <Host>
+            <appendix-view appendix={this.appendix} />
+          </Host>
+        );
       case Resource.Commentary:
-        return <commentary-view commentary={this.commentary} />;
+        return (
+          <Host>
+            <commentary-view commentary={this.commentary} />
+          </Host>
+        );
       default:
         return (
           <Host>

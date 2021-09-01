@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, h, Prop } from '@stencil/core';
 import { Resource } from '../../models';
 import { state } from '../../state';
 
@@ -29,9 +29,9 @@ export class AppHome {
 
   render() {
     return (
-      <Host>
+      <ion-content class="ion-padding">
         <content-view resource={this.resource} />
-      </Host>
+      </ion-content>
     );
   }
 }

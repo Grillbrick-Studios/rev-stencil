@@ -1,13 +1,3 @@
-div[scrollx='true'],
-div[scrolly='true'] {
-  position: relative;
-  overflow: hidden;
-}
-
-div[scrollx='true'] {
-  overflow-x: auto;
-}
-
-div[scrolly='true'] {
-  overflow-y: auto;
+.ion-padding {
+  --padding-top: var(--ion-padding, 75px);
 }

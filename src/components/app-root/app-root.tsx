@@ -34,9 +34,7 @@ export class AppRoot {
             <ion-route url="/:resource/:book/:chapter" component="app-home" />
             <ion-route url="/:resource/:book/:chapter/:verse" component="app-home" />
           </ion-router>
-          <ion-content class="ion-padding" scrollEvents={true} scrollY={true}>
-            <ion-nav swipeGesture={true} />
-          </ion-content>
+          <ion-nav swipeGesture={true} />
         </div>
       </ion-app>
     );
