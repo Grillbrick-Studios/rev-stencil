@@ -1,9 +1,13 @@
-.header {
-  text-align: center;
-  font-size: 3rem;
+div[scrollx='true'],
+div[scrolly='true'] {
+  position: relative;
+  overflow: hidden;
 }
 
-.content {
-  text-align: start;
-  font-size: 1.5rem;
+div[scrollx='true'] {
+  overflow-x: auto;
+}
+
+div[scrolly='true'] {
+  overflow-y: auto;
 }

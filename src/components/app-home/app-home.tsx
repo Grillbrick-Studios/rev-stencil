@@ -1,4 +1,4 @@
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Host, Prop } from '@stencil/core';
 import { Resource } from '../../models';
 import { state } from '../../state';
 
@@ -12,34 +12,26 @@ export class AppHome {
   @Prop() book?: string;
   @Prop() chapter?: number;
   @Prop() verse?: number;
+  nav: HTMLIonNavElement;
 
-  componentWillRender() {
-    state.resource = this.resource;
-    state.book = this.book;
-    state.chapter = this.chapter;
-    state.verse = this.verse;
+  constructor() {
+    this.nav = document.querySelector('ion-nav');
+  }
+
+  connectedCallback() {
+    state.resource = this.resource ? this.resource : state.resource;
+    state.book = this.book ? this.book : state.book;
+    state.chapter = this.chapter ? this.chapter : state.chapter;
+    state.verse = this.verse ? this.verse : state.verse;
+    if (window.location.pathname !== '/') window.history.replaceState(null, null, '/');
+    //console.log(window.location.pathname);
   }
 
   render() {
     return (
-      <ion-app>
-        <rev-menu />
-
-        <div class="ion-page" id="main-content">
-          <ion-header>
-            <ion-toolbar>
-              <ion-buttons slot="start">
-                <ion-menu-button menu="main"></ion-menu-button>
-              </ion-buttons>
-              <ion-title>REV App</ion-title>
-            </ion-toolbar>
-          </ion-header>
-
-          <ion-content class="ion-padding">
-            <content-view />
-          </ion-content>
-        </div>
-      </ion-app>
+      <Host>
+        <content-view resource={this.resource} />
+      </Host>
     );
   }
 }

@@ -26,8 +26,6 @@ export namespace Components {
     }
     interface ContentView {
     }
-    interface RevMenu {
-    }
 }
 declare global {
     interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {
@@ -66,12 +64,6 @@ declare global {
         prototype: HTMLContentViewElement;
         new (): HTMLContentViewElement;
     };
-    interface HTMLRevMenuElement extends Components.RevMenu, HTMLStencilElement {
-    }
-    var HTMLRevMenuElement: {
-        prototype: HTMLRevMenuElement;
-        new (): HTMLRevMenuElement;
-    };
     interface HTMLElementTagNameMap {
         "app-home": HTMLAppHomeElement;
         "app-root": HTMLAppRootElement;
@@ -79,7 +71,6 @@ declare global {
         "chapter-view": HTMLChapterViewElement;
         "commentary-view": HTMLCommentaryViewElement;
         "content-view": HTMLContentViewElement;
-        "rev-menu": HTMLRevMenuElement;
     }
 }
 declare namespace LocalJSX {
@@ -102,8 +93,6 @@ declare namespace LocalJSX {
     }
     interface ContentView {
     }
-    interface RevMenu {
-    }
     interface IntrinsicElements {
         "app-home": AppHome;
         "app-root": AppRoot;
@@ -111,7 +100,6 @@ declare namespace LocalJSX {
         "chapter-view": ChapterView;
         "commentary-view": CommentaryView;
         "content-view": ContentView;
-        "rev-menu": RevMenu;
     }
 }
 export { LocalJSX as JSX };
@@ -124,7 +112,6 @@ declare module "@stencil/core" {
             "chapter-view": LocalJSX.ChapterView & JSXBase.HTMLAttributes<HTMLChapterViewElement>;
             "commentary-view": LocalJSX.CommentaryView & JSXBase.HTMLAttributes<HTMLCommentaryViewElement>;
             "content-view": LocalJSX.ContentView & JSXBase.HTMLAttributes<HTMLContentViewElement>;
-            "rev-menu": LocalJSX.RevMenu & JSXBase.HTMLAttributes<HTMLRevMenuElement>;
         }
     }
 }

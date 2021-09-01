@@ -18,24 +18,41 @@ export class CommentaryView {
         </Host>
       );
 
-    if (!state.book)
+    if (!state.book || !state.chapter || !state.verse)
       return (
         <Host>
-          <ion-title class="title"> Please select a book.</ion-title>
-        </Host>
-      );
-
-    if (!state.chapter)
-      return (
-        <Host>
-          <ion-title class="title"> Please select a chapter.</ion-title>
-        </Host>
-      );
-
-    if (!state.verse)
-      return (
-        <Host>
-          <ion-title class="title"> Please select a verse.</ion-title>
+          <ion-title class="title"> Please select a book, chapter, & verse.</ion-title>
+          <ion-list>
+            <ion-button color="dark" onClick={() => (state.resource = undefined)}>
+              {state.resource}
+            </ion-button>
+            {state.book && (
+              <ion-button
+                color="dark"
+                onClick={() => {
+                  state.book = undefined;
+                }}
+              >
+                {state.book}
+              </ion-button>
+            )}
+            {state.chapter && (
+              <ion-button
+                color="dark"
+                onClick={() => {
+                  state.chapter = undefined;
+                }}
+              >
+                {state.chapter}
+              </ion-button>
+            )}
+            <br />
+            {!state.book
+              ? this.commentary.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>])
+              : !state.chapter
+              ? this.commentary.getChapters(state.book).map(c => [<ion-button onClick={() => (state.chapter = parseInt(c))}>{c}</ion-button>])
+              : this.commentary.getVerses(state.book, state.chapter).map(v => [<ion-button onClick={() => (state.verse = parseInt(v))}>{v}</ion-button>])}
+          </ion-list>
         </Host>
       );
 
