@@ -23,28 +23,29 @@ export class CommentaryView {
         <Host>
           <ion-title class="title"> Please select a book, chapter, & verse.</ion-title>
           <ion-list>
-            <ion-button color="dark" onClick={() => (state.resource = undefined)}>
-              {state.resource}
-            </ion-button>
+            <ion-chip onClick={() => (state.resource = undefined)}>
+              <ion-label color="dark">{state.resource}</ion-label>
+              <ion-icon name="close-circle" />
+            </ion-chip>
             {state.book && (
-              <ion-button
-                color="dark"
+              <ion-chip
                 onClick={() => {
                   state.book = undefined;
                 }}
               >
-                {state.book}
-              </ion-button>
+                <ion-label color="dark">{state.book}</ion-label>
+                <ion-icon name="close-circle" />
+              </ion-chip>
             )}
             {state.chapter && (
-              <ion-button
-                color="dark"
+              <ion-chip
                 onClick={() => {
                   state.chapter = undefined;
                 }}
               >
-                {state.chapter}
-              </ion-button>
+                <ion-label color="dark">{state.chapter}</ion-label>
+                <ion-icon name="close-circle" />
+              </ion-chip>
             )}
             <br />
             {!state.book

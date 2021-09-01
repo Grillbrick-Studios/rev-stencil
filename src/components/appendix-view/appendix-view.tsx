@@ -23,9 +23,10 @@ export class AppendixView {
         <Host>
           <ion-title class="title"> Please select an Appendix</ion-title>
           <ion-list>
-            <ion-button color="dark" onClick={() => (state.resource = undefined)}>
-              {state.resource}
-            </ion-button>
+            <ion-chip onClick={() => (state.resource = undefined)}>
+              <ion-label color="dark">{state.resource}</ion-label>
+              <ion-icon name="close-circle" />
+            </ion-chip>
             <br />
             {this.appendix.getTitles().map(a => [
               <ion-button

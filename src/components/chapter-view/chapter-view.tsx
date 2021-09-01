@@ -23,13 +23,15 @@ export class ChapterView {
         <Host>
           <ion-title class="title"> Please select a book & chapter.</ion-title>
           <ion-list>
-            <ion-button color="dark" onClick={() => (state.resource = undefined)}>
-              {state.resource}
-            </ion-button>
+            <ion-chip onClick={() => (state.resource = undefined)}>
+              <ion-label color="dark">{state.resource}</ion-label>
+              <ion-icon name="close-circle" />
+            </ion-chip>
             {state.book && (
-              <ion-button color="dark" onClick={() => (state.book = undefined)}>
-                {state.book}
-              </ion-button>
+              <ion-chip onClick={() => (state.book = undefined)}>
+                <ion-label color="dark">{state.book}</ion-label>
+                <ion-icon name="close-circle" />
+              </ion-chip>
             )}
             <br />
             {!state.book
