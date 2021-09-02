@@ -9,6 +9,6 @@ Currently we need a lot of work on the styling of the app, and customization.
 
 - Improve styling of scripture verses.
 - Add custom themes.
-- Implement a better back button so going back from the commentary will get
-  you back to the bible.
+- ~~Implement a better back button so going back from the commentary will get
+  you back to the bible.~~ **DONE**
 - Implement infinite scrolling or paging with swiping or navigation buttons.

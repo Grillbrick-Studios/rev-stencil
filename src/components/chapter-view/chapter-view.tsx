@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { Bible } from '../../models';
+import { Bible, ViewMode } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -43,6 +43,13 @@ export class ChapterView {
 
     return (
       <Host>
+        <ion-buttons slot="start">
+          <ion-label>Verse Break Mode?</ion-label>
+          <ion-toggle
+            checked={state.viewMode === ViewMode.VerseBreak}
+            onIonChange={ev => (ev.detail.checked ? (state.viewMode = ViewMode.VerseBreak) : (state.viewMode = ViewMode.Paragraph))}
+          />
+        </ion-buttons>
         <ion-title class="title">
           {state.book} {state.chapter}
         </ion-title>
@@ -50,7 +57,7 @@ export class ChapterView {
           class="content"
           innerHTML={this.bible
             .getVerses(state.book, state.chapter)
-            .map(v => v.html())
+            .map(v => v.html(state.viewMode))
             .join('\n')}
         ></p>
       </Host>

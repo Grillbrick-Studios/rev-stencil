@@ -1,4 +1,5 @@
 import { Component, h } from '@stencil/core';
+import { Resource } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -42,6 +43,7 @@ export class AppRoot {
 }
 
 function goBack() {
+  if (state.resource === Resource.Commentary) state.resource = Resource.Bible;
   if (state.verse) return (state.verse = undefined);
   if (state.chapter) return (state.chapter = undefined);
   if (state.book) return (state.book = undefined);
