@@ -409,6 +409,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@capacitor/android@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "@capacitor/android@npm:3.2.1"
+  peerDependencies:
+    "@capacitor/core": ^3.2.0
+  checksum: bce590b23b845e852a5edb7ee1f98d5a8fc449da5fc67e0f3c9bda3635d904b4c25ab31a996008e2645aa64226f90641be34114cca5ba7b240352fa67c0945a4
+  languageName: node
+  linkType: hard
+
 "@capacitor/app@npm:1.0.2":
   version: 1.0.2
   resolution: "@capacitor/app@npm:1.0.2"
@@ -4850,6 +4859,7 @@ fsevents@^2.1.2:
   version: 0.0.0-use.local
   resolution: "rev-stencil@workspace:."
   dependencies:
+    "@capacitor/android": ^3.2.1
     "@capacitor/app": 1.0.2
     "@capacitor/cli": 3.2.0
     "@capacitor/core": 3.2.0
