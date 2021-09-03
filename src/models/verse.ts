@@ -1,5 +1,26 @@
 import { Commentary } from './commentary';
 
+export enum Style {
+  // style: 1    This is flowing text, or prose. See most verses in the NT.
+  Prose = 1,
+  // style: 2    This is poetry. See Psalms, Proverbs.
+  Poetry,
+  // style: 3    This is poetry with no small vertical space at the end of the verse. See Ezra 2
+  PoetryNoPostGap,
+  // style: 4    This is poetry with an extra linebreak before the verse. See Judges 5:6.
+  PoetryPreGap,
+  // style: 5    This is poetry with an extra linebreak before the verse and no vertical space after the verse. See Ezra 2:36.
+  PoetryPreGapNoPostGap,
+  // style: 6    This is list style. It's similar to poetry... I can explain later if you want to go there.
+  List,
+  // style: 7    This is list style with no small vertical space at the end of the verse.
+  ListNoPostGap,
+  // style: 8    This is list style with an extra linebreak before the verse.
+  ListPreGap,
+  // style: 9    This is list style with an extra linebreak before the verse and no vertical space after the verse.
+  ListPreGapNoPostGap,
+}
+
 export interface iVerse {
   book: string;
   chapter: number;
@@ -7,7 +28,7 @@ export interface iVerse {
   heading: string;
   microheading: number;
   paragraph: number;
-  style: number;
+  style: Style;
   footnotes: string;
   versetext: string;
 }
