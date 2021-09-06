@@ -53,13 +53,7 @@ export class ChapterView {
         <ion-title class="title">
           {state.book} {state.chapter}
         </ion-title>
-        <p
-          class="content"
-          innerHTML={this.bible
-            .getVerses(state.book, state.chapter)
-            .map(v => v.html(state.viewMode))
-            .join('\n')}
-        ></p>
+        <p class="content" innerHTML={this.bible.getChapter(state.book, state.chapter, state.viewMode)}></p>
       </Host>
     );
   }

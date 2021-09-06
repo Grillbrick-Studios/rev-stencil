@@ -1,5 +1,5 @@
 import { iData, iSerializeData, Asynclock } from './common';
-import { iVerse, Verse } from './verse';
+import { iVerse, Verse, ViewMode } from './verse';
 import { writeFile, readFile } from './filesystem';
 
 export const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=bible';
@@ -102,6 +102,14 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     const chaptersArray = Bible.verses.filter(v => v.book === book).map(v => v.chapter);
     const chapterSet = new Set(chaptersArray);
     return Array.from(chapterSet);
+  }
+
+  getChapter(book: string, chapter: number, viewMode: ViewMode = ViewMode.Paragraph): string {
+    // TODO Get this to render with appropriate class tags and styling. use the
+    // html method as a reference.
+    const verses = this.getVerses(book, chapter);
+
+    return verses.map(v => v.html(viewMode)).join('\n');
   }
 
   numChapters(book: string): number {
