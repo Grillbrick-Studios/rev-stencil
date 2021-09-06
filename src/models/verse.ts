@@ -84,6 +84,31 @@ export class Verse implements iVerse {
     };
   }
 
+  public raw(): string {
+    // First get the heading and versetext
+    let { heading, versetext } = this;
+
+    // wrap the heading in appropriate tags and add the microheading if it
+    // exists.
+    heading = `<h2>${heading}</h2>${this.microheading ? `<h3>${this.microheading}</h3>` : ''}`;
+
+    // This is a flag for adding the heading to the top.
+    let addHeading = false;
+
+    // if there is no [mvh] tag but there is a heading - note that we need to
+    // add the heading
+    if (versetext.indexOf('[mvh]') === -1 && this.heading) addHeading = true;
+    // otherwise replace the heading in the versetext
+    else versetext = versetext.replace(/\[mvh\]/g, heading);
+
+    // Generate a verse number link to commentary
+    const commentaryLink = this.hasCommentary
+      ? `<sup><ion-router-link href="/Commentary/${this.book}/${this.chapter}/${this.verse}">${this.verse}</ion-router-link></sup>`
+      : `<sup>${this.verse}</sup>`;
+
+    return `${addHeading ? heading : ''} ${commentaryLink} ${versetext}`;
+  }
+
   public html(mode: ViewMode = ViewMode.Paragraph): string {
     // First get the heading and versetext
     let { heading, versetext } = this;
