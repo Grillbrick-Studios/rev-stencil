@@ -23,3 +23,30 @@
 .verse {
   margin: 20px;
 }
+
+.microheading {
+  display: block;
+  text-indent: 0;
+  font-size: 76%;
+  font-style: italic;
+  color: #999;
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+}
+
+.questionable {
+  font-style: italic;
+  font-weight: lighter;
+}
+
+.prose {
+  text-indent: 0;
+  text-align: start;
+}
+
+.poetry {
+  text-indent: -2.8em;
+  margin: 0 0 0 2.8em;
+  padding: 0;
+  text-align: start;
+}

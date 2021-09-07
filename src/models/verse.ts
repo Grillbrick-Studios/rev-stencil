@@ -26,8 +26,8 @@ export interface iVerse {
   chapter: number;
   verse: number;
   heading: string;
-  microheading: number;
-  paragraph: number;
+  microheading: boolean;
+  paragraph: boolean;
   style: Style;
   footnotes: string;
   versetext: string;
@@ -63,8 +63,8 @@ export class Verse implements iVerse {
   chapter: number;
   verse: number;
   heading: string;
-  microheading: number;
-  paragraph: number;
+  microheading: boolean;
+  paragraph: boolean;
   style: number;
   footnotes: string;
   versetext: string;
@@ -84,93 +84,36 @@ export class Verse implements iVerse {
     };
   }
 
-  public raw(): string {
-    // First get the heading and versetext
-    let { heading, versetext } = this;
+  public getHeading(): string {
+    if (!this.heading) return '';
 
     // wrap the heading in appropriate tags and add the microheading if it
     // exists.
-    heading = `<h2>${heading}</h2>${this.microheading ? `<h3>${this.microheading}</h3>` : ''}`;
-
-    // This is a flag for adding the heading to the top.
-    let addHeading = false;
-
-    // if there is no [mvh] tag but there is a heading - note that we need to
-    // add the heading
-    if (versetext.indexOf('[mvh]') === -1 && this.heading) addHeading = true;
-    // otherwise replace the heading in the versetext
-    else versetext = versetext.replace(/\[mvh\]/g, heading);
-
-    // Generate a verse number link to commentary
-    const commentaryLink = this.hasCommentary
-      ? `<sup><ion-router-link href="/Commentary/${this.book}/${this.chapter}/${this.verse}">${this.verse}</ion-router-link></sup>`
-      : `<sup>${this.verse}</sup>`;
-
-    return `${addHeading ? heading : ''} ${commentaryLink} ${versetext}`;
+    return `<${this.microheading ? 'p class="microheading"' : 'p class="heading"'}>${this.heading}</p>`;
   }
 
-  public html(mode: ViewMode = ViewMode.Paragraph): string {
+  // simply add the commentaryLink to the verse
+  public raw(): string {
     // First get the heading and versetext
-    let { heading, versetext } = this;
-    // This is a flag for adding the heading to the top.
-    let addHeading = false,
-      verseBreak = false;
+    let { versetext } = this;
 
     // Generate a verse number link to commentary
     const commentaryLink = this.hasCommentary
       ? `<sup><ion-router-link href="/Commentary/${this.book}/${this.chapter}/${this.verse}">${this.verse}</ion-router-link></sup>`
       : `<sup>${this.verse}</sup>`;
 
-    // wrap the heading in appropriate tags and add the microheading if it
-    // exists.
-    heading = `<h2>${heading}</h2>${this.microheading ? `<h3>${this.microheading}</h3>` : ''}`;
+    return `${commentaryLink} ${versetext}`;
+  }
 
-    // if there is no [mvh] tag but there is a heading - note that we need to
-    // add the heading
-    if (versetext.indexOf('[mvh]') === -1 && this.heading) addHeading = true;
-    // otherwise replace the heading in the versetext
-    else versetext = versetext.replace(/\[mvh\]/g, heading);
-
-    // Format according te the viewMode
-    switch (mode) {
-      case ViewMode.Paragraph:
-        versetext = versetext?.replace(/\[hp\]/g, ' ');
-        versetext = versetext?.replace(/\[hpbegin\]/g, ' ');
-        versetext = versetext?.replace(/\[hpend\]/g, ' ');
-        versetext = versetext?.replace(/\[li\]/g, ' ');
-        versetext = versetext?.replace(/\[listbegin\]/g, ' ');
-        versetext = versetext?.replace(/\[listend\]/g, ' ');
-        versetext = versetext?.replace(/\[lb\]/g, '<br />');
-        versetext = versetext?.replace(/\[br\]/g, '<br />');
-        versetext = versetext?.replace(/\[fn\]/g, '<footnote />');
-        versetext = versetext?.replace(/\[pg\]/g, '<br />');
-        versetext = versetext?.replace(/\[bq\]/g, '<span class="bq">');
-        versetext = versetext?.replace(/\[\/bq\]/g, '</span>');
-        break;
-      case ViewMode.VerseBreak:
-        versetext = versetext?.replace(/\[hp\]/g, ' ');
-        versetext = versetext?.replace(/\[hpbegin\]/g, ' ');
-        versetext = versetext?.replace(/\[hpend\]/g, ' ');
-        versetext = versetext?.replace(/\[li\]/g, ' ');
-        versetext = versetext?.replace(/\[listbegin\]/g, ' ');
-        versetext = versetext?.replace(/\[listend\]/g, ' ');
-        versetext = versetext?.replace(/\[lb\]/g, ' ');
-        versetext = versetext?.replace(/\[br\]/g, ' ');
-        versetext = versetext?.replace(/\[fn\]/g, ' ');
-        versetext = versetext?.replace(/\[pg\]/g, ' ');
-        versetext = versetext?.replace(/\[bq\]/g, ' ');
-        versetext = versetext?.replace(/\[\/bq\]/g, ' ');
-        verseBreak = true;
-        break;
+  public isPoetry(): boolean {
+    switch (this.style) {
+      case Style.Poetry:
+      case Style.PoetryPreGap:
+      case Style.PoetryNoPostGap:
+      case Style.PoetryPreGapNoPostGap:
+        return true;
+      default:
+        return false;
     }
-
-    // FINALLY replace the brackets for questionable text.
-    versetext = versetext?.replace(/\[\[/g, '<em>');
-    versetext = versetext?.replace(/\]\]/g, '</em>');
-    versetext = versetext?.replace(/\[/g, "<em style='font-weight: lighter;'>");
-    versetext = versetext?.replace(/\]/g, '</em>');
-
-    // Put it all together
-    return `${addHeading ? heading : ''} ${verseBreak ? '<div class="verse">' : ''}${commentaryLink} ${versetext}${verseBreak ? '</div>' : ''}`;
   }
 }
