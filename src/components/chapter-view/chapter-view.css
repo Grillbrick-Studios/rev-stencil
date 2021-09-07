@@ -24,6 +24,14 @@
   margin: 20px;
 }
 
+.heading {
+  text-indent: 0;
+  font-size: 110%;
+  font-weight: 700;
+  font-style: italic;
+  margin-bottom: 0.2em;
+}
+
 .microheading {
   display: block;
   text-indent: 0;
@@ -45,8 +53,6 @@
 }
 
 .poetry {
-  text-indent: -2.8em;
-  margin: 0 0 0 2.8em;
-  padding: 0;
+  padding-left: 20px;
   text-align: start;
 }

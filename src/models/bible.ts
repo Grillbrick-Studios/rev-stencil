@@ -120,14 +120,12 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
           // styling for poetry
           if (styleChange) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1)
-              verse = `<p class="${styleClass(v.style)}"${verse}`;
-            else {
-              verse = verse?.replace(/\[hpbegin\]/g, `<p class="${styleClass(v.style)}"`);
-              verse = verse?.replace(/\[hpend\]/g, `</p><p class="${styleClass(nv.style)}"`);
-              verse = verse?.replace(/\[listbegin\]/g, `<p class="${styleClass(v.style)}"`);
-              verse = verse?.replace(/\[listend\]/g, `</p><p class="${styleClass(nv.style)}"`);
-            }
+              verse = `<p class="${styleClass(v.style)}"${verse}>`;
           }
+          verse = verse?.replace(/\[hpbegin\]/g, `<p class="${styleClass(v.style)}">`);
+          verse = verse?.replace(/\[hpend\]/g, `</p><p class="${styleClass(nv.style)}">`);
+          verse = verse?.replace(/\[listbegin\]/g, `<p class="${styleClass(v.style)}">`);
+          verse = verse?.replace(/\[listend\]/g, `</p><p class="${styleClass(nv.style)}">`);
 
           verse = verse?.replace(/\[hp\]/g, '<br />');
           verse = verse?.replace(/\[li\]/g, '<br />');
@@ -141,12 +139,14 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
           if (v.isPoetry()) verseBreak = true;
           break;
         case ViewMode.VerseBreak:
-          verse = verse?.replace(/\[hp\]/g, ' ');
           verse = verse?.replace(/\[hpbegin\]/g, ' ');
           verse = verse?.replace(/\[hpend\]/g, ' ');
-          verse = verse?.replace(/\[li\]/g, ' ');
+          verse = verse?.replace(/\[hp\]/g, ' ');
+
           verse = verse?.replace(/\[listbegin\]/g, ' ');
           verse = verse?.replace(/\[listend\]/g, ' ');
+          verse = verse?.replace(/\[li\]/g, ' ');
+
           verse = verse?.replace(/\[lb\]/g, ' ');
           verse = verse?.replace(/\[br\]/g, ' ');
           verse = verse?.replace(/\[fn\]/g, ' ');
@@ -158,9 +158,9 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
       }
 
       // FINALLY replace the brackets for questionable text.
-      verse = verse?.replace(/\[\[/g, '<em>');
+      verse = verse?.replace(/\[\[/g, '<em class="questionable">');
       verse = verse?.replace(/\]\]/g, '</em>');
-      verse = verse?.replace(/\[/g, '<em class="questionable">');
+      verse = verse?.replace(/\[/g, '<em>');
       verse = verse?.replace(/\]/g, '</em>');
 
       return `${addHeading ? v.getHeading() : ''} ${verseBreak ? '<p>' : ''}${verse}${verseBreak ? '</p>' : ''}`;
