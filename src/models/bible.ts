@@ -100,7 +100,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
   getChapter(book: string, chapter: number, viewMode: ViewMode = ViewMode.Paragraph): string {
     //console.log(this.dumpRaw(book, chapter));
-    let skipnext = false;
     let spanDepth = 0;
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
       const nv = a[i < a.length - 1 ? i + 1 : i];
@@ -125,7 +124,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
             // special case for first verse
             preverse += `<span class="${styleClass(v.style)}">`;
             spanDepth += 1;
-          } else if (styleChange && !skipnext) {
+          } else if (styleChange) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
               if (spanDepth > 0) {
                 preverse += '</span>';
@@ -133,26 +132,23 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
               }
               preverse += `<span class="${styleClass(v.style)}">`;
               spanDepth += 1;
-            } else if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1) {
+            } else if (verse.indexOf('[hpbegin]') > -1 || verse.indexOf('[listbegin]') > -1) {
               if (spanDepth > 0) {
                 preverse += '</span>';
                 preverse += `<span class="prose">`;
                 midverse += '</span>';
                 spanDepth -= 1;
               }
-              midverse = `<span class="${styleClass(v.style)}">`;
+              midverse += `<span class="${styleClass(v.style)}">`;
               spanDepth += 1;
-            } else if (verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
+            } else if (verse.indexOf('[hpend]') > -1 || verse.indexOf('[listend]') > -1) {
               if (spanDepth > 0) {
                 midverse += '</span>';
                 spanDepth -= 1;
               }
-              midverse = `<span class="${styleClass(nv.style)}">`;
+              midverse += `<span class="${styleClass(nv.style)}">`;
               spanDepth += 1;
-              skipnext = true;
             }
-          } else if (skipnext) {
-            skipnext = false;
           }
           verse = verse?.replace(/\[hpbegin\]/g, midverse);
           verse = verse?.replace(/\[hpend\]/g, midverse);
@@ -163,7 +159,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
           verse = verse?.replace(/\[li\]/g, '<br />');
           verse = verse?.replace(/\[lb\]/g, '<br />');
           verse = verse?.replace(/\[br\]/g, '<br />');
-          verse = verse?.replace(/\[fn\]/g, '<footnote />');
+          verse = verse?.replace(/\[fn\]/g, '<br />');
           verse = verse?.replace(/\[pg\]/g, '<br />');
           // block quote ?
           verse = verse?.replace(/\[bq\]/g, '<span class="bq">');

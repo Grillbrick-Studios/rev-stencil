@@ -20,16 +20,6 @@
   margin: 20px 0;
 }
 
-.hp {
-  display: block;
-  margin-top: 20px;
-  margin-left: 50px;
-}
-
-.verse {
-  margin: 20px;
-}
-
 .heading {
   text-indent: 0;
   font-size: 110%;
@@ -54,14 +44,14 @@
 }
 
 .prose {
-  display: inline-block;
+  display: block;
   text-indent: 0;
   text-align: start;
 }
 
 .poetry {
   display: block;
-  text-indent: -2.8em;
-  margin: 0 0 0 2.8em;
+  /*text-indent: -2.8em;*/
+  margin: 1em 2.8em;
   text-align: start;
 }
