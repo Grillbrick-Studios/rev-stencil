@@ -2,6 +2,21 @@
   display: block;
 }
 
+.flexbase {
+  display: flex;
+  justify-content: space-around;
+}
+
+.flexstack {
+  display: flex;
+  flex-direction: column;
+}
+
+.modeswitch {
+  display: flex;
+  align-items: center;
+}
+
 .title {
   text-align: center;
   font-size: 3rem;
