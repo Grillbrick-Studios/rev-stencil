@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { Bible, ViewMode } from '../../models';
+import { Bible, BiblePath, ViewMode } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -44,11 +44,17 @@ export class ChapterView {
     return (
       <Host>
         <ion-buttons slot="start">
+          <ion-button onClick={() => this.goBack()}>
+            <ion-icon name="arrow-back-outline" />
+          </ion-button>
           <ion-label>Verse Break Mode?</ion-label>
           <ion-toggle
             checked={state.viewMode === ViewMode.VerseBreak}
             onIonChange={ev => (ev.detail.checked ? (state.viewMode = ViewMode.VerseBreak) : (state.viewMode = ViewMode.Paragraph))}
           />
+          <ion-button onClick={() => this.goForward()}>
+            <ion-icon name="arrow-forward-outline" />
+          </ion-button>
         </ion-buttons>
         <ion-title class="title">
           {state.book} {state.chapter}
@@ -57,4 +63,18 @@ export class ChapterView {
       </Host>
     );
   }
+
+  goForward = () => {
+    const { book, chapter } = this.bible.nextChapter(state as BiblePath);
+    state.book = book;
+    state.chapter = chapter;
+    console.log('going back');
+  };
+
+  goBack = () => {
+    const { book, chapter } = this.bible.prevChapter(state as BiblePath);
+    state.book = book;
+    state.chapter = chapter;
+    console.log('going forth');
+  };
 }

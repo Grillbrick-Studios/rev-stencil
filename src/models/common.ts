@@ -21,3 +21,10 @@ export class Asynclock {
     this.promise = new Promise(resolve => (this.disable = resolve));
   }
 }
+
+export interface BiblePath {
+  book: string;
+  chapter: number;
+  verse?: number;
+  resource?: Resource;
+}
