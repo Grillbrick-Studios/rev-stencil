@@ -68,13 +68,11 @@ export class ChapterView {
     const { book, chapter } = this.bible.nextChapter(state as BiblePath);
     state.book = book;
     state.chapter = chapter;
-    console.log('going back');
   };
 
   goBack = () => {
     const { book, chapter } = this.bible.prevChapter(state as BiblePath);
     state.book = book;
     state.chapter = chapter;
-    console.log('going forth');
   };
 }
