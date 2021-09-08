@@ -99,19 +99,22 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   }
 
   getChapter(book: string, chapter: number, viewMode: ViewMode = ViewMode.Paragraph): string {
+    //console.log(this.dumpRaw(book, chapter));
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
       const pv = a[i > 0 ? i - 1 : i];
-      const nv = a[i < a.length - 1 ? i + 1 : i];
+      //const nv = a[i < a.length - 1 ? i + 1 : i];
       let verse = v.raw();
       let verseBreak = false;
       // check for a style change
       let styleChange = pv.style !== v.style;
+      let spanDepth = 0;
+      let [preverse, midverse] = ['', ''];
 
       // This is a flag for adding the heading to the top.
       let addHeading = false;
       // if there is no [mvh] tag but there is a heading - note that we need to
       // add the heading
-      if (verse.indexOf('[mvh]') === -1 && v.getHeading()) addHeading = true;
+      if (verse.indexOf('[mvh]') === -1) addHeading = true;
       // otherwise replace the heading in the versetext
       else verse = verse.replace(/\[mvh\]/g, v.getHeading());
 
@@ -119,13 +122,22 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
         case ViewMode.Paragraph:
           // styling for poetry
           if (styleChange) {
-            if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1)
-              verse = `<p class="${styleClass(v.style)}"${verse}>`;
+            while (spanDepth > 0) {
+              preverse = '</span>';
+              spanDepth -= 1;
+            }
+            if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
+              preverse += `<span class="${styleClass(v.style)}">`;
+              spanDepth += 1;
+            } else {
+              midverse = `<span class="${styleClass(v.style)}">`;
+              spanDepth += 1;
+            }
           }
-          verse = verse?.replace(/\[hpbegin\]/g, `<p class="${styleClass(v.style)}">`);
-          verse = verse?.replace(/\[hpend\]/g, `</p><p class="${styleClass(nv.style)}">`);
-          verse = verse?.replace(/\[listbegin\]/g, `<p class="${styleClass(v.style)}">`);
-          verse = verse?.replace(/\[listend\]/g, `</p><p class="${styleClass(nv.style)}">`);
+          verse = verse?.replace(/\[hpbegin\]/g, midverse);
+          verse = verse?.replace(/\[hpend\]/g, midverse);
+          verse = verse?.replace(/\[listbegin\]/g, midverse);
+          verse = verse?.replace(/\[listend\]/g, midverse);
 
           verse = verse?.replace(/\[hp\]/g, '<br />');
           verse = verse?.replace(/\[li\]/g, '<br />');
@@ -136,7 +148,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
           // block quote ?
           verse = verse?.replace(/\[bq\]/g, '<span class="bq">');
           verse = verse?.replace(/\[\/bq\]/g, '</span>');
-          if (v.isPoetry()) verseBreak = true;
           break;
         case ViewMode.VerseBreak:
           verse = verse?.replace(/\[hpbegin\]/g, ' ');
@@ -163,12 +174,31 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
       verse = verse?.replace(/\[/g, '<em>');
       verse = verse?.replace(/\]/g, '</em>');
 
-      return `${addHeading ? v.getHeading() : ''} ${verseBreak ? '<p>' : ''}${verse}${verseBreak ? '</p>' : ''}`;
+      return `${addHeading ? v.getHeading() : ''}
+      ${preverse}
+        ${verseBreak ? '<span class="versebreak">' : ''}
+        ${verse}
+        ${verseBreak ? '</span>' : ''}
+        ${v.isPoetry() ? '<br/>' : ''}`;
     });
 
     return verses.join('\n');
   }
 
+  dumpRaw(book: string, chapter: number): string {
+    const verses = this.getVerses(book, chapter).map(v => {
+      let verse = v.raw();
+
+      return `
+        <span class="versebreak">
+        ${verse}
+        </span>
+        <br/>
+      `;
+    });
+
+    return verses.join('\n');
+  }
   numChapters(book: string): number {
     return this.getChapters(book).length;
   }
