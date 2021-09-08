@@ -100,17 +100,19 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
   getChapter(book: string, chapter: number, viewMode: ViewMode = ViewMode.Paragraph): string {
     //console.log(this.dumpRaw(book, chapter));
+    let skipnext = false;
+    let spanDepth = 0;
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
-      const pv = a[i > 0 ? i - 1 : i];
-      //const nv = a[i < a.length - 1 ? i + 1 : i];
+      const nv = a[i < a.length - 1 ? i + 1 : i];
       let verse = v.raw();
-      // check for a style change
-      let styleChange = pv.style !== v.style;
-      let spanDepth = 0;
       let [preverse, midverse] = ['', ''];
-
       // This is a flag for adding the heading to the top.
       let addHeading = false;
+
+      // Get the previous verse
+      const pv = a[i > 0 ? i - 1 : i];
+      // check for a style change
+      let styleChange = pv.style !== v.style;
       // if there is no [mvh] tag but there is a heading - note that we need to
       // add the heading
       if (verse.indexOf('[mvh]') === -1) addHeading = true;
@@ -119,19 +121,38 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
       switch (viewMode) {
         case ViewMode.Paragraph:
-          // styling for poetry
-          if (styleChange) {
-            while (spanDepth > 0) {
-              preverse = '</span>';
-              spanDepth -= 1;
-            }
+          if (i === 0) {
+            // special case for first verse
+            preverse += `<span class="${styleClass(v.style)}">`;
+            spanDepth += 1;
+          } else if (styleChange && !skipnext) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
+              if (spanDepth > 0) {
+                preverse += '</span>';
+                spanDepth -= 1;
+              }
               preverse += `<span class="${styleClass(v.style)}">`;
               spanDepth += 1;
-            } else {
+            } else if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1) {
+              if (spanDepth > 0) {
+                preverse += '</span>';
+                preverse += `<span class="prose">`;
+                midverse += '</span>';
+                spanDepth -= 1;
+              }
               midverse = `<span class="${styleClass(v.style)}">`;
               spanDepth += 1;
+            } else if (verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
+              if (spanDepth > 0) {
+                midverse += '</span>';
+                spanDepth -= 1;
+              }
+              midverse = `<span class="${styleClass(nv.style)}">`;
+              spanDepth += 1;
+              skipnext = true;
             }
+          } else if (skipnext) {
+            skipnext = false;
           }
           verse = verse?.replace(/\[hpbegin\]/g, midverse);
           verse = verse?.replace(/\[hpend\]/g, midverse);
