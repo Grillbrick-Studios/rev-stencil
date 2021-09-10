@@ -100,18 +100,20 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   }
 
   getChapter(book: string, chapter: number, viewMode: ViewMode = ViewMode.Paragraph): string {
-    //console.log(this.dumpRaw(book, chapter));
+    //return this.dumpRaw(book, chapter);
+    // console.log(this.dumpRaw(book, chapter));
     let spanDepth = 0;
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
       let verse = v.raw();
-      let [preverse, midverse] = ['', ''];
+      let [preverse, midverse, endverse] = ['', '', ''];
       // This is a flag for adding the heading to the top.
       let addHeading = false;
 
       // Get the previous verse
       const pv = a[i > 0 ? i - 1 : i];
       // check for a style change
-      let styleChange = pv.style !== v.style;
+      let styleChange =
+        pv.style !== v.style || verse.indexOf('[hpbegin]') > -1 || verse.indexOf('[listbegin]') > -1 || verse.indexOf('[hpend]') > -1 || verse.indexOf('[listend]') > -1;
       // if there is no [mvh] tag but there is a heading - note that we need to
       // add the heading
       if (verse.indexOf('[mvh]') === -1) addHeading = true;
@@ -120,7 +122,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
       switch (viewMode) {
         case ViewMode.Paragraph:
-          if (styleChange || i === 0 || v.paragraph) {
+          if (styleChange || spanDepth === 0 || v.paragraph) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
               if (spanDepth > 0) {
                 preverse += '</span>';
@@ -130,18 +132,22 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
               spanDepth += 1;
             } else if (verse.indexOf('[hpbegin]') > -1 || verse.indexOf('[listbegin]') > -1) {
               if (spanDepth > 0) {
+                preverse += '</span><span class="prose">';
                 midverse += '</span>';
                 spanDepth -= 1;
               }
               midverse += `<span class="${styleClass(v.style)}">`;
               spanDepth += 1;
-            } else if (verse.indexOf('[hpend]') > -1 || verse.indexOf('[listend]') > -1) {
+            } else {
+              console.log('hpend found!');
               if (spanDepth > 0) {
                 midverse += '</span>';
                 spanDepth -= 1;
               }
-              midverse += `<span class="${styleClass(v.style)}">`;
+              midverse += '<span class="prose">';
               spanDepth += 1;
+              endverse += '</span>';
+              spanDepth -= 1;
             }
           }
           verse = verse?.replace(/\[hpbegin\]/g, midverse);
@@ -153,8 +159,10 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
           verse = verse?.replace(/\[li\]/g, '<br />');
           verse = verse?.replace(/\[lb\]/g, '<br />');
           verse = verse?.replace(/\[br\]/g, '<br />');
-          verse = verse?.replace(/\[fn\]/g, `<fn>${v.footnotes}</fn>`);
-          verse = verse?.replace(/\[pg\]/g, '<br />');
+          //verse = verse?.replace(/\[fn\]/g, `<fn>${v.footnotes}</fn>`);
+          // TODO: Add Footnotes here.
+          verse = verse?.replace(/\[fn\]/g, '<fn></fn>');
+          verse = verse?.replace(/\[pg\]/g, '<p></p>');
           // block quote ?
           verse = verse?.replace(/\[bq\]/g, '<p class="bq">');
           verse = verse?.replace(/\[\/bq\]/g, '</p>');
@@ -165,6 +173,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
             ${preverse}
             ${addHeading ? v.getHeading() : ''}
             ${verse}
+            ${endverse}
             ${v.isPoetry() ? '<br/>' : ''}
           `;
         case ViewMode.VerseBreak:
@@ -178,6 +187,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     });
 
     return verses.join('\n');
+    /**/
   }
 
   dumpRaw(book: string, chapter: number): string {
