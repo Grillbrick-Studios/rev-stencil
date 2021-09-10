@@ -55,7 +55,7 @@ export class ContentView {
       default:
         return (
           <Host>
-            <ion-title class="title"> Please select a resource.</ion-title>
+            <ion-title class="title"> Select resource.</ion-title>
             <ion-list>
               <ion-item>
                 <ion-button onClick={() => (state.resource = Resource.Bible)}>Bible</ion-button>

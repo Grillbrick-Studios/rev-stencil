@@ -21,7 +21,7 @@ export class CommentaryView {
     if (!state.book || !state.chapter || !state.verse)
       return (
         <Host>
-          <ion-title class="title"> Please select a book, chapter, & verse.</ion-title>
+          <ion-title class="title"> select book/chapter/verse.</ion-title>
           <ion-list>
             <ion-chip onClick={() => (state.resource = undefined)}>
               <ion-label color="dark">{state.resource}</ion-label>

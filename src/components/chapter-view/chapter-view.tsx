@@ -21,7 +21,7 @@ export class ChapterView {
     if (!state.book || !state.chapter)
       return (
         <Host>
-          <ion-title class="title"> Please select a book & chapter.</ion-title>
+          <ion-title class="title"> select book & chapter.</ion-title>
           <ion-list>
             <ion-chip onClick={() => (state.book = undefined)}>
               <ion-label>{state.resource}</ion-label>

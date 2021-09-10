@@ -21,7 +21,7 @@ export class AppendixView {
     if (!state.book)
       return (
         <Host>
-          <ion-title class="title"> Please select an Appendix</ion-title>
+          <ion-title class="title"> Select Appendix</ion-title>
           <ion-list>
             <ion-chip onClick={() => (state.resource = undefined)}>
               <ion-label color="dark">{state.resource}</ion-label>
