@@ -23,33 +23,30 @@ export class CommentaryView {
         <Host>
           <ion-title class="title"> select book/chapter/verse.</ion-title>
           <ion-list>
-            <ion-chip onClick={() => (state.resource = undefined)}>
-              <ion-label color="dark">{state.resource}</ion-label>
-              <ion-icon name="close-circle" />
+            <ion-chip onClick={() => (state.book = undefined)}>
+              <ion-label>{state.resource}</ion-label>
+              <ion-icon name="close-circle" onClick={() => (state.resource = undefined)} />
             </ion-chip>
             {state.book && (
-              <ion-chip
-                onClick={() => {
-                  state.book = undefined;
-                }}
-              >
-                <ion-label color="dark">{state.book}</ion-label>
-                <ion-icon name="close-circle" />
+              <ion-chip onClick={() => (state.chapter = undefined)}>
+                <ion-label>{state.book}</ion-label>
+                <ion-icon name="close-circle" onClick={() => (state.book = undefined)} />
               </ion-chip>
             )}
             {state.chapter && (
-              <ion-chip
-                onClick={() => {
-                  state.chapter = undefined;
-                }}
-              >
-                <ion-label color="dark">{state.chapter}</ion-label>
-                <ion-icon name="close-circle" />
+              <ion-chip onClick={() => (state.verse = undefined)}>
+                <ion-label>{state.chapter}</ion-label>
+                <ion-icon name="close-circle" onClick={() => (state.chapter = undefined)} />
               </ion-chip>
             )}
-            <br />
+            <hr />
+            <p class="heading">Old Testament</p>
+            <hr />
             {!state.book
-              ? this.commentary.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>])
+              ? this.commentary.getBooks().map(b => {
+                  if (b.toLowerCase().startsWith('matt')) return [<hr />, <p class="heading">New Testament</p>, <ion-button onClick={() => (state.book = b)}>{b}</ion-button>];
+                  return <ion-button onClick={() => (state.book = b)}>{b}</ion-button>;
+                })
               : !state.chapter
               ? this.commentary.getChapters(state.book).map(c => [<ion-button onClick={() => (state.chapter = parseInt(c))}>{c}</ion-button>])
               : this.commentary.getVerses(state.book, state.chapter).map(v => [<ion-button onClick={() => (state.verse = parseInt(v))}>{v}</ion-button>])}

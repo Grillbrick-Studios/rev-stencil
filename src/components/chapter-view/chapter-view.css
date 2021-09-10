@@ -2,10 +2,6 @@
   display: block;
 }
 
-ion-icon {
-  color: var(--ion-text-color-rgb, rgba(0, 0, 0, 0.54));
-}
-
 .flexbase {
   display: flex;
   justify-content: space-around;

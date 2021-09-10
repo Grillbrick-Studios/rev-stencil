@@ -33,9 +33,14 @@ export class ChapterView {
                 <ion-icon name="close-circle" onClick={() => (state.book = undefined)} />
               </ion-chip>
             )}
-            <br />
+            <hr />
+            <p class="heading">Old Testament</p>
+            <hr />
             {!state.book
-              ? this.bible.getBooks().map(b => [<ion-button onClick={() => (state.book = b)}>{b}</ion-button>])
+              ? this.bible.getBooks().map(b => {
+                  if (b.toLowerCase().startsWith('matt')) return [<hr />, <p class="heading">New Testament</p>, <ion-button onClick={() => (state.book = b)}>{b}</ion-button>];
+                  return <ion-button onClick={() => (state.book = b)}>{b}</ion-button>;
+                })
               : this.bible.getChapters(state.book).map(c => [<ion-button onClick={() => (state.chapter = c)}>{c}</ion-button>])}
           </ion-list>
         </Host>
