@@ -29,3 +29,15 @@
   More info about color theming using Ionic:
   https://ionicframework.com/docs/theming/color-generator
 */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #000000;
+    --ion-text-color: #ffffff;
+  }
+}
+
+body.dark {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+}
