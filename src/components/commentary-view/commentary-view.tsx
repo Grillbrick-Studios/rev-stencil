@@ -60,7 +60,7 @@ export class CommentaryView {
         <ion-title class="title">
           Commentary for {state.book} {state.chapter}:{state.verse}
         </ion-title>
-        <p class="content" innerHTML={this.commentary.getVerses(state.book, state.chapter, state.verse).join('\n')}></p>
+        <p class="content" innerHTML={this.commentary.getCommentary(state.book, state.chapter, state.verse).join('\n')}></p>
       </Host>
     );
   }

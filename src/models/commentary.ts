@@ -10,8 +10,15 @@ export interface iCommentary {
   commentary: string;
 }
 
+export interface iStringCommentary {
+  book: string;
+  chapter: string;
+  verse: string;
+  commentary: string;
+}
+
 interface iCommentaryJson {
-  REV_Commentary: iCommentary[];
+  REV_Commentary: iStringCommentary[];
   updated?: Date;
 }
 
@@ -31,8 +38,12 @@ export class Commentary implements iData<iCommentary> {
 
   private static async load(): Promise<boolean> {
     try {
-      const commentaryData: iSerializeData<iCommentary> = await readFile('Commentary');
-      Commentary._data = commentaryData.data;
+      const commentaryData: iSerializeData<iStringCommentary> = await readFile('Commentary');
+      Commentary._data = commentaryData.data.map(c => ({
+        ...c,
+        chapter: parseInt(c.chapter),
+        verse: parseInt(c.verse),
+      }));
       Commentary.updated = new Date(commentaryData.updated);
       return true;
     } catch (e) {
@@ -44,29 +55,20 @@ export class Commentary implements iData<iCommentary> {
     Commentary._data = data;
   }
 
-  public get path(): string {
-    if (this.selectedVerse) return `Commentary for ${this.selectedBook} ${this.selectedChapter}:${this.selectedVerse}`;
-    if (this.selectedChapter) return `Commentary for ${this.selectedBook} ${this.selectedChapter}`;
-    if (this.selectedBook) return `Commentary for ${this.selectedBook}`;
-    return 'Commentary';
-  }
-
   public get data(): iCommentary[] {
     return Commentary._data;
   }
-
-  private selectedBook?: string;
-
-  private selectedChapter?: number;
-
-  private selectedVerse?: number;
 
   private static async fetch() {
     console.log('Fetching commentary from web please wait...');
     const res = await fetch(URL);
     console.log('Commentary downloaded!');
     const commentary: iCommentaryJson = await res.json();
-    Commentary._data = commentary.REV_Commentary;
+    Commentary._data = commentary.REV_Commentary.map(c => ({
+      ...c,
+      chapter: parseInt(c.chapter),
+      verse: parseInt(c.verse),
+    }));
     Commentary.updated = new Date();
     Commentary.save();
   }
@@ -98,55 +100,15 @@ export class Commentary implements iData<iCommentary> {
     return Array.from(chapterSet);
   }
 
-  getVerses(book: string, chapter: number, verse?: number): (number | string)[] {
-    if (verse) {
-      const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter && v.verse === verse).map(v => v.commentary);
-      return verseArray;
-    }
+  getVerses(book: string, chapter: number): number[] {
     const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter).map(v => v.verse);
     const verseSet = new Set(verseArray);
     return Array.from(verseSet);
   }
 
-  selectBook(book: string): void {
-    if (this.getBooks().indexOf(book) >= 0) {
-      this.selectedBook = book;
-    }
-  }
-
-  selectChapter(chapter: number): void {
-    if (!this.selectedBook) return;
-    if (this.getChapters(this.selectedBook).indexOf(chapter) >= 0) {
-      this.selectedChapter = chapter;
-    }
-  }
-
-  selectVerse(verse: number): void {
-    if (!this.selectedBook || !this.selectedChapter) return;
-    if (this.getVerses(this.selectedBook, this.selectedChapter).indexOf(verse.toString()) >= 0) {
-      this.selectedVerse = verse;
-    }
-  }
-
-  up(): boolean {
-    if (this.selectedVerse) {
-      this.selectedVerse = undefined;
-      return true;
-    } else if (this.selectedChapter) {
-      this.selectedChapter = undefined;
-      return true;
-    } else if (this.selectedBook) {
-      this.selectedBook = undefined;
-      return true;
-    }
-    return false;
-  }
-
-  select(target: string): void {
-    if (this.selectedVerse) this.selectVerse(parseInt(target));
-    else if (this.selectedChapter) this.selectVerse(parseInt(target));
-    else if (this.selectedBook) this.selectChapter(parseInt(target));
-    else this.selectBook(target);
+  getCommentary(book: string, chapter: number, verse: number): string[] {
+    const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter && v.verse === verse).map(v => v.commentary);
+    return verseArray;
   }
 
   public next(path: BiblePath): BiblePath {

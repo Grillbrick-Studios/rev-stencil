@@ -56,7 +56,7 @@ export class Verse implements iVerse {
   }
 
   get hasCommentary(): boolean {
-    return commentary.getVerses(this.book, this.chapter).indexOf(this.verse.toString()) >= 0;
+    return commentary.getVerses(this.book, this.chapter).indexOf(this.verse) >= 0;
   }
 
   book: string;
