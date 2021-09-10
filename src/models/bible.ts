@@ -1,4 +1,4 @@
-import { iData, iSerializeData, Asynclock, BiblePath, stripStyle } from './common';
+import { iData, iSerializeData, Asynclock, BiblePath, stripStyle, DaysSince } from './common';
 import { iVerse, Style, Verse, ViewMode } from './verse';
 import { writeFile, readFile } from './filesystem';
 
@@ -41,6 +41,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
       Bible.verses = bibleData.data.map(v => new Verse(v));
       Bible.updated = new Date(bibleData.updated);
       console.log('Bible loaded from disk!');
+      if (DaysSince(Bible.updated) > 7) return false;
       return true;
     } catch (e) {
       console.log(`Error loading bible from disk: ${e}`);

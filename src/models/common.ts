@@ -53,3 +53,9 @@ export function stripStyle(verse: string): string {
 
   return verse;
 }
+
+export function DaysSince(date: Date): number {
+  const now: number = Date.now();
+  const since = now - date.getTime();
+  return since / (1000 * 60 * 60 * 24);
+}
