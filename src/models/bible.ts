@@ -1,4 +1,4 @@
-import { iData, iSerializeData, Asynclock, BiblePath } from './common';
+import { iData, iSerializeData, Asynclock, BiblePath, stripStyle } from './common';
 import { iVerse, Style, Verse, ViewMode } from './verse';
 import { writeFile, readFile } from './filesystem';
 
@@ -102,7 +102,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     //console.log(this.dumpRaw(book, chapter));
     let spanDepth = 0;
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
-      const nv = a[i < a.length - 1 ? i + 1 : i];
       let verse = v.raw();
       let [preverse, midverse] = ['', ''];
       // This is a flag for adding the heading to the top.
@@ -120,11 +119,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
       switch (viewMode) {
         case ViewMode.Paragraph:
-          if (i === 0) {
-            // special case for first verse
-            preverse += `<span class="${styleClass(v.style)}">`;
-            spanDepth += 1;
-          } else if (styleChange) {
+          if (styleChange || i === 0 || v.paragraph) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
               if (spanDepth > 0) {
                 preverse += '</span>';
@@ -134,8 +129,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
               spanDepth += 1;
             } else if (verse.indexOf('[hpbegin]') > -1 || verse.indexOf('[listbegin]') > -1) {
               if (spanDepth > 0) {
-                preverse += '</span>';
-                preverse += `<span class="prose">`;
                 midverse += '</span>';
                 spanDepth -= 1;
               }
@@ -146,7 +139,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
                 midverse += '</span>';
                 spanDepth -= 1;
               }
-              midverse += `<span class="${styleClass(nv.style)}">`;
+              midverse += `<span class="${styleClass(v.style)}">`;
               spanDepth += 1;
             }
           }
@@ -159,16 +152,17 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
           verse = verse?.replace(/\[li\]/g, '<br />');
           verse = verse?.replace(/\[lb\]/g, '<br />');
           verse = verse?.replace(/\[br\]/g, '<br />');
-          verse = verse?.replace(/\[fn\]/g, '<br />');
+          verse = verse?.replace(/\[fn\]/g, `<fn>${v.footnotes}</fn>`);
           verse = verse?.replace(/\[pg\]/g, '<br />');
           // block quote ?
-          verse = verse?.replace(/\[bq\]/g, '<span class="bq">');
-          verse = verse?.replace(/\[\/bq\]/g, '</span>');
+          verse = verse?.replace(/\[bq\]/g, '<p class="bq">');
+          verse = verse?.replace(/\[\/bq\]/g, '</p>');
           // FINALLY replace the brackets for questionable text.
           verse = stripStyle(verse);
 
-          return `${addHeading ? v.getHeading() : ''}
+          return `
             ${preverse}
+            ${addHeading ? v.getHeading() : ''}
             ${verse}
             ${v.isPoetry() ? '<br/>' : ''}
           `;
@@ -281,29 +275,4 @@ function styleClass(style: Style) {
     case Style.ListPreGapNoPostGap:
       return 'list pre-gap-no-post-gap';
   }
-}
-
-function stripStyle(verse: string): string {
-  verse = verse?.replace(/\[hpbegin\]/g, ' ');
-  verse = verse?.replace(/\[hpend\]/g, ' ');
-  verse = verse?.replace(/\[hp\]/g, ' ');
-
-  verse = verse?.replace(/\[listbegin\]/g, ' ');
-  verse = verse?.replace(/\[listend\]/g, ' ');
-  verse = verse?.replace(/\[li\]/g, ' ');
-
-  verse = verse?.replace(/\[lb\]/g, ' ');
-  verse = verse?.replace(/\[br\]/g, ' ');
-  verse = verse?.replace(/\[fn\]/g, ' ');
-  verse = verse?.replace(/\[pg\]/g, ' ');
-  verse = verse?.replace(/\[bq\]/g, ' ');
-  verse = verse?.replace(/\[\/bq\]/g, ' ');
-
-  // FINALLY replace the brackets for questionable text.
-  verse = verse?.replace(/\[\[/g, '<em class="questionable">');
-  verse = verse?.replace(/\]\]/g, '</em>');
-  verse = verse?.replace(/\[/g, '<em>');
-  verse = verse?.replace(/\]/g, '</em>');
-
-  return verse;
 }

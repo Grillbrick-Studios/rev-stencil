@@ -1,12 +1,12 @@
-import { iData, Asynclock, iSerializeData } from './common';
+import { iData, Asynclock, iSerializeData, BiblePath } from './common';
 import { writeFile, readFile } from './filesystem';
 
 const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=commentary';
 
 export interface iCommentary {
   book: string;
-  chapter: string;
-  verse: string;
+  chapter: number;
+  verse: number;
   commentary: string;
 }
 
@@ -92,18 +92,18 @@ export class Commentary implements iData<iCommentary> {
     return Array.from(bookSet);
   }
 
-  getChapters(book: string): string[] {
+  getChapters(book: string): number[] {
     const chapterArray = Commentary._data.filter(v => v.book === book).map(v => v.chapter);
     const chapterSet = new Set(chapterArray);
     return Array.from(chapterSet);
   }
 
-  getVerses(book: string, chapter: number, verse?: number): string[] {
+  getVerses(book: string, chapter: number, verse?: number): (number | string)[] {
     if (verse) {
-      const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter.toString() && v.verse === verse.toString()).map(v => v.commentary);
+      const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter && v.verse === verse).map(v => v.commentary);
       return verseArray;
     }
-    const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter.toString()).map(v => v.verse);
+    const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter).map(v => v.verse);
     const verseSet = new Set(verseArray);
     return Array.from(verseSet);
   }
@@ -116,7 +116,7 @@ export class Commentary implements iData<iCommentary> {
 
   selectChapter(chapter: number): void {
     if (!this.selectedBook) return;
-    if (this.getChapters(this.selectedBook).indexOf(chapter.toString()) >= 0) {
+    if (this.getChapters(this.selectedBook).indexOf(chapter) >= 0) {
       this.selectedChapter = chapter;
     }
   }
@@ -126,20 +126,6 @@ export class Commentary implements iData<iCommentary> {
     if (this.getVerses(this.selectedBook, this.selectedChapter).indexOf(verse.toString()) >= 0) {
       this.selectedVerse = verse;
     }
-  }
-
-  ls(): string[] {
-    const { selectedVerse, selectedChapter, selectedBook } = this;
-    if (selectedBook) {
-      if (selectedChapter) {
-        if (selectedVerse) {
-          return this.getVerses(selectedBook, selectedChapter, selectedVerse);
-        }
-        return this.getVerses(selectedBook, selectedChapter);
-      }
-      return this.getChapters(selectedBook);
-    }
-    return this.getBooks();
   }
 
   up(): boolean {
@@ -161,5 +147,47 @@ export class Commentary implements iData<iCommentary> {
     else if (this.selectedChapter) this.selectVerse(parseInt(target));
     else if (this.selectedBook) this.selectChapter(parseInt(target));
     else this.selectBook(target);
+  }
+
+  public next(path: BiblePath): BiblePath {
+    const chapters = this.getChapters(path.book);
+    if (chapters.indexOf(path.chapter + 1) != -1)
+      return {
+        ...path,
+        chapter: path.chapter + 1,
+      };
+    else {
+      const books = this.getBooks();
+      const index = books.indexOf(path.book);
+      if (books.length > index + 2)
+        return {
+          ...path,
+          book: books[index + 1],
+          chapter: 1,
+        };
+      else return path;
+    }
+  }
+
+  public prev(path: BiblePath): BiblePath {
+    const chapters = this.getChapters(path.book);
+    if (chapters.indexOf(path.chapter - 1) != -1)
+      return {
+        ...path,
+        chapter: path.chapter - 1,
+      };
+    else {
+      const books = this.getBooks();
+      const index = books.indexOf(path.book);
+      if (index - 1 >= 0) {
+        // get the last chapter of the book
+        const chapters = this.getChapters(books[index - 1]);
+        return {
+          ...path,
+          book: books[index - 1],
+          chapter: chapters[chapters.length - 1],
+        };
+      } else return path;
+    }
   }
 }

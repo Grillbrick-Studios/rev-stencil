@@ -1,4 +1,5 @@
 import { Commentary } from './commentary';
+import { Resource } from './common';
 
 export enum Style {
   // style: 1    This is flowing text, or prose. See most verses in the NT.

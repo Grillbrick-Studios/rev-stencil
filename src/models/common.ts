@@ -28,3 +28,28 @@ export interface BiblePath {
   verse?: number;
   resource?: Resource;
 }
+
+export function stripStyle(verse: string): string {
+  verse = verse?.replace(/\[hpbegin\]/g, ' ');
+  verse = verse?.replace(/\[hpend\]/g, ' ');
+  verse = verse?.replace(/\[hp\]/g, ' ');
+
+  verse = verse?.replace(/\[listbegin\]/g, ' ');
+  verse = verse?.replace(/\[listend\]/g, ' ');
+  verse = verse?.replace(/\[li\]/g, ' ');
+
+  verse = verse?.replace(/\[lb\]/g, ' ');
+  verse = verse?.replace(/\[br\]/g, ' ');
+  verse = verse?.replace(/\[fn\]/g, ' ');
+  verse = verse?.replace(/\[pg\]/g, ' ');
+  verse = verse?.replace(/\[bq\]/g, ' ');
+  verse = verse?.replace(/\[\/bq\]/g, ' ');
+
+  // FINALLY replace the brackets for questionable text.
+  verse = verse?.replace(/\[\[/g, '<em class="questionable">');
+  verse = verse?.replace(/\]\]/g, '</em>');
+  verse = verse?.replace(/\[/g, '<em>');
+  verse = verse?.replace(/\]/g, '</em>');
+
+  return verse;
+}

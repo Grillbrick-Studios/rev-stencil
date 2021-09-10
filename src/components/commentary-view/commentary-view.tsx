@@ -40,16 +40,17 @@ export class CommentaryView {
               </ion-chip>
             )}
             <hr />
-            <p class="heading">Old Testament</p>
-            <hr />
             {!state.book
               ? this.commentary.getBooks().map(b => {
-                  if (b.toLowerCase().startsWith('matt')) return [<hr />, <p class="heading">New Testament</p>, <ion-button onClick={() => (state.book = b)}>{b}</ion-button>];
+                  if (b.toLowerCase().startsWith('gen'))
+                    return [<hr />, <p class="heading">Old Testament</p>, <hr />, <ion-button onClick={() => (state.book = b)}>{b}</ion-button>];
+                  if (b.toLowerCase().startsWith('matt'))
+                    return [<hr />, <p class="heading">New Testament</p>, <hr />, <ion-button onClick={() => (state.book = b)}>{b}</ion-button>];
                   return <ion-button onClick={() => (state.book = b)}>{b}</ion-button>;
                 })
               : !state.chapter
-              ? this.commentary.getChapters(state.book).map(c => [<ion-button onClick={() => (state.chapter = parseInt(c))}>{c}</ion-button>])
-              : this.commentary.getVerses(state.book, state.chapter).map(v => [<ion-button onClick={() => (state.verse = parseInt(v))}>{v}</ion-button>])}
+              ? this.commentary.getChapters(state.book).map(c => [<ion-button onClick={() => (state.chapter = c)}>{c}</ion-button>])
+              : this.commentary.getVerses(state.book, state.chapter).map(v => [<ion-button onClick={() => (state.verse = v as number)}>{v}</ion-button>])}
           </ion-list>
         </Host>
       );

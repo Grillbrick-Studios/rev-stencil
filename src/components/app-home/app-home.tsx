@@ -24,7 +24,6 @@ export class AppHome {
     state.chapter = this.chapter ? this.chapter : state.chapter;
     state.verse = this.verse ? this.verse : state.verse;
     if (window.location.pathname !== '/') window.history.replaceState(null, null, '/');
-    //console.log(window.location.pathname);
   }
 
   render() {
