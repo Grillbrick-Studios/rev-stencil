@@ -30,14 +30,10 @@
   https://ionicframework.com/docs/theming/color-generator
 */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ion-background-color: #000000;
-    --ion-text-color: #ffffff;
-  }
-}
-
 body.dark {
+  --background: rgba(0, 0, 0, 0.54);
   --ion-background-color: #000000;
+  --color: #ffffff;
   --ion-text-color: #ffffff;
+  --ion-text-color-rgb: rgba(255, 255, 255, 0.54);
 }
