@@ -1,4 +1,4 @@
-import { iData, Asynclock, iSerializeData } from './common';
+import { iData, Asynclock, iSerializeData, DaysSince } from './common';
 import { writeFile, readFile } from './filesystem';
 
 const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=appendices';
@@ -32,6 +32,7 @@ export class Appendices implements iData<iAppendices> {
       const appendixData: iSerializeData<iAppendices> = await readFile('Appendices');
       Appendices._data = appendixData.data;
       Appendices.updated = new Date(appendixData.updated);
+      if (DaysSince(Appendices.updated) > 7) return false;
       return true;
     } catch (e) {
       return false;

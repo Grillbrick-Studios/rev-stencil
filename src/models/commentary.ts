@@ -1,4 +1,4 @@
-import { iData, Asynclock, iSerializeData, BiblePath } from './common';
+import { iData, Asynclock, iSerializeData, BiblePath, DaysSince } from './common';
 import { writeFile, readFile } from './filesystem';
 
 const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=commentary';
@@ -45,6 +45,7 @@ export class Commentary implements iData<iCommentary> {
         verse: parseInt(c.verse),
       }));
       Commentary.updated = new Date(commentaryData.updated);
+      if (DaysSince(Commentary.updated) > 7) return false;
       return true;
     } catch (e) {
       return false;
