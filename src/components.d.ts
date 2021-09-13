@@ -8,10 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Appendices, Bible, Commentary, Resource } from "./models";
 export namespace Components {
     interface AppHome {
-        "book"?: string;
-        "chapter"?: number;
         "resource"?: Resource;
-        "verse"?: number;
     }
     interface AppRoot {
     }
@@ -85,10 +82,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AppHome {
-        "book"?: string;
-        "chapter"?: number;
         "resource"?: Resource;
-        "verse"?: number;
     }
     interface AppRoot {
     }

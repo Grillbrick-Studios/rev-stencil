@@ -30,12 +30,8 @@ export class AppRoot {
           </ion-header>
           <ion-router useHash={false}>
             <ion-route url="/" component="app-home" />
-            <ion-route url="/:resource" component="app-home" />
-            <ion-route url="/:resource/:book" component="app-home" />
-            <ion-route url="/:resource/:book/:chapter" component="app-home" />
-            <ion-route url="/:resource/:book/:chapter/:verse" component="app-home" />
           </ion-router>
-          <ion-nav swipeGesture={true} />
+          <ion-nav />
         </div>
       </ion-app>
     );
