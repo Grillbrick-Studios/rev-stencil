@@ -70,6 +70,14 @@ export class ChapterView {
           </ion-button>
         </ion-buttons>
         <p class="content" innerHTML={this.bible.getChapter(state.book, state.chapter, state.viewMode)}></p>
+        <ion-buttons slot="start" class="flexbase">
+          <ion-button onClick={() => this.goBack()}>
+            <ion-icon name="arrow-back-outline" />
+          </ion-button>
+          <ion-button onClick={() => this.goForward()}>
+            <ion-icon name="arrow-forward-outline" />
+          </ion-button>
+        </ion-buttons>
       </Host>
     );
   }
