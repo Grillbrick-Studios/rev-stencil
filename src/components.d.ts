@@ -21,6 +21,9 @@ export namespace Components {
     interface ChapterView {
         "bible": Bible;
     }
+    interface CommentaryLink {
+        "verse": number;
+    }
     interface CommentaryView {
         "commentary": Commentary;
     }
@@ -52,6 +55,12 @@ declare global {
         prototype: HTMLChapterViewElement;
         new (): HTMLChapterViewElement;
     };
+    interface HTMLCommentaryLinkElement extends Components.CommentaryLink, HTMLStencilElement {
+    }
+    var HTMLCommentaryLinkElement: {
+        prototype: HTMLCommentaryLinkElement;
+        new (): HTMLCommentaryLinkElement;
+    };
     interface HTMLCommentaryViewElement extends Components.CommentaryView, HTMLStencilElement {
     }
     var HTMLCommentaryViewElement: {
@@ -69,6 +78,7 @@ declare global {
         "app-root": HTMLAppRootElement;
         "appendix-view": HTMLAppendixViewElement;
         "chapter-view": HTMLChapterViewElement;
+        "commentary-link": HTMLCommentaryLinkElement;
         "commentary-view": HTMLCommentaryViewElement;
         "content-view": HTMLContentViewElement;
     }
@@ -88,6 +98,9 @@ declare namespace LocalJSX {
     interface ChapterView {
         "bible"?: Bible;
     }
+    interface CommentaryLink {
+        "verse"?: number;
+    }
     interface CommentaryView {
         "commentary"?: Commentary;
     }
@@ -98,6 +111,7 @@ declare namespace LocalJSX {
         "app-root": AppRoot;
         "appendix-view": AppendixView;
         "chapter-view": ChapterView;
+        "commentary-link": CommentaryLink;
         "commentary-view": CommentaryView;
         "content-view": ContentView;
     }
@@ -110,6 +124,7 @@ declare module "@stencil/core" {
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "appendix-view": LocalJSX.AppendixView & JSXBase.HTMLAttributes<HTMLAppendixViewElement>;
             "chapter-view": LocalJSX.ChapterView & JSXBase.HTMLAttributes<HTMLChapterViewElement>;
+            "commentary-link": LocalJSX.CommentaryLink & JSXBase.HTMLAttributes<HTMLCommentaryLinkElement>;
             "commentary-view": LocalJSX.CommentaryView & JSXBase.HTMLAttributes<HTMLCommentaryViewElement>;
             "content-view": LocalJSX.ContentView & JSXBase.HTMLAttributes<HTMLContentViewElement>;
         }

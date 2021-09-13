@@ -98,9 +98,7 @@ export class Verse implements iVerse {
     let { versetext } = this;
 
     // Generate a verse number link to commentary
-    const commentaryLink = this.hasCommentary
-      ? `<sup><ion-router-link href="/Commentary/${this.book}/${this.chapter}/${this.verse}">${this.verse}</ion-router-link></sup>`
-      : `<sup>${this.verse}</sup>`;
+    const commentaryLink = this.hasCommentary ? `<sup><commentary-link verse=${this.verse}/></sup>` : `<sup>${this.verse}</sup>`;
 
     return `${commentaryLink} ${versetext}`;
   }
