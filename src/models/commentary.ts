@@ -112,45 +112,141 @@ export class Commentary implements iData<iCommentary> {
     return verseArray;
   }
 
+  private hasNextVerse(path: BiblePath): boolean {
+    const { book, chapter, verse } = path;
+    const verses = this.getVerses(book, chapter);
+    const index = verses.indexOf(verse);
+    if (index === -1) return false;
+    return verses.length > index + 2;
+  }
+
+  private getNextVerse(path: BiblePath): BiblePath {
+    const { book, chapter, verse } = path;
+    const verses = this.getVerses(book, chapter);
+    const index = verses.indexOf(verse);
+    return {
+      ...path,
+      verse: verses[index + 1],
+    };
+  }
+
+  private hasPrevVerse(path: BiblePath): boolean {
+    const { book, chapter, verse } = path;
+    const verses = this.getVerses(book, chapter);
+    const index = verses.indexOf(verse);
+    if (index === -1) return false;
+    return index > 0;
+  }
+
+  private getPrevVerse(path: BiblePath): BiblePath {
+    const { book, chapter, verse } = path;
+    const verses = this.getVerses(book, chapter);
+    const index = verses.indexOf(verse);
+    return {
+      ...path,
+      verse: verses[index - 1],
+    };
+  }
+
+  private hasNextChapter(path: BiblePath): boolean {
+    const { book, chapter } = path;
+    const chapters = this.getChapters(book);
+    const index = chapters.indexOf(chapter);
+    if (index === -1) return false;
+    return chapters.length > index + 2;
+  }
+
+  private getNextChapter(path: BiblePath): BiblePath {
+    const { book, chapter } = path;
+    const chapters = this.getChapters(book);
+    const verses = this.getVerses(book, chapter + 1);
+    const index = chapters.indexOf(chapter);
+    return {
+      ...path,
+      chapter: chapters[index + 1],
+      verse: verses[0],
+    };
+  }
+
+  private hasPrevChapter(path: BiblePath): boolean {
+    const { book, chapter } = path;
+    const chapters = this.getChapters(book);
+    const index = chapters.indexOf(chapter);
+    if (index === -1) return false;
+    return index > 0;
+  }
+
+  private getPrevChapter(path: BiblePath): BiblePath {
+    const { book, chapter } = path;
+    const chapters = this.getChapters(book);
+    const verses = this.getVerses(book, chapter - 1);
+    const index = chapters.indexOf(chapter);
+    return {
+      ...path,
+      chapter: chapters[index - 1],
+      verse: verses[verses.length - 1],
+    };
+  }
+
+  private hasNextBook(path: BiblePath): boolean {
+    const { book } = path;
+    const books = this.getBooks();
+    const index = books.indexOf(book);
+    if (index === -1) return false;
+    return books.length > index + 2;
+  }
+
+  private getNextBook(path: BiblePath): BiblePath {
+    let { book, chapter, verse } = path;
+    const books = this.getBooks();
+    const index = books.indexOf(book);
+    book = books[index + 1];
+    const chapters = this.getChapters(book);
+    chapter = chapters[0];
+    const verses = this.getVerses(book, chapter);
+    verse = verses[0];
+    return {
+      book,
+      chapter,
+      verse,
+    };
+  }
+
+  private hasPrevBook(path: BiblePath): boolean {
+    const { book } = path;
+    const books = this.getBooks();
+    const index = books.indexOf(book);
+    if (index === -1) return false;
+    return index > 0;
+  }
+
+  private getPrevBook(path: BiblePath): BiblePath {
+    let { book, chapter, verse } = path;
+    const books = this.getBooks();
+    const index = books.indexOf(book);
+    book = books[index - 1];
+    const chapters = this.getChapters(book);
+    chapter = chapters[chapters.length - 1];
+    const verses = this.getVerses(book, chapter);
+    verse = verses[verses.length - 1];
+    return {
+      book,
+      chapter,
+      verse,
+    };
+  }
+
   public next(path: BiblePath): BiblePath {
-    const chapters = this.getChapters(path.book);
-    if (chapters.indexOf(path.chapter + 1) != -1)
-      return {
-        ...path,
-        chapter: path.chapter + 1,
-      };
-    else {
-      const books = this.getBooks();
-      const index = books.indexOf(path.book);
-      if (books.length > index + 2)
-        return {
-          ...path,
-          book: books[index + 1],
-          chapter: 1,
-        };
-      else return path;
-    }
+    if (this.hasNextVerse(path)) return this.getNextVerse(path);
+    if (this.hasNextChapter(path)) return this.getNextChapter(path);
+    if (this.hasNextBook(path)) return this.getNextBook(path);
+    return path;
   }
 
   public prev(path: BiblePath): BiblePath {
-    const chapters = this.getChapters(path.book);
-    if (chapters.indexOf(path.chapter - 1) != -1)
-      return {
-        ...path,
-        chapter: path.chapter - 1,
-      };
-    else {
-      const books = this.getBooks();
-      const index = books.indexOf(path.book);
-      if (index - 1 >= 0) {
-        // get the last chapter of the book
-        const chapters = this.getChapters(books[index - 1]);
-        return {
-          ...path,
-          book: books[index - 1],
-          chapter: chapters[chapters.length - 1],
-        };
-      } else return path;
-    }
+    if (this.hasPrevVerse(path)) return this.getPrevVerse(path);
+    if (this.hasPrevChapter(path)) return this.getPrevChapter(path);
+    if (this.hasPrevBook(path)) return this.getPrevBook(path);
+    return path;
   }
 }
