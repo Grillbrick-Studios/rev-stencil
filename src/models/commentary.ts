@@ -117,7 +117,7 @@ export class Commentary implements iData<iCommentary> {
     const verses = this.getVerses(book, chapter);
     const index = verses.indexOf(verse);
     if (index === -1) return false;
-    return verses.length > index + 2;
+    return verses.length > index + 1;
   }
 
   private getNextVerse(path: BiblePath): BiblePath {
@@ -153,7 +153,7 @@ export class Commentary implements iData<iCommentary> {
     const chapters = this.getChapters(book);
     const index = chapters.indexOf(chapter);
     if (index === -1) return false;
-    return chapters.length > index + 2;
+    return chapters.length > index + 1;
   }
 
   private getNextChapter(path: BiblePath): BiblePath {
@@ -193,7 +193,7 @@ export class Commentary implements iData<iCommentary> {
     const books = this.getBooks();
     const index = books.indexOf(book);
     if (index === -1) return false;
-    return books.length > index + 2;
+    return books.length > index + 1;
   }
 
   private getNextBook(path: BiblePath): BiblePath {
