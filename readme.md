@@ -12,3 +12,4 @@ Currently we need a lot of work on the styling of the app, and customization.
 - ~~Implement a better back button so going back from the commentary will get
   you back to the bible.~~ **DONE**
 - Implement infinite scrolling or paging with swiping or navigation buttons.
+  - Currently using navigation buttons
