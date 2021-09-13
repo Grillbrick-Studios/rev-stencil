@@ -7,6 +7,9 @@
   "files": [
     "dist/"
   ],
+  "workspaces": [
+    "./electron"
+  ],
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve --no-open",
