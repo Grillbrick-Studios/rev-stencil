@@ -88,4 +88,20 @@ export class Appendices implements iData<iAppendices> {
   getAppendix(title: string): string {
     return Appendices._data.filter(a => a.title === title)[0].appendix;
   }
+
+  next(title: string): string {
+    const titles = this.getTitles();
+    const index = titles.indexOf(title);
+    if (index === -1) return title;
+    if (titles.length > index + 1) return titles[index + 1];
+    return title;
+  }
+
+  prev(title: string): string {
+    const titles = this.getTitles();
+    const index = titles.indexOf(title);
+    if (index === -1) return title;
+    if (index > 0) return titles[index - 1];
+    return title;
+  }
 }

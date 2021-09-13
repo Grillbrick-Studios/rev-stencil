@@ -232,7 +232,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     else {
       const books = this.getBooks();
       const index = books.indexOf(path.book);
-      if (books.length > index + 2)
+      if (books.length > index + 1)
         return {
           ...path,
           book: books[index + 1],

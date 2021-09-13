@@ -2,11 +2,6 @@
   display: block;
 }
 
-.flexbase {
-  display: flex;
-  justify-content: space-around;
-}
-
 .flexstack {
   display: flex;
   flex-direction: column;
