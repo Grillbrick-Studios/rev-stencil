@@ -87,9 +87,10 @@ export class Verse implements iVerse {
   public getHeading(): string {
     if (!this.heading) return '';
 
+    const heading = this.heading.replace(/\[br\]/g, '<br />');
     // wrap the heading in appropriate tags and add the microheading if it
     // exists.
-    return `<${this.microheading ? 'p class="microheading"' : 'p class="heading"'}>${this.heading}</p>`;
+    return `<${this.microheading ? 'p class="microheading"' : 'p class="heading"'}>${heading}</p>`;
   }
 
   // simply add the commentaryLink to the verse

@@ -62,7 +62,9 @@ export class CommentaryView {
             <ion-icon name="arrow-back-outline" />
           </ion-button>
           <ion-title class="title">
-            Commentary for {state.book} {state.chapter}:{state.verse}
+            Commentary for
+            <br />
+            {state.book} {state.chapter}:{state.verse}
           </ion-title>
           <ion-button onClick={() => this.goForward()}>
             <ion-icon name="arrow-forward-outline" />
