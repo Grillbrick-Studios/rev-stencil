@@ -35,10 +35,40 @@ onChange('chapter', v => {
   if (!v) state.verse = undefined;
 });
 
-Storage.get({ key: 'resource' }).then(r => (state.resource = JSON.parse(r.value)));
-Storage.get({ key: 'book' }).then(r => (state.book = JSON.parse(r.value)));
-Storage.get({ key: 'chapter' }).then(r => (state.chapter = JSON.parse(r.value)));
-Storage.get({ key: 'verse' }).then(r => (state.verse = JSON.parse(r.value)));
-Storage.get({ key: 'viewMode' }).then(r => (state.viewMode = JSON.parse(r.value)));
+Storage.get({ key: 'resource' }).then(r => {
+  try {
+    state.resource = JSON.parse(r.value);
+  } catch (_) {
+    state.resource = undefined;
+  }
+});
+Storage.get({ key: 'book' }).then(r => {
+  try {
+    state.book = JSON.parse(r.value);
+  } catch (_) {
+    state.book = undefined;
+  }
+});
+Storage.get({ key: 'chapter' }).then(r => {
+  try {
+    state.chapter = JSON.parse(r.value);
+  } catch (_) {
+    state.chapter = undefined;
+  }
+});
+Storage.get({ key: 'verse' }).then(r => {
+  try {
+    state.verse = JSON.parse(r.value);
+  } catch (_) {
+    state.verse = undefined;
+  }
+});
+Storage.get({ key: 'viewMode' }).then(r => {
+  try {
+    state.viewMode = JSON.parse(r.value);
+  } catch (_) {
+    state.viewMode = ViewMode.Paragraph;
+  }
+});
 
 export { state, onChange };

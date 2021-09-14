@@ -5,11 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Appendices, Bible, Commentary, Resource } from "./models";
+import { Appendices, Bible, Commentary } from "./models";
 export namespace Components {
-    interface AppHome {
-        "resource"?: Resource;
-    }
     interface AppRoot {
     }
     interface AppendixView {
@@ -30,12 +27,6 @@ export namespace Components {
     }
 }
 declare global {
-    interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {
-    }
-    var HTMLAppHomeElement: {
-        prototype: HTMLAppHomeElement;
-        new (): HTMLAppHomeElement;
-    };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
     var HTMLAppRootElement: {
@@ -79,7 +70,6 @@ declare global {
         new (): HTMLOptionScreenElement;
     };
     interface HTMLElementTagNameMap {
-        "app-home": HTMLAppHomeElement;
         "app-root": HTMLAppRootElement;
         "appendix-view": HTMLAppendixViewElement;
         "chapter-view": HTMLChapterViewElement;
@@ -90,9 +80,6 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    interface AppHome {
-        "resource"?: Resource;
-    }
     interface AppRoot {
     }
     interface AppendixView {
@@ -112,7 +99,6 @@ declare namespace LocalJSX {
     interface OptionScreen {
     }
     interface IntrinsicElements {
-        "app-home": AppHome;
         "app-root": AppRoot;
         "appendix-view": AppendixView;
         "chapter-view": ChapterView;
@@ -126,7 +112,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "appendix-view": LocalJSX.AppendixView & JSXBase.HTMLAttributes<HTMLAppendixViewElement>;
             "chapter-view": LocalJSX.ChapterView & JSXBase.HTMLAttributes<HTMLChapterViewElement>;

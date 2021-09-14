@@ -53,18 +53,9 @@ export class ChapterView {
           <ion-button onClick={() => this.goBack()}>
             <ion-icon name="arrow-back-outline" />
           </ion-button>
-          <div class="flexstack">
-            <div class="modeswitch">
-              <ion-label>Verse Break Mode?</ion-label>
-              <ion-toggle
-                checked={state.viewMode === ViewMode.VerseBreak}
-                onIonChange={ev => (ev.detail.checked ? (state.viewMode = ViewMode.VerseBreak) : (state.viewMode = ViewMode.Paragraph))}
-              />
-            </div>
-            <ion-title class="title">
-              {state.book} {state.chapter}
-            </ion-title>
-          </div>
+          <ion-title class="title">
+            {state.book} {state.chapter}
+          </ion-title>
           <ion-button onClick={() => this.goForward()}>
             <ion-icon name="arrow-forward-outline" />
           </ion-button>
