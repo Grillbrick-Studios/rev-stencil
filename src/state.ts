@@ -66,6 +66,7 @@ Storage.get({ key: 'verse' }).then(r => {
 Storage.get({ key: 'viewMode' }).then(r => {
   try {
     state.viewMode = JSON.parse(r.value);
+    if (!state.viewMode) state.viewMode = ViewMode.Paragraph;
   } catch (_) {
     state.viewMode = ViewMode.Paragraph;
   }

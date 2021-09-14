@@ -24,7 +24,10 @@ export class OptionScreen {
             onIonChange={ev => (ev.detail.checked ? (state.viewMode = ViewMode.VerseBreak) : (state.viewMode = ViewMode.Paragraph))}
           />
         </div>
-        <p class="content" innerHTML={this.bible.getChapter('Psalms', 117, state.viewMode)}></p>
+        <div class="example">
+          <ion-title class="title">Psalms 117</ion-title>
+          <p class="content" innerHTML={this.bible.getChapter('Psalms', 117, state.viewMode)}></p>
+        </div>
       </Host>
     );
   }
