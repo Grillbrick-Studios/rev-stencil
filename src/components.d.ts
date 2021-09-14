@@ -26,6 +26,8 @@ export namespace Components {
     }
     interface ContentView {
     }
+    interface OptionScreen {
+    }
 }
 declare global {
     interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {
@@ -70,6 +72,12 @@ declare global {
         prototype: HTMLContentViewElement;
         new (): HTMLContentViewElement;
     };
+    interface HTMLOptionScreenElement extends Components.OptionScreen, HTMLStencilElement {
+    }
+    var HTMLOptionScreenElement: {
+        prototype: HTMLOptionScreenElement;
+        new (): HTMLOptionScreenElement;
+    };
     interface HTMLElementTagNameMap {
         "app-home": HTMLAppHomeElement;
         "app-root": HTMLAppRootElement;
@@ -78,6 +86,7 @@ declare global {
         "commentary-link": HTMLCommentaryLinkElement;
         "commentary-view": HTMLCommentaryViewElement;
         "content-view": HTMLContentViewElement;
+        "option-screen": HTMLOptionScreenElement;
     }
 }
 declare namespace LocalJSX {
@@ -100,6 +109,8 @@ declare namespace LocalJSX {
     }
     interface ContentView {
     }
+    interface OptionScreen {
+    }
     interface IntrinsicElements {
         "app-home": AppHome;
         "app-root": AppRoot;
@@ -108,6 +119,7 @@ declare namespace LocalJSX {
         "commentary-link": CommentaryLink;
         "commentary-view": CommentaryView;
         "content-view": ContentView;
+        "option-screen": OptionScreen;
     }
 }
 export { LocalJSX as JSX };
@@ -121,6 +133,7 @@ declare module "@stencil/core" {
             "commentary-link": LocalJSX.CommentaryLink & JSXBase.HTMLAttributes<HTMLCommentaryLinkElement>;
             "commentary-view": LocalJSX.CommentaryView & JSXBase.HTMLAttributes<HTMLCommentaryViewElement>;
             "content-view": LocalJSX.ContentView & JSXBase.HTMLAttributes<HTMLContentViewElement>;
+            "option-screen": LocalJSX.OptionScreen & JSXBase.HTMLAttributes<HTMLOptionScreenElement>;
         }
     }
 }
