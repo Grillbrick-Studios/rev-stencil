@@ -1,5 +1,5 @@
 import { Component, Host, h } from '@stencil/core';
-import { ViewMode } from '../../models';
+import { Bible, ViewMode } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -8,6 +8,12 @@ import { state } from '../../state';
   shadow: true,
 })
 export class OptionScreen {
+  bible: Bible;
+
+  async componentWillLoad() {
+    this.bible = await Bible.onReady();
+  }
+
   render() {
     return (
       <Host>
@@ -18,7 +24,7 @@ export class OptionScreen {
             onIonChange={ev => (ev.detail.checked ? (state.viewMode = ViewMode.VerseBreak) : (state.viewMode = ViewMode.Paragraph))}
           />
         </div>
-        <slot></slot>
+        <p class="content" innerHTML={this.bible.getChapter('Psalms', 117, state.viewMode)}></p>
       </Host>
     );
   }
