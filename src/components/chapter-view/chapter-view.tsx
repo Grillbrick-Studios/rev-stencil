@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { Bible, BiblePath, ViewMode } from '../../models';
+import { Bible, BiblePath } from '../../models';
 import { state } from '../../state';
 
 @Component({
