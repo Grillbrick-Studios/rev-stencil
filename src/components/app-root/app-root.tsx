@@ -34,13 +34,13 @@ export class AppRoot {
               </ion-buttons>
               <ion-title>REV App</ion-title>
               <ion-buttons slot="end">
-                <ion-button onClick={() => (this.showOptions = !this.showOptions)}>
+                <ion-button onClick={() => (state.showOptions = !state.showOptions)}>
                   <ion-icon name="settings-outline" />
                 </ion-button>
               </ion-buttons>
             </ion-toolbar>
           </ion-header>
-          <ion-content class="ion-padding">{this.showOptions ? <option-screen /> : <content-view resource={this.resource} />}</ion-content>
+          <ion-content class="ion-padding">{state.showOptions ? <option-screen /> : <content-view resource={this.resource} />}</ion-content>
         </div>
       </ion-app>
     );

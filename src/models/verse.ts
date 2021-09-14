@@ -93,12 +93,12 @@ export class Verse implements iVerse {
   }
 
   // simply add the commentaryLink to the verse
-  public raw(): string {
+  public raw(linkCommentary: boolean = true): string {
     // First get the heading and versetext
     let { versetext } = this;
 
     // Generate a verse number link to commentary
-    const commentaryLink = this.hasCommentary ? `<sup><commentary-link verse=${this.verse}/></sup>` : `<sup>${this.verse}</sup>`;
+    const commentaryLink = this.hasCommentary && linkCommentary ? `<sup><commentary-link verse=${this.verse}/></sup>` : `<sup>${this.verse}</sup>`;
 
     return `${commentaryLink} ${versetext}`;
   }

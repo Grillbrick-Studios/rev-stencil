@@ -10,6 +10,11 @@ export interface iBibleJson {
   updated?: Date;
 }
 
+export interface ViewOptions {
+  viewMode: ViewMode;
+  linkCommentary?: boolean;
+}
+
 export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   private static verses: Verse[];
   private static updated: Date;
@@ -99,12 +104,19 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     return Array.from(chapterSet);
   }
 
-  getChapter(book: string, chapter: number, viewMode: ViewMode = ViewMode.Paragraph): string {
+  getChapter(
+    book: string,
+    chapter: number,
+    { viewMode, linkCommentary }: ViewOptions = {
+      viewMode: ViewMode.Paragraph,
+      linkCommentary: true,
+    },
+  ): string {
     //return this.dumpRaw(book, chapter);
     // console.log(this.dumpRaw(book, chapter));
     let spanDepth = 0;
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
-      let verse = v.raw();
+      let verse = v.raw(linkCommentary);
       let [preverse, midverse, endverse] = ['', '', ''];
       // This is a flag for adding the heading to the top.
       let addHeading = false;

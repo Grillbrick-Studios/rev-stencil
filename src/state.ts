@@ -8,13 +8,21 @@ interface iStore {
   chapter?: number;
   verse?: number;
   viewMode: ViewMode;
+  showOptions: boolean;
+  linkCommentary: boolean;
 }
 
 const store = createStore<iStore>({
   viewMode: ViewMode.Paragraph,
+  showOptions: false,
+  linkCommentary: true,
 });
+
 const { state, onChange } = store;
 
+/*
+ * Here I save all of the state to storage for future reference.
+ */
 store.on('set', (key, value) => {
   value = JSON.stringify(value);
   Storage.set({
@@ -23,6 +31,9 @@ store.on('set', (key, value) => {
   });
 });
 
+/*
+ * Here is where I make sure that the current path makes sense.
+ */
 onChange('resource', value => {
   if (!value) state.book = undefined;
 });
@@ -35,6 +46,9 @@ onChange('chapter', v => {
   if (!v) state.verse = undefined;
 });
 
+/*
+ * Here I load everything from storage. Check for null and use default values.
+ */
 Storage.get({ key: 'resource' }).then(r => {
   try {
     state.resource = JSON.parse(r.value);
@@ -69,6 +83,13 @@ Storage.get({ key: 'viewMode' }).then(r => {
     if (!state.viewMode) state.viewMode = ViewMode.Paragraph;
   } catch (_) {
     state.viewMode = ViewMode.Paragraph;
+  }
+});
+Storage.get({ key: 'linkCommentary' }).then(r => {
+  try {
+    state.linkCommentary = JSON.parse(r.value);
+  } catch (_) {
+    state.linkCommentary = true;
   }
 });
 
