@@ -1,3 +1,7 @@
 :host {
   display: block;
 }
+
+.example {
+  font-size: var(--example-font-size);
+}

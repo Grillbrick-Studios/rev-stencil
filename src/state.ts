@@ -2,6 +2,8 @@ import { Storage } from '@capacitor/storage';
 import { createStore } from '@stencil/store';
 import { Resource, ViewMode } from './models';
 
+export const DEFAULT_FONT_SIZE = 12;
+
 interface iStore {
   resource?: Resource;
   book?: string;
@@ -10,12 +12,14 @@ interface iStore {
   viewMode: ViewMode;
   showOptions: boolean;
   linkCommentary: boolean;
+  fontSize: number;
 }
 
 const store = createStore<iStore>({
   viewMode: ViewMode.Paragraph,
   showOptions: false,
   linkCommentary: true,
+  fontSize: DEFAULT_FONT_SIZE,
 });
 
 const { state, onChange } = store;
@@ -47,8 +51,24 @@ onChange('chapter', v => {
 });
 
 /*
+ * Here I set the font variable when the state changes
+ */
+onChange('fontSize', value => {
+  const root = document.documentElement;
+
+  root.style.setProperty('--font-size', `${value}px`);
+});
+
+/*
  * Here I load everything from storage. Check for null and use default values.
  */
+Storage.get({ key: 'fontSize' }).then(r => {
+  try {
+    state.fontSize = JSON.parse(r.value) || DEFAULT_FONT_SIZE;
+  } catch (_) {
+    state.fontSize = DEFAULT_FONT_SIZE;
+  }
+});
 Storage.get({ key: 'resource' }).then(r => {
   try {
     state.resource = JSON.parse(r.value);

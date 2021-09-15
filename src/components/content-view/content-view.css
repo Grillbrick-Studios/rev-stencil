@@ -5,3 +5,7 @@
 ion-title {
   text-align: center;
 }
+
+.content {
+  font-size: var(--font-size);
+}
