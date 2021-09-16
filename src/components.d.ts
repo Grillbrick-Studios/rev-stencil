@@ -23,6 +23,10 @@ export namespace Components {
     }
     interface ContentView {
     }
+    interface FontPicker {
+        "onFontChange": (family: string) => any;
+        "value": string;
+    }
     interface OptionScreen {
     }
 }
@@ -63,6 +67,12 @@ declare global {
         prototype: HTMLContentViewElement;
         new (): HTMLContentViewElement;
     };
+    interface HTMLFontPickerElement extends Components.FontPicker, HTMLStencilElement {
+    }
+    var HTMLFontPickerElement: {
+        prototype: HTMLFontPickerElement;
+        new (): HTMLFontPickerElement;
+    };
     interface HTMLOptionScreenElement extends Components.OptionScreen, HTMLStencilElement {
     }
     var HTMLOptionScreenElement: {
@@ -76,6 +86,7 @@ declare global {
         "commentary-link": HTMLCommentaryLinkElement;
         "commentary-view": HTMLCommentaryViewElement;
         "content-view": HTMLContentViewElement;
+        "font-picker": HTMLFontPickerElement;
         "option-screen": HTMLOptionScreenElement;
     }
 }
@@ -96,6 +107,10 @@ declare namespace LocalJSX {
     }
     interface ContentView {
     }
+    interface FontPicker {
+        "onFontChange"?: (family: string) => any;
+        "value"?: string;
+    }
     interface OptionScreen {
     }
     interface IntrinsicElements {
@@ -105,6 +120,7 @@ declare namespace LocalJSX {
         "commentary-link": CommentaryLink;
         "commentary-view": CommentaryView;
         "content-view": ContentView;
+        "font-picker": FontPicker;
         "option-screen": OptionScreen;
     }
 }
@@ -118,6 +134,7 @@ declare module "@stencil/core" {
             "commentary-link": LocalJSX.CommentaryLink & JSXBase.HTMLAttributes<HTMLCommentaryLinkElement>;
             "commentary-view": LocalJSX.CommentaryView & JSXBase.HTMLAttributes<HTMLCommentaryViewElement>;
             "content-view": LocalJSX.ContentView & JSXBase.HTMLAttributes<HTMLContentViewElement>;
+            "font-picker": LocalJSX.FontPicker & JSXBase.HTMLAttributes<HTMLFontPickerElement>;
             "option-screen": LocalJSX.OptionScreen & JSXBase.HTMLAttributes<HTMLOptionScreenElement>;
         }
     }

@@ -13,6 +13,7 @@ export class OptionScreen {
   @State() viewMode: ViewMode;
   @State() linkCommentary: boolean;
   @State() fontSize: number;
+  @State() fontFamily: string;
 
   @Watch('fontSize')
   onFontSizeChange(newValue: number) {
@@ -21,13 +22,22 @@ export class OptionScreen {
     root.style.setProperty('--example-font-size', `${newValue}px`);
   }
 
+  @Watch('fontFamily')
+  onFontFamilyChange(value: string) {
+    const root = document.documentElement;
+
+    root.style.setProperty('--example-font-family', value);
+  }
+
   async componentWillLoad() {
     this.bible = await Bible.onReady();
     this.viewMode = state.viewMode;
     this.linkCommentary = state.linkCommentary;
     this.fontSize = state.fontSize;
+    this.fontFamily = state.fontFamily;
 
     this.onFontSizeChange(this.fontSize);
+    this.onFontFamilyChange(this.fontFamily);
   }
 
   render() {
@@ -73,6 +83,10 @@ export class OptionScreen {
           </ion-item>
 
           <ion-item>
+            <font-picker onFontChange={(v: string) => (this.fontFamily = v)} value={this.fontFamily} />
+          </ion-item>
+
+          <ion-item>
             <ion-button onClick={() => (state.showOptions = false)}>Close</ion-button>
             <ion-button disabled={this.compareOptions()} onClick={this.saveOptions.bind(this)}>
               Save
@@ -97,13 +111,14 @@ export class OptionScreen {
   }
 
   compareOptions(): boolean {
-    return state.viewMode === this.viewMode && state.linkCommentary === this.linkCommentary && state.fontSize === this.fontSize;
+    return state.viewMode === this.viewMode && state.linkCommentary === this.linkCommentary && state.fontSize === this.fontSize && this.fontFamily === state.fontFamily;
   }
 
   saveOptions() {
     state.viewMode = this.viewMode;
     state.linkCommentary = this.linkCommentary;
     state.fontSize = this.fontSize;
+    state.fontFamily = this.fontFamily;
     state.showOptions = false;
   }
 }
