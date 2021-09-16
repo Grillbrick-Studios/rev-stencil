@@ -1,5 +1,4 @@
-import { PickerButton } from '@ionic/core';
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core';
 import { SansSerifFonts, SerifFonts } from '../../state';
 
 @Component({
@@ -8,14 +7,14 @@ import { SansSerifFonts, SerifFonts } from '../../state';
   shadow: true,
 })
 export class FontPicker {
-  @Prop() onFontChange: (family: string) => any;
+  @Event() fontChange: EventEmitter<string>;
   @Prop() value: string;
 
   render() {
     return (
       <Host>
         <ion-label>Select Font Family</ion-label>
-        <ion-select placeholder={this.value} onIonChange={ev => this.onFontChange(ev.detail.value)}>
+        <ion-select placeholder={this.value} onIonChange={ev => this.fontChange.emit(ev.detail.value)}>
           <ion-label>Sans Serif Fonts</ion-label>
           {SansSerifFonts.map(font => (
             <ion-select-option value={`${font}, sans-serif`}>{font}</ion-select-option>

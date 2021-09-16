@@ -24,7 +24,6 @@ export namespace Components {
     interface ContentView {
     }
     interface FontPicker {
-        "onFontChange": (family: string) => any;
         "value": string;
     }
     interface OptionScreen {
@@ -108,7 +107,7 @@ declare namespace LocalJSX {
     interface ContentView {
     }
     interface FontPicker {
-        "onFontChange"?: (family: string) => any;
+        "onFontChange"?: (event: CustomEvent<string>) => void;
         "value"?: string;
     }
     interface OptionScreen {

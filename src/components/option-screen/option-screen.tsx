@@ -83,7 +83,7 @@ export class OptionScreen {
           </ion-item>
 
           <ion-item>
-            <font-picker onFontChange={(v: string) => (this.fontFamily = v)} value={this.fontFamily} />
+            <font-picker onFontChange={ev => (this.fontFamily = ev.detail)} value={this.fontFamily} />
           </ion-item>
 
           <ion-item>
