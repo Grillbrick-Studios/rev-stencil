@@ -14,7 +14,7 @@ export class FontPicker {
     return (
       <Host>
         <ion-label>Select Font Family</ion-label>
-        <ion-select placeholder={this.value} onIonChange={ev => this.fontChange.emit(ev.detail.value)}>
+        <ion-select placeholder={this.value} onIonChange={ev => this.fontChange.emit(ev.detail.value)} interface="action-sheet">
           <ion-label>Sans Serif Fonts</ion-label>
           {SansSerifFonts.map(font => (
             <ion-select-option value={`${font}, sans-serif`}>{font}</ion-select-option>

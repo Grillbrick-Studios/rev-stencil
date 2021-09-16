@@ -129,6 +129,7 @@ Storage.get({ key: 'viewMode' }).then(r => {
 Storage.get({ key: 'linkCommentary' }).then(r => {
   try {
     state.linkCommentary = JSON.parse(r.value);
+    if (state.linkCommentary === undefined || state.linkCommentary === null) state.linkCommentary = true;
   } catch (_) {
     state.linkCommentary = true;
   }
