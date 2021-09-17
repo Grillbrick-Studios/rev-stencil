@@ -101,7 +101,7 @@ export class OptionScreen {
 
           <ion-item>
             <p class="link" onClick={this.presentFonts.bind(this)}>
-              Select Font Family
+              Select Font Family: {this.fontFamily.label}
             </p>
           </ion-item>
 

@@ -4,10 +4,11 @@
 
 .link {
   cursor: pointer;
+  width: 200px;
 }
 
 .header {
-  font-size: 25px;
+  width: 200px;
   font-weight: bold;
   border: 1px solid var(--ion-color-medium, grey);
   border-radius: 15px;

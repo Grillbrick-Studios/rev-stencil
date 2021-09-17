@@ -4,7 +4,7 @@ import { Font, Resource, ViewMode } from './models';
 
 export const DEFAULT_FONT_SIZE = 12;
 export const DEFAULT_FONT_FAMILY: Font = {
-  value: 'Arial, Helvetica, sans-serif',
+  value: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
   label: 'Arial (default)',
 };
 
@@ -12,106 +12,82 @@ export const Fonts: Font[] = [
   {
     heading: 'Sans Serif Fonts',
     headingStyle: 'sans-serif',
-    value: 'Arial, sans-serif',
+    value: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
     label: 'Arial',
   },
   {
-    value: '"Arial Narrow", sans-serif',
+    value: '"Arial Black", "Arial Bold", Gadget, sans-serif',
+    label: 'Arial Black',
+  },
+  {
+    value: '"Arial Narrow", Arial, sans-serif',
     label: 'Arial Narrow',
   },
   {
-    value: 'Helvetica, sans-serif',
-    label: 'Helvetica',
+    value: 'Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif',
+    label: 'Impact',
   },
   {
-    value: 'Verdana, sans-serif',
+    value: 'Verdana, Geneva, sans-serif',
     label: 'Verdana',
   },
   {
-    value: '"Trebuchet MS", sans-serif',
-    label: 'Trebuchet MS',
+    value: 'Tahoma, Verdana, Segoe, sans-serif',
+    label: 'Tahoma',
   },
   {
-    value: '"Gill Sans", sans-serif',
-    label: 'Gill Sans',
-  },
-  {
-    value: '"Noto Sans", sans-serif',
-    label: 'Noto Sans',
-  },
-  {
-    value: 'Avantgarde, "TeX Gyre Adventor", "URW Gothic L", sans-serif',
-    label: 'Avantgarde',
-  },
-  {
-    value: 'Optima, sans-serif',
-    label: 'Optima',
+    value: '"Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif',
+    label: 'Trebuchet',
   },
   {
     heading: 'Serif Fonts',
     headingStyle: 'serif',
-    value: 'Times, "Times New Roman", serif',
+    value: 'TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif',
     label: 'Times New Roman',
   },
   {
-    value: 'Didot, serif',
+    value: 'Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif',
     label: 'Didot',
   },
   {
-    value: 'Georgia, serif',
+    value: 'Georgia, Times, "Times New Roman", serif',
     label: 'Georgia',
   },
   {
-    value: 'Palatino, "URW Palladio L", serif',
-    label: 'Palatino',
-  },
-  {
-    value: 'Bookman, "URW Bookman L", serif',
-    label: 'Bookman',
-  },
-  {
-    value: '"New Century Schoolbook", "TeX Gyre Schola", serif',
-    label: 'New Century Schoolbook',
-  },
-  {
-    value: '"American Typewriter", serif',
+    value: '"American Typewriter", "Lucida Sans Typewriter", serif',
     label: 'American Typewriter',
   },
   {
     heading: 'Monospaced Fonts',
     headingStyle: 'monospace',
-    value: '"Andale Mono", monospace',
-    label: 'Andale Mono',
+    value: '"Andale Mono", AndaleMono, monospace',
+    label: 'Andalé Mono',
   },
   {
-    value: 'Courier, monospace',
-    label: 'Courier',
+    value: '"Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace',
+    label: 'Lucida Sans Typewriter',
   },
   {
-    value: '"Courier New", monospace',
+    value: '"Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace',
     label: 'Courier New',
   },
   {
-    value: 'FreeMono, monospace',
-    label: 'FreeMono',
+    value: '"Lucinda Console", "Lucida Sans Typewriter", monaco, "Bitstream Vera Sans Mono", monospace',
+    label: 'Lucinda Console',
   },
   {
-    value: '"OCR A Std", monospace',
-    label: 'OCR A Std',
+    value: 'monaco, Consolas, "Lucida Console", monospace',
+    label: 'Monaco',
   },
   {
-    value: '"DejaVu Sans Mono", monospace',
-    label: 'DejaVu Sans Mono',
+    value: 'Consolas, monaco, monospace',
+    label: 'Consolas',
   },
   {
     heading: 'Cursive Fonts',
     headingStyle: 'cursive',
     value: '"Comic Sans MS", "Comic Sans", cursive',
     label: 'Comic Sans',
-  },
-  {
-    value: '"Apple Chancery", cursive',
-    label: 'Apple Chancery',
   },
   {
     value: '"Bradley Hand", cursive',
@@ -126,34 +102,26 @@ export const Fonts: Font[] = [
     label: 'Snell Roundhand',
   },
   {
-    value: '"URW Chancery L", cursive',
-    label: 'URW Chancery',
-  },
-  {
     heading: 'Fantasy Fonts',
     headingStyle: 'fantasy',
-    value: 'Impact, fantasy',
-    label: 'Impact',
-  },
-  {
     value: 'Luminari, fantasy',
     label: 'Luminari',
+  },
+  {
+    value: 'Copperplate, "Copperplate Gothic Light", fantasy',
+    label: 'Copperplate',
+  },
+  {
+    value: 'Papyrus, fantasy',
+    label: 'Papyrus',
   },
   {
     value: 'Chalkduster, fantasy',
     label: 'Chalkduster',
   },
   {
-    value: '"Jazz LET", fantasy',
-    label: 'Jazz LET',
-  },
-  {
     value: 'Blippo, fantasy',
     label: 'Blippo',
-  },
-  {
-    value: '"Stencil Std", fantasy',
-    label: 'Stencil Std',
   },
   {
     value: '"Marker Felt", fantasy',
