@@ -2,6 +2,42 @@ import { Font } from './models';
 
 export const Fonts: Font[] = [
   {
+    heading: 'Default Serif Fonts',
+    headingStyle: 'Merriweather, "Times New Roman", serif',
+    value: 'Merriweather, "Times New Roman", serif',
+    label: 'Merriweather',
+  },
+  {
+    value: '"Times New Roman", Times, serif',
+    label: 'Times New Roman',
+  },
+  {
+    value: 'Caladea, "Times New Roman", Serif',
+    label: 'Caladea',
+  },
+  {
+    value: '"ibm plex serif", "Times New Roman", Serif',
+    label: 'IBM Plex Serif',
+  },
+  {
+    heading: 'Default Non-Serifed Fonts',
+    headingStyle: 'merriweather, "times new roman", serif',
+    value: 'Arial, sans-serif',
+    label: 'Arial',
+  },
+  {
+    value: 'roboto, sans-serif',
+    label: 'Roboto',
+  },
+  {
+    value: 'montserrat, sans-serif',
+    label: 'Montserrat',
+  },
+  {
+    value: '"balsamiq sans", sans-serif',
+    label: 'Balsamiq Sans',
+  },
+  {
     heading: 'Google Fonts',
     headingStyle: 'sans-serif',
     value: '"Are You Serious", cursive',

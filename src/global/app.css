@@ -195,3 +195,98 @@ ion-icon {
   display: flex;
   justify-content: space-around;
 }
+
+.flexstack {
+  display: flex;
+  flex-direction: column;
+}
+
+.modeswitch {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.start {
+  text-align: start;
+}
+
+.versebreak {
+  display: block;
+  margin: 20px 0;
+}
+
+.heading {
+  text-indent: 0;
+  font-size: 110%;
+  font-weight: 700;
+  font-style: italic;
+  margin-bottom: 0.2em;
+}
+
+.microheading {
+  display: block;
+  text-indent: 0;
+  font-size: 76%;
+  font-style: italic;
+  color: #999;
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+}
+
+.questionable {
+  font-style: italic;
+  font-weight: lighter;
+}
+
+.prose {
+  display: block;
+  text-indent: 0;
+  margin-top: 1em;
+  text-align: start;
+}
+
+.poetry {
+  display: block;
+  margin: 1em 0 1em 1em;
+  text-align: start;
+}
+
+.col2container,
+.col3container,
+.col4container,
+.col5container {
+  column-gap: 40px;
+  column-rule: 1px outset #aaa;
+  -moz-column-gap: 40px;
+  -moz-column-rule: 1px outset #aaa; /* Firefox */
+  -webkit-column-gap: 40px;
+  -webkit-column-rule: 1px outset #aaa; /* Chrome, Safari, Opera */
+}
+.col2container {
+  column-count: 2;
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+}
+.col3container {
+  column-count: 3;
+  -moz-column-count: 3;
+  -webkit-column-count: 3;
+}
+.col4container {
+  column-count: 4;
+  -moz-column-count: 4;
+  -webkit-column-count: 4;
+}
+.col5container {
+  column-count: 5;
+  -moz-column-count: 5;
+  -webkit-column-count: 5;
+}
+
+.link {
+  cursor: pointer;
+}

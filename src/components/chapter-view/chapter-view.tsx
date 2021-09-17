@@ -11,6 +11,7 @@ export class ChapterView {
   @Prop() bible: Bible;
 
   render() {
+    const colClass = `col${state.numColumns}container`;
     if (!this.bible)
       return (
         <Host>
@@ -60,7 +61,7 @@ export class ChapterView {
             <ion-icon name="arrow-forward-outline" />
           </ion-button>
         </ion-buttons>
-        <p class="content" innerHTML={this.bible.getChapter(state.book, state.chapter, state)}></p>
+        <div class={`content ${colClass}`} innerHTML={this.bible.getChapter(state.book, state.chapter, state)}></div>
         <ion-buttons slot="start" class="flexbase">
           <ion-button onClick={() => this.goBack()}>
             <ion-icon name="arrow-back-outline" />

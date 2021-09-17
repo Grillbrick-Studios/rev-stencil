@@ -6,8 +6,8 @@ import { Fonts } from './fonts';
 export { Fonts };
 export const DEFAULT_FONT_SIZE = 12;
 export const DEFAULT_FONT_FAMILY: Font = {
-  value: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
-  label: 'Arial (default)',
+  value: 'Merriweather, "Times New Roman", serif',
+  label: 'Merriweather (default)',
 };
 
 interface iStore {
@@ -21,6 +21,7 @@ interface iStore {
   linkCommentary: boolean;
   fontSize: number;
   fontFamily: Font;
+  numColumns: number;
 }
 
 const store = createStore<iStore>({
@@ -30,6 +31,7 @@ const store = createStore<iStore>({
   fontSize: DEFAULT_FONT_SIZE,
   fontFamily: DEFAULT_FONT_FAMILY,
   forceDarkMode: false,
+  numColumns: 1,
 });
 
 const { state, onChange } = store;
@@ -85,6 +87,13 @@ onChange('forceDarkMode', value => {
 /*
  * Here I load everything from storage. Check for null and use default values.
  */
+Storage.get({ key: 'numColumns' }).then(r => {
+  try {
+    state.numColumns = JSON.parse(r.value) || 1;
+  } catch (_) {
+    state.numColumns = 1;
+  }
+});
 Storage.get({ key: 'forceDarkMode' }).then(r => {
   try {
     state.forceDarkMode = JSON.parse(r.value) || false;

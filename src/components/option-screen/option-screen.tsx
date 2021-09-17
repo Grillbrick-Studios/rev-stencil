@@ -6,7 +6,7 @@ import { DEFAULT_FONT_SIZE, state } from '../../state';
 @Component({
   tag: 'option-screen',
   styleUrl: 'option-screen.css',
-  shadow: true,
+  shadow: false,
 })
 export class OptionScreen {
   bible: Bible;
@@ -14,6 +14,7 @@ export class OptionScreen {
   @State() linkCommentary: boolean;
   @State() fontSize: number;
   @State() fontFamily: Font;
+  @State() numColumns: number;
 
   @Watch('fontSize')
   onFontSizeChange(newValue: number) {
@@ -52,6 +53,7 @@ export class OptionScreen {
     this.linkCommentary = state.linkCommentary;
     this.fontSize = state.fontSize;
     this.fontFamily = state.fontFamily;
+    this.numColumns = state.numColumns;
 
     //this.onFontSizeChange(this.fontSize);
     //this.onFontFamilyChange(this.fontFamily);
@@ -66,7 +68,13 @@ export class OptionScreen {
   }
 
   compareOptions(): boolean {
-    return state.viewMode === this.viewMode && state.linkCommentary === this.linkCommentary && state.fontSize === this.fontSize && state.fontFamily === this.fontFamily;
+    return (
+      state.viewMode === this.viewMode &&
+      state.linkCommentary === this.linkCommentary &&
+      state.fontSize === this.fontSize &&
+      state.fontFamily === this.fontFamily &&
+      state.numColumns === this.numColumns
+    );
   }
 
   saveOptions() {
@@ -74,6 +82,7 @@ export class OptionScreen {
     state.linkCommentary = this.linkCommentary;
     state.fontSize = this.fontSize;
     state.fontFamily = this.fontFamily;
+    state.numColumns = this.numColumns;
     state.showOptions = false;
   }
 
@@ -81,10 +90,25 @@ export class OptionScreen {
     state.forceDarkMode = ev.detail.checked;
   }
 
+  moreColumns() {
+    this.numColumns++;
+    if (this.numColumns > 5) this.numColumns = 5;
+  }
+
+  lessColumns() {
+    this.numColumns--;
+    if (this.numColumns < 1) this.numColumns = 1;
+  }
+
   render() {
+    const colClass = `col${this.numColumns}container`;
     return (
       <Host>
-        <ion-list>
+        <ion-list
+          style={{
+            width: '500px',
+          }}
+        >
           <ion-item>
             <ion-list>
               <ion-item>
@@ -115,7 +139,23 @@ export class OptionScreen {
           </ion-item>
 
           <ion-item>
-            <ion-label>Font Size</ion-label>
+            <ion-label>Number of Columns:</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-segment>
+              <ion-segment-button onClick={this.lessColumns.bind(this)}>
+                <ion-icon name="remove-outline" />
+              </ion-segment-button>
+              <ion-segment-button onClick={this.moreColumns.bind(this)}>
+                <ion-icon name="add-outline" />
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Font Size:</ion-label>
+          </ion-item>
+          <ion-item>
             <ion-segment>
               <ion-segment-button onClick={() => this.fontSize--}>
                 <ion-icon name="remove-outline" />
@@ -151,8 +191,8 @@ export class OptionScreen {
         </ion-list>
 
         <div class="example" id="example">
-          <ion-title class="title">Exodus 11</ion-title>
-          <p class="content" innerHTML={this.bible.getChapter('Exodus', 11, this)}></p>
+          <ion-title class="title">Genesis 3</ion-title>
+          <div class={`example content ${colClass}`} innerHTML={this.bible.getChapter('Genesis', 3, this)}></div>
         </div>
       </Host>
     );
