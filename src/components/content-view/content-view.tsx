@@ -136,76 +136,88 @@ export class ContentView {
       case Resource.Bible:
         return (
           <Host>
-            <ion-buttons slot="start" class="flexbase">
-              <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                <ion-icon name="arrow-back-outline" />
-              </ion-button>
-              <ion-title class="title">
-                {state.book} {state.chapter}
-              </ion-title>
-              <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                <ion-icon name="arrow-forward-outline" />
-              </ion-button>
-            </ion-buttons>
+            <div class="top-heading">
+              <ion-buttons class="flexbase">
+                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
+                  <ion-icon name="arrow-back-outline" />
+                </ion-button>
+                <ion-title class="title">
+                  {state.book} {state.chapter}
+                </ion-title>
+                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
+                  <ion-icon name="arrow-forward-outline" />
+                </ion-button>
+              </ion-buttons>
+            </div>
             <chapter-view bible={this.bible} />
-            <ion-buttons slot="start" class="flexbase">
-              <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                <ion-icon name="arrow-back-outline" />
-              </ion-button>
-              <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                <ion-icon name="arrow-forward-outline" />
-              </ion-button>
-            </ion-buttons>
+            <div class="top-heading">
+              <ion-buttons slot="start" class="flexbase">
+                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
+                  <ion-icon name="arrow-back-outline" />
+                </ion-button>
+                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
+                  <ion-icon name="arrow-forward-outline" />
+                </ion-button>
+              </ion-buttons>
+            </div>
           </Host>
         );
       case Resource.Appendix:
         return (
           <Host>
-            <ion-buttons slot="start" class="flexbase">
-              <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                <ion-icon name="arrow-back-outline" />
-              </ion-button>
-              <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                <ion-icon name="arrow-forward-outline" />
-              </ion-button>
-            </ion-buttons>
+            <div class="top-heading">
+              <ion-buttons slot="start" class="top-heading flexbase">
+                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
+                  <ion-icon name="arrow-back-outline" />
+                </ion-button>
+                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
+                  <ion-icon name="arrow-forward-outline" />
+                </ion-button>
+              </ion-buttons>
+            </div>
             <appendix-view appendix={this.appendix} />
-            <ion-buttons slot="start" class="flexbase">
-              <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                <ion-icon name="arrow-back-outline" />
-              </ion-button>
-              <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                <ion-icon name="arrow-forward-outline" />
-              </ion-button>
-            </ion-buttons>
+            <div class="top-heading">
+              <ion-buttons slot="start" class="top-heading flexbase">
+                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
+                  <ion-icon name="arrow-back-outline" />
+                </ion-button>
+                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
+                  <ion-icon name="arrow-forward-outline" />
+                </ion-button>
+              </ion-buttons>
+            </div>
           </Host>
         );
       case Resource.Commentary:
         return (
           <Host>
-            <ion-buttons slot="start" class="flexbase">
-              <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                <ion-icon name="arrow-back-outline" />
-              </ion-button>
-              <ion-title class="title">
-                Commentary for
-                <br />
-                {state.book} {state.chapter}
-                {state.verse && `:${state.verse}`}
-              </ion-title>
-              <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                <ion-icon name="arrow-forward-outline" />
-              </ion-button>
-            </ion-buttons>
+            <div class="top-heading">
+              <ion-buttons slot="start" class="top-heading flexbase">
+                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
+                  <ion-icon name="arrow-back-outline" />
+                </ion-button>
+                <ion-title class="title">
+                  Commentary for
+                  <br />
+                  {state.book} {state.chapter}
+                  {state.verse ? `:${state.verse}` : '?'}
+                </ion-title>
+                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
+                  <ion-icon name="arrow-forward-outline" />
+                </ion-button>
+              </ion-buttons>
+            </div>
             <commentary-view commentary={this.commentary} />
-            <ion-buttons slot="start" class="flexbase">
-              <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                <ion-icon name="arrow-back-outline" />
-              </ion-button>
-              <ion-button onClick={() => this.next()}>
-                <ion-icon name="arrow-forward-outline" />
-              </ion-button>
-            </ion-buttons>
+            <div class="top-heading">
+              <ion-buttons slot="start" class="top-heading flexbase">
+                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
+                  <ion-icon name="arrow-back-outline" />
+                </ion-button>
+                <ion-button onClick={() => this.next()}>
+                  <ion-icon name="arrow-forward-outline" />
+                </ion-button>
+              </ion-buttons>
+            </div>
           </Host>
         );
       default:

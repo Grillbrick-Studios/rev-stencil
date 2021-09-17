@@ -196,9 +196,15 @@ ion-icon {
   justify-content: space-around;
 }
 
-.flexstack {
+.top-heading {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-heading ion-buttons {
+  align-self: center;
+  max-width: fit-content;
 }
 
 .modeswitch {
