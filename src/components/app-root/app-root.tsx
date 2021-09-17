@@ -1,6 +1,6 @@
-import { Component, h, State } from '@stencil/core';
+import { Component, h, State, Watch } from '@stencil/core';
 import { Resource } from '../../models';
-import { state } from '../../state';
+import { state, onChange } from '../../state';
 
 @Component({
   tag: 'app-root',
@@ -10,8 +10,15 @@ export class AppRoot {
   @State() showOptions: boolean = false;
   @State() resource?: Resource;
 
+  @Watch('showOptions')
+  showOptionsUpdate(value: boolean) {
+    state.showOptions = value;
+  }
+
   connectedCallback() {
     state.resource = this.resource ? this.resource : state.resource;
+    this.showOptions = state.showOptions;
+    onChange('showOptions', value => (this.showOptions = value));
   }
 
   render() {
@@ -34,13 +41,15 @@ export class AppRoot {
               </ion-buttons>
               <ion-title>REV App</ion-title>
               <ion-buttons slot="end">
-                <ion-button onClick={() => (state.showOptions = !state.showOptions)}>
+                <ion-button onClick={() => (this.showOptions = !this.showOptions)}>
                   <ion-icon name="settings-outline" />
                 </ion-button>
               </ion-buttons>
             </ion-toolbar>
           </ion-header>
-          <ion-content class="ion-padding">{state.showOptions ? <option-screen /> : <content-view resource={this.resource} />}</ion-content>
+          <ion-content class="ion-padding">
+            <content-view resource={this.resource} />
+          </ion-content>
         </div>
       </ion-app>
     );

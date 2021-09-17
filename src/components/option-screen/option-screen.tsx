@@ -14,7 +14,6 @@ export class OptionScreen {
   @State() linkCommentary: boolean;
   @State() fontSize: number;
   @State() fontFamily: Font;
-  @State() forceDarkMode: boolean;
 
   @Watch('fontSize')
   onFontSizeChange(newValue: number) {
@@ -53,7 +52,6 @@ export class OptionScreen {
     this.linkCommentary = state.linkCommentary;
     this.fontSize = state.fontSize;
     this.fontFamily = state.fontFamily;
-    this.forceDarkMode = state.forceDarkMode;
 
     //this.onFontSizeChange(this.fontSize);
     //this.onFontFamilyChange(this.fontFamily);
@@ -68,13 +66,7 @@ export class OptionScreen {
   }
 
   compareOptions(): boolean {
-    return (
-      state.viewMode === this.viewMode &&
-      state.linkCommentary === this.linkCommentary &&
-      state.fontSize === this.fontSize &&
-      this.fontFamily === state.fontFamily &&
-      this.forceDarkMode === state.forceDarkMode
-    );
+    return state.viewMode === this.viewMode && state.linkCommentary === this.linkCommentary && state.fontSize === this.fontSize && state.fontFamily === this.fontFamily;
   }
 
   saveOptions() {
@@ -82,12 +74,11 @@ export class OptionScreen {
     state.linkCommentary = this.linkCommentary;
     state.fontSize = this.fontSize;
     state.fontFamily = this.fontFamily;
-    state.forceDarkMode = this.forceDarkMode;
     state.showOptions = false;
   }
 
   forceDarkModeChange(ev: CustomEvent<ToggleChangeEventDetail>) {
-    this.forceDarkMode = ev.detail.checked;
+    state.forceDarkMode = ev.detail.checked;
   }
 
   render() {
@@ -97,8 +88,9 @@ export class OptionScreen {
           <ion-item>
             <ion-list>
               <ion-item>
-                <ion-label>Force Dark Mode? (RELOAD REQUIRED)</ion-label>
-                <ion-toggle checked={this.forceDarkMode} onIonChange={this.forceDarkModeChange.bind(this)} />
+                <ion-label>Force Dark Mode?</ion-label>
+                <br />
+                <ion-toggle checked={state.forceDarkMode} onIonChange={this.forceDarkModeChange.bind(this)} />
               </ion-item>
 
               <ion-radio-group onIonChange={this.viewModeChange.bind(this)} value={this.viewMode}>
@@ -151,7 +143,7 @@ export class OptionScreen {
           </ion-item>
         </ion-list>
 
-        <div class={`example ${this.forceDarkMode && 'dark'}`} id="example">
+        <div class="example" id="example">
           <ion-title class="title">Exodus 11</ion-title>
           <p class="content" innerHTML={this.bible.getChapter('Exodus', 11, this)}></p>
         </div>

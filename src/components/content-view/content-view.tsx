@@ -33,6 +33,13 @@ export class ContentView {
           )}
         </Host>
       );
+
+    if (state.showOptions)
+      return (
+        <Host>
+          <option-screen />
+        </Host>
+      );
     switch (state.resource) {
       case Resource.Bible:
         return (
