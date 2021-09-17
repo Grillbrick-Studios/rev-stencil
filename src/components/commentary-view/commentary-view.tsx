@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { BiblePath, Commentary } from '../../models';
+import { Commentary } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -21,7 +21,6 @@ export class CommentaryView {
     if (!state.book || !state.chapter || !state.verse)
       return (
         <Host>
-          <ion-title class="title"> select book/chapter/verse.</ion-title>
           <ion-list>
             <ion-chip onClick={() => (state.book = undefined)}>
               <ion-label>{state.resource}</ion-label>
@@ -57,43 +56,8 @@ export class CommentaryView {
 
     return (
       <Host>
-        <ion-buttons slot="start" class="flexbase">
-          <ion-button onClick={() => this.goBack()}>
-            <ion-icon name="arrow-back-outline" />
-          </ion-button>
-          <ion-title class="title">
-            Commentary for
-            <br />
-            {state.book} {state.chapter}:{state.verse}
-          </ion-title>
-          <ion-button onClick={() => this.goForward()}>
-            <ion-icon name="arrow-forward-outline" />
-          </ion-button>
-        </ion-buttons>
         <p class="content" innerHTML={this.commentary.getCommentary(state.book, state.chapter, state.verse).join('\n')}></p>
-        <ion-buttons slot="start" class="flexbase">
-          <ion-button onClick={() => this.goBack()}>
-            <ion-icon name="arrow-back-outline" />
-          </ion-button>
-          <ion-button onClick={() => this.goForward()}>
-            <ion-icon name="arrow-forward-outline" />
-          </ion-button>
-        </ion-buttons>
       </Host>
     );
   }
-
-  goForward = () => {
-    const { book, chapter, verse } = this.commentary.next(state as BiblePath);
-    state.book = book;
-    state.chapter = chapter;
-    state.verse = verse;
-  };
-
-  goBack = () => {
-    const { book, chapter, verse } = this.commentary.prev(state as BiblePath);
-    state.book = book;
-    state.chapter = chapter;
-    state.verse = verse;
-  };
 }

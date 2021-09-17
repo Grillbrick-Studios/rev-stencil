@@ -15,6 +15,8 @@ export class CommentaryLink {
       <Host>
         <ion-router-link
           onClick={() => {
+            // does nothing on the options screen
+            if (state.showOptions) return;
             state.verse = this.verse;
             state.resource = Resource.Commentary;
           }}

@@ -43,23 +43,7 @@ export class AppendixView {
 
     return (
       <Host>
-        <ion-buttons slot="start" class="flexbase">
-          <ion-button onClick={() => this.prev()}>
-            <ion-icon name="arrow-back-outline" />
-          </ion-button>
-          <ion-button onClick={() => this.next()}>
-            <ion-icon name="arrow-forward-outline" />
-          </ion-button>
-        </ion-buttons>
         <p class="content" innerHTML={this.appendix.getAppendix(state.book)}></p>
-        <ion-buttons slot="start" class="flexbase">
-          <ion-button onClick={() => this.prev()}>
-            <ion-icon name="arrow-back-outline" />
-          </ion-button>
-          <ion-button onClick={() => this.next()}>
-            <ion-icon name="arrow-forward-outline" />
-          </ion-button>
-        </ion-buttons>
       </Host>
     );
   }

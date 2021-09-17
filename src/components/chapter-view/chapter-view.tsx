@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { Bible, BiblePath } from '../../models';
+import { Bible } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -22,7 +22,6 @@ export class ChapterView {
     if (!state.book || !state.chapter)
       return (
         <Host>
-          <ion-title class="title"> select book & chapter.</ion-title>
           <ion-list>
             <ion-chip onClick={() => (state.book = undefined)}>
               <ion-label>{state.resource}</ion-label>
@@ -50,39 +49,8 @@ export class ChapterView {
 
     return (
       <Host>
-        <ion-buttons slot="start" class="flexbase">
-          <ion-button onClick={() => this.goBack()}>
-            <ion-icon name="arrow-back-outline" />
-          </ion-button>
-          <ion-title class="title">
-            {state.book} {state.chapter}
-          </ion-title>
-          <ion-button onClick={() => this.goForward()}>
-            <ion-icon name="arrow-forward-outline" />
-          </ion-button>
-        </ion-buttons>
         <div class={`content ${colClass}`} innerHTML={this.bible.getChapter(state.book, state.chapter, state)}></div>
-        <ion-buttons slot="start" class="flexbase">
-          <ion-button onClick={() => this.goBack()}>
-            <ion-icon name="arrow-back-outline" />
-          </ion-button>
-          <ion-button onClick={() => this.goForward()}>
-            <ion-icon name="arrow-forward-outline" />
-          </ion-button>
-        </ion-buttons>
       </Host>
     );
   }
-
-  goForward = () => {
-    const { book, chapter } = this.bible.nextChapter(state as BiblePath);
-    state.book = book;
-    state.chapter = chapter;
-  };
-
-  goBack = () => {
-    const { book, chapter } = this.bible.prevChapter(state as BiblePath);
-    state.book = book;
-    state.chapter = chapter;
-  };
 }
