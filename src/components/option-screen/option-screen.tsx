@@ -101,12 +101,14 @@ export class OptionScreen {
   }
 
   render() {
-    const colClass = `col${this.numColumns}container`;
+    const colClass = `col${this.numColumns}container`,
+      exampleBook = 'Genesis',
+      exampleChapter = 3;
     return (
       <Host>
         <ion-list
           style={{
-            width: '500px',
+            maxWidth: '500px',
           }}
         >
           <ion-item>
@@ -190,9 +192,11 @@ export class OptionScreen {
           </ion-item>
         </ion-list>
 
-        <div class="example" id="example">
-          <ion-title class="title">Genesis 3</ion-title>
-          <div class={`example content ${colClass}`} innerHTML={this.bible.getChapter('Genesis', 3, this)}></div>
+        <div class="example">
+          <ion-title class="title">
+            {exampleBook} {exampleChapter}
+          </ion-title>
+          <div class={`example content ${colClass}`} innerHTML={this.bible.getChapter(exampleBook, exampleChapter, this)}></div>
         </div>
       </Host>
     );
