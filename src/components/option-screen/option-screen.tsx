@@ -1,6 +1,6 @@
-import { SelectChangeEventDetail, ToggleChangeEventDetail } from '@ionic/core';
+import { popoverController, SelectChangeEventDetail, ToggleChangeEventDetail } from '@ionic/core';
 import { Component, Host, h, State, Watch } from '@stencil/core';
-import { Bible, ViewMode } from '../../models';
+import { Bible, Font, ViewMode } from '../../models';
 import { DEFAULT_FONT_SIZE, state } from '../../state';
 
 @Component({
@@ -13,7 +13,7 @@ export class OptionScreen {
   @State() viewMode: ViewMode;
   @State() linkCommentary: boolean;
   @State() fontSize: number;
-  @State() fontFamily: string;
+  @State() fontFamily: Font;
 
   @Watch('fontSize')
   onFontSizeChange(newValue: number) {
@@ -23,10 +23,27 @@ export class OptionScreen {
   }
 
   @Watch('fontFamily')
-  onFontFamilyChange(value: string) {
+  onFontFamilyChange(value: Font) {
+    console.log('Font updated - setting css variable');
     const root = document.documentElement;
 
-    root.style.setProperty('--example-font-family', value);
+    root.style.setProperty('--example-font-family', value.value);
+  }
+
+  async presentFonts(_event: MouseEvent) {
+    const popover = await popoverController.create({
+      component: 'font-picker',
+      componentProps: {
+        value: this.fontFamily,
+      },
+    });
+    await popover.present();
+
+    popover.addEventListener('fontChange', (evt: CustomEvent<Font>) => {
+      console.log('Font selected', evt.detail);
+      this.fontFamily = evt.detail;
+      popover.dismiss();
+    });
   }
 
   async componentWillLoad() {
@@ -36,8 +53,8 @@ export class OptionScreen {
     this.fontSize = state.fontSize;
     this.fontFamily = state.fontFamily;
 
-    this.onFontSizeChange(this.fontSize);
-    this.onFontFamilyChange(this.fontFamily);
+    //this.onFontSizeChange(this.fontSize);
+    //this.onFontFamilyChange(this.fontFamily);
   }
 
   render() {
@@ -83,7 +100,9 @@ export class OptionScreen {
           </ion-item>
 
           <ion-item>
-            <font-picker onFontChange={ev => (this.fontFamily = ev.detail)} value={this.fontFamily} />
+            <p class="link" onClick={this.presentFonts.bind(this)}>
+              Select Font Family
+            </p>
           </ion-item>
 
           <ion-item>

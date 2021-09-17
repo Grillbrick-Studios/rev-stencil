@@ -1,15 +1,169 @@
 import { Storage } from '@capacitor/storage';
 import { createStore } from '@stencil/store';
-import { Resource, ViewMode } from './models';
+import { Font, Resource, ViewMode } from './models';
 
 export const DEFAULT_FONT_SIZE = 12;
-export const DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif';
+export const DEFAULT_FONT_FAMILY: Font = {
+  value: 'Arial, Helvetica, sans-serif',
+  label: 'Arial (default)',
+};
 
-export const SansSerifFonts = ['Arial', '"Arial Narrow"', 'Helvetica', 'Verdana', '"Trebuchet MS"', '"Gill Sans"', '"Noto Sans"', 'Avantgarde', 'Optima'];
-export const SerifFonts = ['"Times New Roman", Times', 'Didot', 'Georgia', 'Palatino', 'Bookman', '"New Century Schoolbook"', '"American Typewriter"'];
-export const MonospaceFonts = ['"Andale Mono"', '"Courier New"', 'FreeMono', '"OCR A Std"', '"DejaVu Sans Mono"'];
-export const CursiveFonts = ['"Comic Sans MS"', '"Apple Chancery"', '"Bradley Hand"', '"Brush Script MT"', '"Snell Roundhand"', '"URW Chancery L"'];
-export const FantasyFonts = ['Impact', 'Luminari', 'Chalkduster', '"Jazz LET"', 'Blippo', '"Stencil Std"', '"Marker Felt"', 'Trattatello'];
+export const Fonts: Font[] = [
+  {
+    heading: 'Sans Serif Fonts',
+    headingStyle: 'sans-serif',
+    value: 'Arial, sans-serif',
+    label: 'Arial',
+  },
+  {
+    value: '"Arial Narrow", sans-serif',
+    label: 'Arial Narrow',
+  },
+  {
+    value: 'Helvetica, sans-serif',
+    label: 'Helvetica',
+  },
+  {
+    value: 'Verdana, sans-serif',
+    label: 'Verdana',
+  },
+  {
+    value: '"Trebuchet MS", sans-serif',
+    label: 'Trebuchet MS',
+  },
+  {
+    value: '"Gill Sans", sans-serif',
+    label: 'Gill Sans',
+  },
+  {
+    value: '"Noto Sans", sans-serif',
+    label: 'Noto Sans',
+  },
+  {
+    value: 'Avantgarde, "TeX Gyre Adventor", "URW Gothic L", sans-serif',
+    label: 'Avantgarde',
+  },
+  {
+    value: 'Optima, sans-serif',
+    label: 'Optima',
+  },
+  {
+    heading: 'Serif Fonts',
+    headingStyle: 'serif',
+    value: 'Times, "Times New Roman", serif',
+    label: 'Times New Roman',
+  },
+  {
+    value: 'Didot, serif',
+    label: 'Didot',
+  },
+  {
+    value: 'Georgia, serif',
+    label: 'Georgia',
+  },
+  {
+    value: 'Palatino, "URW Palladio L", serif',
+    label: 'Palatino',
+  },
+  {
+    value: 'Bookman, "URW Bookman L", serif',
+    label: 'Bookman',
+  },
+  {
+    value: '"New Century Schoolbook", "TeX Gyre Schola", serif',
+    label: 'New Century Schoolbook',
+  },
+  {
+    value: '"American Typewriter", serif',
+    label: 'American Typewriter',
+  },
+  {
+    heading: 'Monospaced Fonts',
+    headingStyle: 'monospace',
+    value: '"Andale Mono", monospace',
+    label: 'Andale Mono',
+  },
+  {
+    value: 'Courier, monospace',
+    label: 'Courier',
+  },
+  {
+    value: '"Courier New", monospace',
+    label: 'Courier New',
+  },
+  {
+    value: 'FreeMono, monospace',
+    label: 'FreeMono',
+  },
+  {
+    value: '"OCR A Std", monospace',
+    label: 'OCR A Std',
+  },
+  {
+    value: '"DejaVu Sans Mono", monospace',
+    label: 'DejaVu Sans Mono',
+  },
+  {
+    heading: 'Cursive Fonts',
+    headingStyle: 'cursive',
+    value: '"Comic Sans MS", "Comic Sans", cursive',
+    label: 'Comic Sans',
+  },
+  {
+    value: '"Apple Chancery", cursive',
+    label: 'Apple Chancery',
+  },
+  {
+    value: '"Bradley Hand", cursive',
+    label: 'Bradley Hand',
+  },
+  {
+    value: '"Brush Script MT", "Brush Script Std", cursive',
+    label: 'Brush Script',
+  },
+  {
+    value: '"Snell Roundhand", cursive',
+    label: 'Snell Roundhand',
+  },
+  {
+    value: '"URW Chancery L", cursive',
+    label: 'URW Chancery',
+  },
+  {
+    heading: 'Fantasy Fonts',
+    headingStyle: 'fantasy',
+    value: 'Impact, fantasy',
+    label: 'Impact',
+  },
+  {
+    value: 'Luminari, fantasy',
+    label: 'Luminari',
+  },
+  {
+    value: 'Chalkduster, fantasy',
+    label: 'Chalkduster',
+  },
+  {
+    value: '"Jazz LET", fantasy',
+    label: 'Jazz LET',
+  },
+  {
+    value: 'Blippo, fantasy',
+    label: 'Blippo',
+  },
+  {
+    value: '"Stencil Std", fantasy',
+    label: 'Stencil Std',
+  },
+  {
+    value: '"Marker Felt", fantasy',
+    label: 'Marker Felt',
+  },
+  {
+    value: 'Trattatello, fantasy',
+    label: 'Trattatello',
+  },
+];
 
 interface iStore {
   resource?: Resource;
@@ -20,7 +174,7 @@ interface iStore {
   showOptions: boolean;
   linkCommentary: boolean;
   fontSize: number;
-  fontFamily: string;
+  fontFamily: Font;
 }
 
 const store = createStore<iStore>({
@@ -71,7 +225,7 @@ onChange('fontSize', value => {
 onChange('fontFamily', value => {
   const root = document.documentElement;
 
-  root.style.setProperty('--font-family', value);
+  root.style.setProperty('--font-family', value.value);
 });
 
 /*

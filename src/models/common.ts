@@ -59,3 +59,10 @@ export function DaysSince(date: Date): number {
   const since = now - date.getTime();
   return since / (1000 * 60 * 60 * 24);
 }
+
+export interface Font {
+  label: string;
+  value: string;
+  heading?: string;
+  headingStyle?: string;
+}

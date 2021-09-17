@@ -1,5 +1,6 @@
-import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core';
-import { SansSerifFonts, SerifFonts } from '../../state';
+import { Component, Host, h, Event, EventEmitter } from '@stencil/core';
+import { Font } from '../../models';
+import { Fonts } from '../../state';
 
 @Component({
   tag: 'font-picker',
@@ -7,23 +8,40 @@ import { SansSerifFonts, SerifFonts } from '../../state';
   shadow: true,
 })
 export class FontPicker {
-  @Event() fontChange: EventEmitter<string>;
-  @Prop() value: string;
+  @Event({
+    bubbles: true,
+    composed: true,
+  })
+  fontChange: EventEmitter<Font>;
 
   render() {
     return (
       <Host>
-        <ion-label>Select Font Family</ion-label>
-        <ion-select placeholder={this.value} onIonChange={ev => this.fontChange.emit(ev.detail.value)} interface="action-sheet">
-          <ion-label>Sans Serif Fonts</ion-label>
-          {SansSerifFonts.map(font => (
-            <ion-select-option value={`${font}, sans-serif`}>{font}</ion-select-option>
-          ))}
-          <ion-label>Serif Fonts</ion-label>
-          {SerifFonts.map(font => (
-            <ion-select-option value={`${font}, serif`}>{font}</ion-select-option>
-          ))}
-        </ion-select>
+        <ion-list>
+          {Fonts.map((font: Font) => [
+            font.heading && font.headingStyle && (
+              <ion-list-header
+                class="header"
+                style={{
+                  fontFamily: font.headingStyle,
+                }}
+              >
+                {font.heading}
+              </ion-list-header>
+            ),
+            <ion-item>
+              <p
+                class="link"
+                onClick={() => this.fontChange.emit(font)}
+                style={{
+                  fontFamily: font.value,
+                }}
+              >
+                {font.label}
+              </p>
+            </ion-item>,
+          ])}
+        </ion-list>
       </Host>
     );
   }

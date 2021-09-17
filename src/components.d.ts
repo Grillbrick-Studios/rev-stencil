@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Appendices, Bible, Commentary } from "./models";
+import { Appendices, Bible, Commentary, Font } from "./models";
 export namespace Components {
     interface AppRoot {
     }
@@ -24,7 +24,6 @@ export namespace Components {
     interface ContentView {
     }
     interface FontPicker {
-        "value": string;
     }
     interface OptionScreen {
     }
@@ -107,8 +106,7 @@ declare namespace LocalJSX {
     interface ContentView {
     }
     interface FontPicker {
-        "onFontChange"?: (event: CustomEvent<string>) => void;
-        "value"?: string;
+        "onFontChange"?: (event: CustomEvent<Font>) => void;
     }
     interface OptionScreen {
     }

@@ -6,3 +6,7 @@
   font-size: var(--example-font-size);
   font-family: var(--example-font-family);
 }
+
+.link {
+  cursor: pointer;
+}
