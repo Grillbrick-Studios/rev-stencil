@@ -12,8 +12,7 @@ export const config: Config = {
       serviceWorker: {
         globPatterns: [
           // The basics to cache everything?
-          '**/*.{js,css,json,html,ico,png}',
-          'build/svg/{arrow-back-outline,home-outline,close-circle}.svg',
+          '**/*.{js,css,json,html,ico,png,svg}',
         ],
       },
     },

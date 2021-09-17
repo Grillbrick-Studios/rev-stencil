@@ -8,6 +8,10 @@ export const Fonts: Font[] = [
     label: 'Arial',
   },
   {
+    value: '"Source Sans Pro", sans-serif',
+    label: 'Source Sans Pro',
+  },
+  {
     value: '"Arial Black", "Arial Bold", Gadget, sans-serif',
     label: 'Arial Black',
   },
@@ -38,6 +42,10 @@ export const Fonts: Font[] = [
     label: 'Times New Roman',
   },
   {
+    value: '"Source Serif Pro", serif',
+    label: 'Source Serif Pro',
+  },
+  {
     value: 'Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif',
     label: 'Didot',
   },
@@ -54,6 +62,14 @@ export const Fonts: Font[] = [
     headingStyle: 'monospace',
     value: '"Andale Mono", AndaleMono, monospace',
     label: 'Andalé Mono',
+  },
+  {
+    value: '"Source Code Pro", monospace',
+    label: 'Source Code Pro',
+  },
+  {
+    value: '"Xanh Mono", monospace',
+    label: 'Xanh Mono',
   },
   {
     value: '"Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace',
@@ -80,6 +96,34 @@ export const Fonts: Font[] = [
     headingStyle: 'cursive',
     value: '"Comic Sans MS", "Comic Sans", cursive',
     label: 'Comic Sans',
+  },
+  {
+    value: '"Are You Serious", cursive',
+    label: 'Are You Serious',
+  },
+  {
+    value: 'Bangers, cursive',
+    label: 'Bangers',
+  },
+  {
+    value: '"Dancing Script", cursive',
+    label: 'Dancing Script',
+  },
+  {
+    value: '"Great Vibes", cursive',
+    label: 'Great Vibes',
+  },
+  {
+    value: '"Pinyon Script", cursive',
+    label: 'Pinyon Script',
+  },
+  {
+    value: 'Rye, cursive',
+    label: 'Rye',
+  },
+  {
+    value: 'Sacramento, cursive',
+    label: 'Sacramento',
   },
   {
     value: '"Bradley Hand", cursive',
