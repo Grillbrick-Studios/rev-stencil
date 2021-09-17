@@ -21,6 +21,9 @@
 @import '~@ionic/core/css/text-transformation.css';
 @import '~@ionic/core/css/flex-utils.css';
 
+/** Import the font options that should be available */
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Montserrat&family=Caladea&family=IBM+Plex+Serif&family=Roboto&family=Merriweather&family=Dancing+Script&family=Great+Vibes&family=Pinyon+Script&family=Rye&family=Sacramento&family=Source+Code+Pro&family=Source+Sans+Pro&family=Source+Serif+Pro&family=Xanh+Mono&display=swap');
+
 /*
   The CSS Variables below can be used to theme your app.
   For more info on CSS variables check out:
