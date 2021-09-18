@@ -1,7 +1,7 @@
-import { iData, Asynclock, iSerializeData, DaysSince } from './common';
+import { iData, Asynclock, iSerializeData, remoteHasNewer } from './common';
 import { writeFile, readFile } from './filesystem';
 
-const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=appendices';
+const URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=203';
 
 export interface iAppendices {
   title: string;
@@ -17,6 +17,7 @@ export class Appendices implements iData<iAppendices> {
   private static _data: iAppendices[];
   private static updated: Date;
   private static lock = new Asynclock();
+  private static remoteDate: Date;
 
   public static async save() {
     const data: iSerializeData<iAppendices> = {
@@ -32,7 +33,9 @@ export class Appendices implements iData<iAppendices> {
       const appendixData: iSerializeData<iAppendices> = await readFile('Appendices');
       Appendices._data = appendixData.data;
       Appendices.updated = new Date(appendixData.updated);
-      if (DaysSince(Appendices.updated) > 7) return false;
+      const [newer, remoteDate] = await remoteHasNewer(Appendices.updated);
+      Appendices.remoteDate = remoteDate;
+      if (newer) return false;
       return true;
     } catch (e) {
       return false;
@@ -57,12 +60,10 @@ export class Appendices implements iData<iAppendices> {
   }
 
   private static async fetch() {
-    console.log('Fetching appendices from the web. please wait...');
     const res = await fetch(URL);
-    console.log('appendices downloaded!');
     const commentary = await res.json();
     Appendices._data = commentary.REV_Appendices;
-    Appendices.updated = new Date();
+    Appendices.updated = Appendices.remoteDate;
     Appendices.save();
   }
 

@@ -1,8 +1,8 @@
-import { iData, iSerializeData, Asynclock, BiblePath, stripStyle, DaysSince } from './common';
+import { iData, iSerializeData, Asynclock, BiblePath, stripStyle, remoteHasNewer } from './common';
 import { iVerse, Style, Verse, ViewMode } from './verse';
 import { writeFile, readFile } from './filesystem';
 
-export const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=bible';
+export const URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=201';
 
 export interface iBibleJson {
   // eslint-disable-next-line camelcase
@@ -19,6 +19,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   private static verses: Verse[];
   private static updated: Date;
   private static lock: Asynclock = new Asynclock();
+  private static remoteDate: Date;
 
   public static get data(): iVerse[] {
     return Bible.verses.map(v => v.unwrap());
@@ -34,22 +35,20 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
       updated: Bible.updated,
     };
 
-    console.log('saving bible...');
     await writeFile(data, 'Bible');
-    console.log('bible saved!');
   }
 
   public static async load(): Promise<boolean> {
     try {
-      console.log('attempting to load bible from disk');
       const bibleData: iSerializeData<iVerse> = await readFile('Bible');
       Bible.verses = bibleData.data.map(v => new Verse(v));
       Bible.updated = new Date(bibleData.updated);
-      console.log('Bible loaded from disk!');
-      if (DaysSince(Bible.updated) > 7) return false;
+      const [newer, remoteDate] = await remoteHasNewer(Bible.updated);
+      Bible.remoteDate = remoteDate;
+      if (newer) return false;
       return true;
     } catch (e) {
-      console.log(`Error loading bible from disk: ${e}`);
+      console.error(`Error loading bible from disk: ${e}`);
       return false;
     }
   }
@@ -67,13 +66,10 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   }
 
   private static async fetch() {
-    console.log('Fetching bible from web. Please wait...');
-
     const bible: iBibleJson = await fetch(URL).then(res => res.json());
     Bible.verses = bible.REV_Bible.map(v => new Verse(v));
-    Bible.updated = new Date();
+    Bible.updated = Bible.remoteDate;
     Bible.save();
-    console.log('Bible downloaded!');
   }
 
   static async onReady(): Promise<Bible> {
@@ -113,7 +109,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     },
   ): string {
     //return this.dumpRaw(book, chapter);
-    // console.log(this.dumpRaw(book, chapter));
     let spanDepth = 0;
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
       let verse = v.raw(linkCommentary);
@@ -151,7 +146,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
               midverse += `<span class="${styleClass(v.style)}">`;
               spanDepth += 1;
             } else {
-              console.log('hpend found!');
               if (spanDepth > 0) {
                 midverse += '</span>';
                 spanDepth -= 1;

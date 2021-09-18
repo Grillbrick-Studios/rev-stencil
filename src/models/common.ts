@@ -1,3 +1,25 @@
+const URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=200';
+
+interface iDateJson {
+  REV_Timestamp: {
+    timestamp: string;
+  }[];
+}
+
+export async function remoteHasNewer(localDate: Date): Promise<[boolean, Date]> {
+  try {
+    let dateJson: iDateJson = await fetch(URL)
+      .then(res => res.json())
+      .catch(err => {
+        console.error(`Error parsing date: ${err}`);
+      });
+    const remoteDate = new Date(dateJson.REV_Timestamp[0].timestamp);
+    return [remoteDate.getTime() > localDate.getTime(), remoteDate];
+  } catch (error) {
+    console.error(`Error reading remote date: ${error}`);
+  }
+}
+
 export interface iData<T> {
   data: T[];
 }

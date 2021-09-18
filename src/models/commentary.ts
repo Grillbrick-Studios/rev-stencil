@@ -1,7 +1,7 @@
-import { iData, Asynclock, iSerializeData, BiblePath, DaysSince } from './common';
+import { iData, Asynclock, iSerializeData, BiblePath, remoteHasNewer } from './common';
 import { writeFile, readFile } from './filesystem';
 
-const URL = 'https://www.revisedenglishversion.com/jsonrevexport.php?permission=yUp&autorun=1&what=commentary';
+const URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=202';
 
 export interface iCommentary {
   book: string;
@@ -26,6 +26,7 @@ export class Commentary implements iData<iCommentary> {
   private static _data: iCommentary[];
   private static updated: Date;
   private static lock = new Asynclock();
+  private static remoteDate: Date;
 
   private static async save() {
     const data: iSerializeData<iCommentary> = {
@@ -45,7 +46,9 @@ export class Commentary implements iData<iCommentary> {
         verse: parseInt(c.verse),
       }));
       Commentary.updated = new Date(commentaryData.updated);
-      if (DaysSince(Commentary.updated) > 7) return false;
+      const [newer, remoteDate] = await remoteHasNewer(Commentary.updated);
+      Commentary.remoteDate = remoteDate;
+      if (newer) return false;
       return true;
     } catch (e) {
       return false;
@@ -61,16 +64,14 @@ export class Commentary implements iData<iCommentary> {
   }
 
   private static async fetch() {
-    console.log('Fetching commentary from web please wait...');
     const res = await fetch(URL);
-    console.log('Commentary downloaded!');
     const commentary: iCommentaryJson = await res.json();
     Commentary._data = commentary.REV_Commentary.map(c => ({
       ...c,
       chapter: parseInt(c.chapter),
       verse: parseInt(c.verse),
     }));
-    Commentary.updated = new Date();
+    Commentary.updated = Commentary.remoteDate;
     Commentary.save();
   }
 
