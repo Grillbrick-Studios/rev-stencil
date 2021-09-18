@@ -1,5 +1,5 @@
 import { Component, h, Host, State } from '@stencil/core';
-import { scrollBottom, scrollTop } from '../../helpers/utils';
+import { scrollTop } from '../../helpers/utils';
 import { Appendices, Bible, BiblePath, Commentary, Resource } from '../../models';
 import { state } from '../../state';
 
@@ -86,7 +86,7 @@ export class ContentView {
         path = this.bible.prevChapter(path);
         state.book = path.book;
         state.chapter = path.chapter;
-        scrollBottom();
+        scrollTop();
         return;
       case Resource.Commentary:
         path.verse = state.verse;
@@ -94,11 +94,11 @@ export class ContentView {
         state.book = path.book;
         state.chapter = path.chapter;
         state.verse = path.verse;
-        scrollBottom();
+        scrollTop();
         return;
       case Resource.Appendix:
         state.book = this.appendix.prev(path.book);
-        scrollBottom();
+        scrollTop();
         return;
     }
   }
@@ -135,7 +135,7 @@ export class ContentView {
       case Resource.Bible:
         return (
           <Host>
-            <div class="top-heading">
+            <div slot="fixed" class="top-heading">
               <ion-buttons class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
@@ -165,8 +165,8 @@ export class ContentView {
       case Resource.Appendix:
         return (
           <Host>
-            <div class="top-heading">
-              <ion-buttons slot="start" class="top-heading flexbase">
+            <div slot="fixed" class="top-heading">
+              <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
                 </ion-button>
@@ -177,7 +177,7 @@ export class ContentView {
             </div>
             <appendix-view appendix={this.appendix} />
             <div class="top-heading">
-              <ion-buttons slot="start" class="top-heading flexbase">
+              <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
                 </ion-button>
@@ -192,8 +192,8 @@ export class ContentView {
       case Resource.Commentary:
         return (
           <Host>
-            <div class="top-heading">
-              <ion-buttons slot="start" class="top-heading flexbase">
+            <div slot="fixed" class="top-heading">
+              <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
                 </ion-button>
@@ -210,7 +210,7 @@ export class ContentView {
             </div>
             <commentary-view commentary={this.commentary} />
             <div class="top-heading">
-              <ion-buttons slot="start" class="top-heading flexbase">
+              <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
                 </ion-button>

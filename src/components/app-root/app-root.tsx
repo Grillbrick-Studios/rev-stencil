@@ -15,6 +15,10 @@ export class AppRoot {
     state.showOptions = value;
   }
 
+  componentWillLoad() {
+    document.addEventListener('ionBackButton', (ev: any) => ev.detail.register(10, goBack));
+  }
+
   connectedCallback() {
     state.resource = this.resource ? this.resource : state.resource;
     this.showOptions = state.showOptions;

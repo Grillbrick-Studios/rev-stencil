@@ -15,5 +15,3 @@ export function scrollBottom() {
   const content: HTMLIonContentElement = document.querySelector('#root');
   content.scrollToBottom();
 }
-
-scrollTop();
