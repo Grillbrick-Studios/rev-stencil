@@ -22,7 +22,36 @@
 @import '~@ionic/core/css/flex-utils.css';
 
 /** Import the font options that should be available */
-@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Montserrat&family=Caladea&family=IBM+Plex+Serif&family=Roboto&family=Merriweather&family=Dancing+Script&family=Great+Vibes&family=Pinyon+Script&family=Rye&family=Sacramento&family=Source+Code+Pro&family=Source+Sans+Pro&family=Source+Serif+Pro&family=Xanh+Mono&display=swap');
+/*Merriweather*/
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+/*// Caladea*/
+@import url('https://fonts.googleapis.com/css2?family=Caladea:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/*// IBM Plex Serif*/
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+/*// roboto*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+/*// montserrat*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/*// balsamiq sans*/
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/*// Are you serious*/
+@import url('https://fonts.googleapis.com/css2?family=Are+You+Serious&display=swap');
+/*// bangers*/
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+/*// Dancing Script*/
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap');
+/*// Great Vibes*/
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+/*// Pinyon Script*/
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+/*// Rye*/
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+/*// Sacramento*/
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+/*// Source **/
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&family=Source+Serif+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+/*// Xanh Mono*/
+@import url('https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap');
 
 /*
   The CSS Variables below can be used to theme your app.
