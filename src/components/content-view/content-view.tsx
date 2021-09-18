@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop, State } from '@stencil/core';
+import { Component, h, Host, Prop } from '@stencil/core';
 import { scrollTop } from '../../helpers/utils';
 import { Appendices, Bible, BiblePath, Commentary, Resource } from '../../models';
 import { state } from '../../state';
