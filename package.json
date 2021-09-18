@@ -11,12 +11,12 @@
     "./electron"
   ],
   "scripts": {
-    "build": "stencil build",
+    "build": "stencil build && stencil build",
     "start": "stencil build --dev --watch --serve --no-open",
     "start.prod": "stencil build --prod --watch --serve --no-open",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watch",
-    "generate": "stencil generate"
+    "g": "stencil generate"
   },
   "devDependencies": {
     "@capacitor/cli": "3.2.1",
