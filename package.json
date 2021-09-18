@@ -12,6 +12,8 @@
   ],
   "scripts": {
     "build": "stencil build && stencil build",
+    "run:ios": "cap run ios",
+    "run:android": "cap run android",
     "start": "stencil build --dev --watch --serve --no-open",
     "start.prod": "stencil build --prod --watch --serve --no-open",
     "test": "stencil test --spec --e2e",

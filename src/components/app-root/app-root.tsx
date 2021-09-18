@@ -148,7 +148,7 @@ export class AppRoot {
             <ion-toolbar class="flexbase">
               <ion-buttons slot="start">
                 <ion-button disabled={state.resource === undefined} onClick={() => goBack()}>
-                  <ion-icon name="arrow-back-outline" />
+                  <ion-icon name="play-back" />
                 </ion-button>
                 <ion-button
                   onClick={() => {

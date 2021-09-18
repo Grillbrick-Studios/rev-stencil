@@ -1,6 +1,6 @@
 {
 	"appId": "com.grillbrickstudios.rev",
-	"appName": "REV App - Offline",
+	"appName": "REV",
 	"webDir": "www",
 	"bundledWebRuntime": true
 }
