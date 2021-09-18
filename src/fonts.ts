@@ -80,6 +80,11 @@ export const Fonts: Font[] = [
     value: 'Sacramento, cursive',
     label: 'Sacramento',
   },
+  // Fira Code
+  {
+    value: '"Fira Code", monospace',
+    label: 'Fira Code',
+  },
   // Source *
   {
     value: '"Source Code Pro", monospace',
