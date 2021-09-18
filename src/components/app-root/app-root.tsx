@@ -48,7 +48,7 @@ export class AppRoot {
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding">
-            <content-view resource={this.resource} />
+            <content-view resource={this.resource} id="root" />
           </ion-content>
         </div>
       </ion-app>

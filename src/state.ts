@@ -40,6 +40,7 @@ const { state, onChange } = store;
  * Here I save all of the state to storage for future reference.
  */
 store.on('set', (key, value) => {
+  window.scrollTo(0, 0);
   value = JSON.stringify(value);
   Storage.set({
     key,

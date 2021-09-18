@@ -10,6 +10,10 @@ import { state } from '../../state';
 export class CommentaryView {
   @Prop() commentary: Commentary;
 
+  connectedCallback() {
+    window.scrollTo(0, 0);
+  }
+
   render() {
     if (!this.commentary)
       return (
