@@ -1,4 +1,4 @@
-import { Component, h, Host, State } from '@stencil/core';
+import { Component, h, Host, Prop, State } from '@stencil/core';
 import { scrollTop } from '../../helpers/utils';
 import { Appendices, Bible, BiblePath, Commentary, Resource } from '../../models';
 import { state } from '../../state';
@@ -9,9 +9,9 @@ import { state } from '../../state';
   shadow: false,
 })
 export class ContentView {
-  @State() bible: Bible;
-  @State() commentary: Commentary;
-  @State() appendix: Appendices;
+  @Prop() bible: Bible;
+  @Prop() commentary: Commentary;
+  @Prop() appendix: Appendices;
 
   hasNext(): boolean {
     let path: BiblePath = {
@@ -104,27 +104,6 @@ export class ContentView {
   }
 
   render() {
-    if (!this.bible || !this.commentary || !this.appendix)
-      return (
-        <Host>
-          {this.bible ? (
-            <ion-title>Bible Loaded!</ion-title>
-          ) : (
-            Bible.onReady().then(b => (this.bible = b)) && [<ion-title>Loading Bible...</ion-title>, <ion-progress-bar type="indeterminate" />]
-          )}
-          {this.commentary ? (
-            <ion-title>Commentary Loaded!</ion-title>
-          ) : (
-            Commentary.onReady().then(c => (this.commentary = c)) && [<ion-title>Loading Commentary...</ion-title>, <ion-progress-bar type="indeterminate" />]
-          )}
-          {this.appendix ? (
-            <ion-title>Appendices Loaded!</ion-title>
-          ) : (
-            Appendices.onReady().then(a => (this.appendix = a)) && [<ion-title>Loading Appendices...</ion-title>, <ion-progress-bar type="indeterminate" />]
-          )}
-        </Host>
-      );
-
     if (state.showOptions)
       return (
         <Host>
@@ -136,17 +115,9 @@ export class ContentView {
         return (
           <Host>
             <div slot="fixed" class="top-heading">
-              <ion-buttons class="flexbase">
-                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="arrow-back-outline" />
-                </ion-button>
-                <ion-title class="title">
-                  {state.book} {state.chapter}
-                </ion-title>
-                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon name="arrow-forward-outline" />
-                </ion-button>
-              </ion-buttons>
+              <ion-title class="title">
+                {state.book} {state.chapter}
+              </ion-title>
             </div>
             <chapter-view bible={this.bible} />
             <div class="top-heading">
@@ -165,16 +136,6 @@ export class ContentView {
       case Resource.Appendix:
         return (
           <Host>
-            <div slot="fixed" class="top-heading">
-              <ion-buttons slot="start" class="flexbase">
-                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="arrow-back-outline" />
-                </ion-button>
-                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon name="arrow-forward-outline" />
-                </ion-button>
-              </ion-buttons>
-            </div>
             <appendix-view appendix={this.appendix} />
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
@@ -193,20 +154,12 @@ export class ContentView {
         return (
           <Host>
             <div slot="fixed" class="top-heading">
-              <ion-buttons slot="start" class="flexbase">
-                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="arrow-back-outline" />
-                </ion-button>
-                <ion-title class="title">
-                  Commentary for
-                  <br />
-                  {state.book} {state.chapter}
-                  {state.verse ? `:${state.verse}` : '?'}
-                </ion-title>
-                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon name="arrow-forward-outline" />
-                </ion-button>
-              </ion-buttons>
+              <ion-title class="title">
+                Commentary for
+                <br />
+                {state.book} {state.chapter}
+                {state.verse ? `:${state.verse}` : '?'}
+              </ion-title>
             </div>
             <commentary-view commentary={this.commentary} />
             <div class="top-heading">

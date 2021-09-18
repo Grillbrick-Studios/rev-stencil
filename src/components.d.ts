@@ -22,6 +22,9 @@ export namespace Components {
         "commentary": Commentary;
     }
     interface ContentView {
+        "appendix": Appendices;
+        "bible": Bible;
+        "commentary": Commentary;
     }
     interface FontPicker {
     }
@@ -104,6 +107,9 @@ declare namespace LocalJSX {
         "commentary"?: Commentary;
     }
     interface ContentView {
+        "appendix"?: Appendices;
+        "bible"?: Bible;
+        "commentary"?: Commentary;
     }
     interface FontPicker {
         "onFontChange"?: (event: CustomEvent<Font>) => void;
