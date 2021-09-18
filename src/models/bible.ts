@@ -111,7 +111,10 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     //return this.dumpRaw(book, chapter);
     let spanDepth = 0;
     const verses = this.getVerses(book, chapter).map((v, i, a) => {
-      let verse = v.raw(linkCommentary);
+      let verse = v.raw({
+        viewMode,
+        linkCommentary,
+      });
       let [preverse, midverse, endverse] = ['', '', ''];
       // This is a flag for adding the heading to the top.
       let addHeading = false;
@@ -129,6 +132,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
 
       switch (viewMode) {
         case ViewMode.Paragraph:
+        case ViewMode.Reading:
           if (styleChange || spanDepth === 0 || v.paragraph) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
               if (spanDepth > 0) {

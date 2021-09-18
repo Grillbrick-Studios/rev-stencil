@@ -131,6 +131,10 @@ export class OptionScreen {
                   <ion-label>Paragraph</ion-label>
                   <ion-radio slot="start" value={ViewMode.Paragraph} />
                 </ion-item>
+                <ion-item>
+                  <ion-label>Reading</ion-label>
+                  <ion-radio slot="start" value={ViewMode.Reading} />
+                </ion-item>
               </ion-radio-group>
             </ion-list>
           </ion-item>

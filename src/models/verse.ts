@@ -1,3 +1,4 @@
+import { ViewOptions } from './bible';
 import { Commentary } from './commentary';
 
 export enum Style {
@@ -36,6 +37,7 @@ export interface iVerse {
 export enum ViewMode {
   Paragraph,
   VerseBreak,
+  Reading,
 }
 
 let commentary: Commentary;
@@ -94,9 +96,18 @@ export class Verse implements iVerse {
   }
 
   // simply add the commentaryLink to the verse
-  public raw(linkCommentary: boolean = true): string {
+  public raw(
+    { linkCommentary, viewMode }: ViewOptions = {
+      viewMode: ViewMode.Paragraph,
+      linkCommentary: true,
+    },
+  ): string {
     // First get the heading and versetext
     let { versetext } = this;
+
+    if (viewMode === ViewMode.Reading) {
+      return versetext;
+    }
 
     // Generate a verse number link to commentary
     const commentaryLink = this.hasCommentary && linkCommentary ? `<sup><commentary-link verse=${this.verse}/></sup>` : `<sup>${this.verse}</sup>`;
