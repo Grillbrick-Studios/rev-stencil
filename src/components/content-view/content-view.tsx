@@ -1,4 +1,5 @@
 import { Component, h, Host, State } from '@stencil/core';
+import { scrollBottom, scrollTop } from '../../helpers/utils';
 import { Appendices, Bible, BiblePath, Commentary, Resource } from '../../models';
 import { state } from '../../state';
 
@@ -57,7 +58,7 @@ export class ContentView {
         path = this.bible.nextChapter(path);
         state.book = path.book;
         state.chapter = path.chapter;
-        this.scrollTop();
+        scrollTop();
         return;
       case Resource.Commentary:
         path.verse = state.verse;
@@ -65,11 +66,11 @@ export class ContentView {
         state.book = path.book;
         state.chapter = path.chapter;
         state.verse = path.verse;
-        this.scrollTop();
+        scrollTop();
         return;
       case Resource.Appendix:
         state.book = this.appendix.next(path.book);
-        this.scrollTop();
+        scrollTop();
         return;
     }
   }
@@ -80,14 +81,12 @@ export class ContentView {
       chapter: state.chapter || 22,
     };
 
-    const scrollTarget = document.body.scrollHeight;
-
     switch (state.resource) {
       case Resource.Bible:
         path = this.bible.prevChapter(path);
         state.book = path.book;
         state.chapter = path.chapter;
-        window.scrollTo(0, scrollTarget);
+        scrollBottom();
         return;
       case Resource.Commentary:
         path.verse = state.verse;
@@ -95,11 +94,11 @@ export class ContentView {
         state.book = path.book;
         state.chapter = path.chapter;
         state.verse = path.verse;
-        window.scrollTo(0, scrollTarget);
+        scrollBottom();
         return;
       case Resource.Appendix:
         state.book = this.appendix.prev(path.book);
-        window.scrollTo(0, scrollTarget);
+        scrollBottom();
         return;
     }
   }
@@ -155,7 +154,7 @@ export class ContentView {
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
                 </ion-button>
-                <ion-button onClick={() => this.scrollTop()}>Top</ion-button>
+                <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
                   <ion-icon name="arrow-forward-outline" />
                 </ion-button>
@@ -182,7 +181,7 @@ export class ContentView {
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
                 </ion-button>
-                <ion-button onClick={() => this.scrollTop()}>Top</ion-button>
+                <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
                   <ion-icon name="arrow-forward-outline" />
                 </ion-button>
@@ -215,7 +214,7 @@ export class ContentView {
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
                   <ion-icon name="arrow-back-outline" />
                 </ion-button>
-                <ion-button onClick={() => this.scrollTop()}>Top</ion-button>
+                <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button onClick={() => this.next()}>
                   <ion-icon name="arrow-forward-outline" />
                 </ion-button>
@@ -241,14 +240,5 @@ export class ContentView {
           </Host>
         );
     }
-  }
-  scrollTop(): void {
-    console.log(`scrollRestoration = ${window.history.scrollRestoration}`);
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-    document.querySelector('#root').scrollTo(0, 0);
-    window.focus();
-    window.scrollTo(0, 0);
   }
 }

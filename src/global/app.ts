@@ -1,5 +1,6 @@
 import '@ionic/core';
 import { setupConfig } from '@ionic/core';
+import { toggleDarkTheme } from '../helpers/utils';
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -13,7 +14,3 @@ export default () => {
     mode: 'md',
   });
 };
-
-function toggleDarkTheme(shouldAdd: boolean): void {
-  document.body.classList.toggle('dark', shouldAdd);
-}

@@ -2,6 +2,7 @@ import { Storage } from '@capacitor/storage';
 import { createStore } from '@stencil/store';
 import { Font, Resource, ViewMode } from './models';
 import { Fonts } from './fonts';
+import { scrollTop } from './helpers/utils';
 
 export { Fonts };
 export const DEFAULT_FONT_SIZE = 12;
@@ -40,7 +41,6 @@ const { state, onChange } = store;
  * Here I save all of the state to storage for future reference.
  */
 store.on('set', (key, value) => {
-  window.scrollTo(0, 0);
   value = JSON.stringify(value);
   Storage.set({
     key,
@@ -51,6 +51,10 @@ store.on('set', (key, value) => {
 /*
  * Here is where I make sure that the current path makes sense.
  */
+onChange('showOptions', _ => {
+  scrollTop();
+});
+
 onChange('resource', value => {
   if (!value) state.book = undefined;
 });

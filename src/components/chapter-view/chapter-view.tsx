@@ -10,10 +10,6 @@ import { state } from '../../state';
 export class ChapterView {
   @Prop() bible: Bible;
 
-  connectedCallback() {
-    window.scrollTo(0, 0);
-  }
-
   render() {
     const colClass = `col${state.numColumns}container`;
     if (!this.bible)

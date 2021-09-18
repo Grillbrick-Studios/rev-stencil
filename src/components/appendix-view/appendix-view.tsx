@@ -10,10 +10,6 @@ import { state } from '../../state';
 export class AppendixView {
   @Prop() appendix: Appendices;
 
-  connectedCallback() {
-    window.scrollTo(0, 0);
-  }
-
   render() {
     if (!this.appendix)
       return (
