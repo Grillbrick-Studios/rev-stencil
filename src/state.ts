@@ -10,6 +10,7 @@ export const DEFAULT_FONT_FAMILY: Font = {
   value: 'Merriweather, "Times New Roman", serif',
   label: 'Merriweather (default)',
 };
+export const DEFAULT_DARK_MODE = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 interface iStore {
   resource?: Resource;
@@ -32,7 +33,7 @@ const store = createStore<iStore>({
   linkCommentary: true,
   fontSize: DEFAULT_FONT_SIZE,
   fontFamily: DEFAULT_FONT_FAMILY,
-  forceDarkMode: false,
+  forceDarkMode: DEFAULT_DARK_MODE,
   numColumns: 1,
 });
 
@@ -116,9 +117,9 @@ Storage.get({ key: 'numColumns' }).then(r => {
 });
 Storage.get({ key: 'forceDarkMode' }).then(r => {
   try {
-    state.forceDarkMode = JSON.parse(r.value) || false;
+    state.forceDarkMode = JSON.parse(r.value) || DEFAULT_DARK_MODE;
   } catch (_) {
-    state.forceDarkMode = false;
+    state.forceDarkMode = DEFAULT_DARK_MODE;
   }
 });
 Storage.get({ key: 'fontFamily' }).then(r => {
