@@ -16,6 +16,7 @@ interface iStore {
   book?: string;
   chapter?: number;
   verse?: number;
+  heading?: string;
   forceDarkMode: boolean;
   viewMode: ViewMode;
   showOptions: boolean;
@@ -56,15 +57,28 @@ onChange('showOptions', _ => {
 });
 
 onChange('resource', value => {
-  if (!value) state.book = undefined;
+  if (!value) {
+    state.heading = undefined;
+    state.book = undefined;
+  }
 });
 
 onChange('book', value => {
-  if (!value) state.chapter = undefined;
+  if (!value) {
+    state.heading = undefined;
+    state.chapter = undefined;
+  } else {
+    state.heading = value;
+  }
 });
 
 onChange('chapter', v => {
   if (!v) state.verse = undefined;
+  else state.heading = `${state.book} ${v}`;
+});
+
+onChange('verse', v => {
+  if (v) state.heading = `${state.book} ${state.chapter}:${v}`;
 });
 
 /*

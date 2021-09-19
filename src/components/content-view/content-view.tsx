@@ -114,20 +114,15 @@ export class ContentView {
       case Resource.Bible:
         return (
           <Host>
-            <div slot="fixed" class="top-heading">
-              <ion-title class="title">
-                {state.book} {state.chapter}
-              </ion-title>
-            </div>
             <chapter-view bible={this.bible} />
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="chevron-back" />
+                  <ion-icon size="large" name="chevron-back" />
                 </ion-button>
                 <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon name="chevron-forward" />
+                  <ion-icon size="large" name="chevron-forward" />
                 </ion-button>
               </ion-buttons>
             </div>
@@ -140,11 +135,11 @@ export class ContentView {
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="chevron-back" />
+                  <ion-icon size="large" name="chevron-back" />
                 </ion-button>
                 <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon name="chevron-forward" />
+                  <ion-icon size="large" name="chevron-forward" />
                 </ion-button>
               </ion-buttons>
             </div>
@@ -153,23 +148,15 @@ export class ContentView {
       case Resource.Commentary:
         return (
           <Host>
-            <div slot="fixed" class="top-heading">
-              <ion-title class="title">
-                Commentary for
-                <br />
-                {state.book} {state.chapter}
-                {state.verse ? `:${state.verse}` : '?'}
-              </ion-title>
-            </div>
             <commentary-view commentary={this.commentary} />
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="chevron-back" />
+                  <ion-icon size="large" name="chevron-back" />
                 </ion-button>
                 <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button onClick={() => this.next()}>
-                  <ion-icon name="chevron-forward" />
+                  <ion-icon size="large" name="chevron-forward" />
                 </ion-button>
               </ion-buttons>
             </div>

@@ -148,31 +148,31 @@ export class AppRoot {
             <ion-toolbar class="flexbase">
               <ion-buttons slot="start">
                 <ion-button disabled={state.resource === undefined} onClick={() => goBack()}>
-                  <ion-icon name="caret-back" />
+                  <ion-icon size="large" name="caret-back" />
                 </ion-button>
                 <ion-button
                   onClick={() => {
                     state.resource = undefined;
                   }}
                 >
-                  <ion-icon name="home-outline" />
+                  <ion-icon size="large" name="home-outline" />
                 </ion-button>
               </ion-buttons>
               <div class="top-heading">
                 <ion-buttons>
                   <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                    <ion-icon name="chevron-back" />
+                    <ion-icon size="large" name="chevron-back" />
                   </ion-button>
-                  <ion-icon name="book" />
-                  <ion-title>REV App</ion-title>
+                  <ion-icon size="large" name="book" />
+                  <ion-title>{state.heading || 'REV'}</ion-title>
                   <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                    <ion-icon name="chevron-forward" />
+                    <ion-icon size="large" name="chevron-forward" />
                   </ion-button>
                 </ion-buttons>
               </div>
               <ion-buttons slot="end">
                 <ion-button onClick={() => (this.showOptions = !this.showOptions)}>
-                  <ion-icon name="settings-outline" />
+                  <ion-icon size="large" name="settings-outline" />
                 </ion-button>
               </ion-buttons>
             </ion-toolbar>
