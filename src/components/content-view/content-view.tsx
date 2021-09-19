@@ -123,11 +123,11 @@ export class ContentView {
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="arrow-back-outline" />
+                  <ion-icon name="chevron-back" />
                 </ion-button>
                 <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon name="arrow-forward-outline" />
+                  <ion-icon name="chevron-forward" />
                 </ion-button>
               </ion-buttons>
             </div>
@@ -140,11 +140,11 @@ export class ContentView {
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="arrow-back-outline" />
+                  <ion-icon name="chevron-back" />
                 </ion-button>
                 <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon name="arrow-forward-outline" />
+                  <ion-icon name="chevron-forward" />
                 </ion-button>
               </ion-buttons>
             </div>
@@ -165,11 +165,11 @@ export class ContentView {
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon name="arrow-back-outline" />
+                  <ion-icon name="chevron-back" />
                 </ion-button>
                 <ion-button onClick={() => scrollTop()}>Top</ion-button>
                 <ion-button onClick={() => this.next()}>
-                  <ion-icon name="arrow-forward-outline" />
+                  <ion-icon name="chevron-forward" />
                 </ion-button>
               </ion-buttons>
             </div>

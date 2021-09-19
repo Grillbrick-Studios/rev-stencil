@@ -148,7 +148,7 @@ export class AppRoot {
             <ion-toolbar class="flexbase">
               <ion-buttons slot="start">
                 <ion-button disabled={state.resource === undefined} onClick={() => goBack()}>
-                  <ion-icon name="return-up-back" />
+                  <ion-icon name="caret-back" />
                 </ion-button>
                 <ion-button
                   onClick={() => {
@@ -161,12 +161,12 @@ export class AppRoot {
               <div class="top-heading">
                 <ion-buttons>
                   <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                    <ion-icon name="arrow-back-outline" />
+                    <ion-icon name="chevron-back" />
                   </ion-button>
                   <ion-icon name="book" />
                   <ion-title>REV App</ion-title>
                   <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                    <ion-icon name="arrow-forward-outline" />
+                    <ion-icon name="chevron-forward" />
                   </ion-button>
                 </ion-buttons>
               </div>
