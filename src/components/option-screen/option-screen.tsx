@@ -146,46 +146,39 @@ export class OptionScreen {
 
           <ion-item>
             <ion-label>Number of Columns:</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-segment>
-              <ion-segment-button onClick={this.lessColumns.bind(this)}>
-                <ion-icon name="remove-outline" />
-              </ion-segment-button>
-              <ion-segment-button onClick={this.moreColumns.bind(this)}>
-                <ion-icon name="add-outline" />
-              </ion-segment-button>
-            </ion-segment>
+            <ion-button color="light" size="large" onClick={this.lessColumns.bind(this)}>
+              <ion-icon name="remove-outline" />
+            </ion-button>
+            <ion-button color="light" size="large" onClick={this.moreColumns.bind(this)}>
+              <ion-icon name="add-outline" />
+            </ion-button>
           </ion-item>
 
           <ion-item>
             <ion-label>Font Size:</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-segment>
-              <ion-segment-button onClick={() => this.fontSize--}>
-                <ion-icon name="remove-outline" />
-              </ion-segment-button>
-              <ion-segment-button onClick={() => this.fontSize++}>
-                <ion-icon name="add-outline" />
-              </ion-segment-button>
-              <ion-segment-button onClick={() => (this.fontSize = DEFAULT_FONT_SIZE)}>
-                <ion-icon name="refresh-outline" />
-              </ion-segment-button>
-            </ion-segment>
+            <ion-button color="light" size="large" onClick={() => this.fontSize--}>
+              <ion-icon name="remove-outline" />
+            </ion-button>
+            <ion-button color="light" size="large" onClick={() => this.fontSize++}>
+              <ion-icon name="add-outline" />
+            </ion-button>
+            <ion-button color="light" size="large" onClick={() => (this.fontSize = DEFAULT_FONT_SIZE)}>
+              <ion-icon name="refresh-outline" />
+            </ion-button>
           </ion-item>
 
           <ion-item>
-            <p class="link" onClick={this.presentFonts.bind(this)}>
-              Select Font Family:
-              <span
-                style={{
-                  fontFamily: this.fontFamily.value,
-                }}
-              >
-                {this.fontFamily.label}
-              </span>
-            </p>
+            <ion-label>Select Font Family:</ion-label>
+            <ion-chip
+              style={{
+                fontFamily: this.fontFamily.value,
+              }}
+              class="link"
+              onClick={this.presentFonts.bind(this)}
+            >
+              {this.fontFamily.label}
+              <ion-icon name="caret-down" />
+            </ion-chip>
           </ion-item>
 
           <ion-item>

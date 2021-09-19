@@ -49,6 +49,14 @@ export class ChapterView {
 
     return (
       <Host>
+        <ion-chip onClick={() => (state.book = undefined)}>
+          <ion-label>{state.resource}</ion-label>
+          <ion-icon name="close-circle" onClick={() => (state.resource = undefined)} />
+        </ion-chip>
+        <ion-chip onClick={() => (state.chapter = undefined)}>
+          <ion-label>{state.book}</ion-label>
+          <ion-icon name="close-circle" onClick={() => (state.book = undefined)} />
+        </ion-chip>
         <div class={`content ${colClass}`} innerHTML={this.bible.getChapter(state.book, state.chapter, state)}></div>
       </Host>
     );
