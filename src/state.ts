@@ -100,7 +100,8 @@ onChange('fontFamily', value => {
  * Here I update darkmode
  */
 onChange('forceDarkMode', value => {
-  document.body.classList.toggle('dark', value);
+  if (value) document.body.classList.add('dark');
+  else document.body.classList.remove('dark');
 });
 
 /*
