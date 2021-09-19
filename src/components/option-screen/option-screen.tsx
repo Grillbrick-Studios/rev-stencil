@@ -114,7 +114,7 @@ export class OptionScreen {
           <ion-item>
             <ion-list>
               <ion-item>
-                <ion-label>Force Dark Mode?</ion-label>
+                <ion-label>Dark Mode?</ion-label>
                 <br />
                 <ion-toggle checked={state.forceDarkMode} onIonChange={this.forceDarkModeChange.bind(this)} />
               </ion-item>
