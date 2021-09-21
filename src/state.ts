@@ -12,6 +12,12 @@ export const DEFAULT_FONT_FAMILY: Font = {
 };
 export const DEFAULT_DARK_MODE = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+export function isSmall(cb?: (value: boolean) => void): boolean {
+  const sizeQuery = window.matchMedia('screen and (max-width: 500px)');
+  sizeQuery.addEventListener('change', ev => cb(ev.matches));
+  return sizeQuery.matches;
+}
+
 interface iStore {
   resource?: Resource;
   book?: string;
@@ -50,6 +56,57 @@ store.on('set', (key, value) => {
   });
 });
 
+function abbreviateBook(book: string): string {
+  return (
+    book
+      // old testament
+      .replace('Genesis', 'Gen.')
+      .replace('Exodus', 'Ex.')
+      .replace('Leviticus', 'Lev.')
+      .replace('Numbers', 'Num.')
+      .replace('Deuteronomy', 'Deut.')
+      .replace('Joshua', 'Josh.')
+      .replace('Judges', 'Judg.')
+      .replace('Samuel', 'Sam.')
+      .replace('Chronicles', 'Chron.')
+      .replace('Nehemiah', 'Neh.')
+      .replace('Esther', 'Est.')
+      .replace('Psalms', 'Ps.')
+      .replace('Proverbs', 'Prov.')
+      .replace('Ecclesiastes', 'Ecc.')
+      .replace('Song of Songs', 'Song.')
+      .replace('Isaiah', 'Isa.')
+      .replace('Jeremiah', 'Jer.')
+      .replace('Lamentations', 'Lam.')
+      .replace('Ezekel', 'Ezek.')
+      .replace('Daniel', 'Dan.')
+      .replace('Hosea', 'Hos.')
+      .replace('Obadiah', 'Obad.')
+      .replace('Jonah', 'Jnh.')
+      .replace('Micah', 'Mic')
+      .replace('Nahum', 'Nah.')
+      .replace('Habakkuk', 'Hab.')
+      .replace('Zephaniah', 'Zeph.')
+      .replace('Haggai', 'Hag.')
+      .replace('Zechariah', 'Zech.')
+      .replace('Malachi', 'Mal.')
+      // New Testament
+      .replace('Matthew', 'Matt.')
+      .replace('Romans', 'Rom.')
+      .replace('Corinthians', 'Cor.')
+      .replace('Galatians', 'Gal.')
+      .replace('Ephesians', 'Eph')
+      .replace('Philippians', 'Phil.')
+      .replace('Colossians', 'Col.')
+      .replace('Thessalonians', 'Thes.')
+      .replace('Timothy', 'Tim.')
+      .replace('Philemon', 'Phm.')
+      .replace('Hebrews', 'Heb.')
+      .replace('Peter', 'Pet.')
+      .replace('John', 'Jn.')
+      .replace('Revelation', 'Rev.')
+  );
+}
 /*
  * Here is where I make sure that the current path makes sense.
  */
@@ -69,17 +126,17 @@ onChange('book', value => {
     state.heading = undefined;
     state.chapter = undefined;
   } else {
-    state.heading = value;
+    state.heading = isSmall() ? abbreviateBook(value) : value;
   }
 });
 
 onChange('chapter', v => {
   if (!v) state.verse = undefined;
-  else state.heading = `${state.book} ${v}`;
+  else state.heading = `${isSmall() ? abbreviateBook(state.book) : state.book} ${v}`;
 });
 
 onChange('verse', v => {
-  if (v) state.heading = `${state.book} ${state.chapter}:${v}`;
+  if (v) state.heading = `${isSmall() ? abbreviateBook(state.book) : state.book} ${state.chapter}:${v}`;
 });
 
 /*

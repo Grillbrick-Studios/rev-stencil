@@ -1,7 +1,7 @@
 import { Component, h, Host, State, Watch } from '@stencil/core';
 import { scrollTop } from '../../helpers/utils';
 import { Appendices, Bible, BiblePath, Commentary, Resource } from '../../models';
-import { state, onChange } from '../../state';
+import { state, onChange, isSmall } from '../../state';
 
 @Component({
   tag: 'app-root',
@@ -13,6 +13,7 @@ export class AppRoot {
   @State() bible: Bible;
   @State() commentary: Commentary;
   @State() appendix: Appendices;
+  @State() isSmall: boolean;
 
   @Watch('showOptions')
   showOptionsUpdate(value: boolean) {
@@ -20,6 +21,7 @@ export class AppRoot {
   }
 
   componentWillLoad() {
+    isSmall(v => (this.isSmall = v));
     document.addEventListener('ionBackButton', (ev: any) => ev.detail.register(10, goBack));
   }
 
@@ -141,6 +143,8 @@ export class AppRoot {
         </Host>
       );
 
+    const size = this.isSmall ? 'small' : 'large';
+
     return (
       <ion-app>
         <div class="ion-page" id="main-content">
@@ -148,31 +152,31 @@ export class AppRoot {
             <ion-toolbar class="flexbase">
               <ion-buttons slot="start">
                 <ion-button disabled={state.resource === undefined} onClick={() => goBack()}>
-                  <ion-icon size="large" name="caret-back" />
+                  <ion-icon size={size} name="caret-back" />
                 </ion-button>
                 <ion-button
                   onClick={() => {
                     state.resource = undefined;
                   }}
                 >
-                  <ion-icon size="large" name="home-outline" />
+                  <ion-icon size={size} name="home-outline" />
                 </ion-button>
               </ion-buttons>
               <div class="top-heading">
                 <ion-buttons>
                   <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                    <ion-icon size="large" name="chevron-back" />
+                    <ion-icon size={size} name="chevron-back" />
                   </ion-button>
-                  <ion-icon size="large" name="book" />
+                  {this.isSmall || <ion-icon size={size} name="book" />}
                   <ion-title>{state.heading || 'REV'}</ion-title>
                   <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                    <ion-icon size="large" name="chevron-forward" />
+                    <ion-icon size={size} name="chevron-forward" />
                   </ion-button>
                 </ion-buttons>
               </div>
               <ion-buttons slot="end">
                 <ion-button onClick={() => (this.showOptions = !this.showOptions)}>
-                  <ion-icon size="large" name="settings-outline" />
+                  <ion-icon size={size} name="settings-outline" />
                 </ion-button>
               </ion-buttons>
             </ion-toolbar>
