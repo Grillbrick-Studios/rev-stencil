@@ -13,7 +13,10 @@ export class AppRoot {
   @State() bible: Bible;
   @State() commentary: Commentary;
   @State() appendix: Appendices;
-  @State() isSmall: boolean;
+
+  get isSmall(): boolean {
+    return isSmall();
+  }
 
   @Watch('showOptions')
   showOptionsUpdate(value: boolean) {
@@ -21,7 +24,6 @@ export class AppRoot {
   }
 
   componentWillLoad() {
-    isSmall(v => (this.isSmall = v));
     document.addEventListener('ionBackButton', (ev: any) => ev.detail.register(10, goBack));
   }
 
