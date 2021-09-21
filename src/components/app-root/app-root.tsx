@@ -127,21 +127,23 @@ export class AppRoot {
     if (!this.bible || !this.commentary || !this.appendix)
       return (
         <Host>
-          {this.bible ? (
-            <ion-title>Bible Loaded!</ion-title>
-          ) : (
-            Bible.onReady().then(b => (this.bible = b)) && [<ion-title>Loading Bible...</ion-title>, <ion-progress-bar type="indeterminate" />]
-          )}
-          {this.commentary ? (
-            <ion-title>Commentary Loaded!</ion-title>
-          ) : (
-            Commentary.onReady().then(c => (this.commentary = c)) && [<ion-title>Loading Commentary...</ion-title>, <ion-progress-bar type="indeterminate" />]
-          )}
-          {this.appendix ? (
-            <ion-title>Appendices Loaded!</ion-title>
-          ) : (
-            Appendices.onReady().then(a => (this.appendix = a)) && [<ion-title>Loading Appendices...</ion-title>, <ion-progress-bar type="indeterminate" />]
-          )}
+          <ion-content>
+            {this.bible ? (
+              <ion-title>Bible Loaded!</ion-title>
+            ) : (
+              Bible.onReady().then(b => (this.bible = b)) && [<ion-title>Loading Bible...</ion-title>, <ion-progress-bar type="indeterminate" />]
+            )}
+            {this.commentary ? (
+              <ion-title>Commentary Loaded!</ion-title>
+            ) : (
+              Commentary.onReady().then(c => (this.commentary = c)) && [<ion-title>Loading Commentary...</ion-title>, <ion-progress-bar type="indeterminate" />]
+            )}
+            {this.appendix ? (
+              <ion-title>Appendices Loaded!</ion-title>
+            ) : (
+              Appendices.onReady().then(a => (this.appendix = a)) && [<ion-title>Loading Appendices...</ion-title>, <ion-progress-bar type="indeterminate" />]
+            )}
+          </ion-content>
         </Host>
       );
 
