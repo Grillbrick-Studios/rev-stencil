@@ -187,6 +187,15 @@ export class AppRoot {
           </ion-header>
           <ion-content class="ion-padding" id="root">
             <content-view resource={this.resource} bible={this.bible} commentary={this.commentary} appendix={this.appendix} />
+            <span
+              style={{
+                display: 'inline-block',
+                width: '3px',
+                height: '400px',
+              }}
+            >
+              &nbsp;
+            </span>
           </ion-content>
         </div>
       </ion-app>
