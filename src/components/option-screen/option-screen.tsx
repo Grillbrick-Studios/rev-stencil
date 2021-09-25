@@ -1,7 +1,7 @@
 import { popoverController, SelectChangeEventDetail, ToggleChangeEventDetail } from '@ionic/core';
 import { Component, Host, h, State, Watch } from '@stencil/core';
 import { Bible, Font, ViewMode } from '../../models';
-import { DEFAULT_FONT_SIZE, state } from '../../state';
+import { DEFAULT_FONT_SIZE, isSmall, state } from '../../state';
 
 @Component({
   tag: 'option-screen',
@@ -91,8 +91,9 @@ export class OptionScreen {
   }
 
   moreColumns() {
+    const maxColumns = isSmall() ? 1 : 5;
     this.numColumns++;
-    if (this.numColumns > 5) this.numColumns = 5;
+    if (this.numColumns > maxColumns) this.numColumns = maxColumns;
   }
 
   lessColumns() {
@@ -103,7 +104,8 @@ export class OptionScreen {
   render() {
     const colClass = `col${this.numColumns}container`,
       exampleBook = 'Genesis',
-      exampleChapter = 3;
+      exampleChapter = 3,
+      size = isSmall() ? 'small' : 'large';
     return (
       <Host>
         <ion-list
@@ -146,23 +148,23 @@ export class OptionScreen {
 
           <ion-item>
             <ion-label>Number of Columns:</ion-label>
-            <ion-button color="light" size="large" onClick={this.lessColumns.bind(this)}>
+            <ion-button color="light" size={size} onClick={this.lessColumns.bind(this)}>
               <ion-icon name="remove-outline" />
             </ion-button>
-            <ion-button color="light" size="large" onClick={this.moreColumns.bind(this)}>
+            <ion-button color="light" size={size} onClick={this.moreColumns.bind(this)}>
               <ion-icon name="add-outline" />
             </ion-button>
           </ion-item>
 
           <ion-item>
             <ion-label>Font Size:</ion-label>
-            <ion-button color="light" size="large" onClick={() => this.fontSize--}>
+            <ion-button color="light" size={size} onClick={() => this.fontSize--}>
               <ion-icon name="remove-outline" />
             </ion-button>
-            <ion-button color="light" size="large" onClick={() => this.fontSize++}>
+            <ion-button color="light" size={size} onClick={() => this.fontSize++}>
               <ion-icon name="add-outline" />
             </ion-button>
-            <ion-button color="light" size="large" onClick={() => (this.fontSize = DEFAULT_FONT_SIZE)}>
+            <ion-button color="light" size={size} onClick={() => (this.fontSize = DEFAULT_FONT_SIZE)}>
               <ion-icon name="refresh-outline" />
             </ion-button>
           </ion-item>

@@ -165,6 +165,13 @@ onChange('forceDarkMode', value => {
 /*
  * Here I load everything from storage. Check for null and use default values.
  */
+Storage.get({ key: 'heading' }).then(r => {
+  try {
+    state.heading = JSON.parse(r.value) || 'REV';
+  } catch (_) {
+    state.heading = 'REV';
+  }
+});
 Storage.get({ key: 'numColumns' }).then(r => {
   try {
     state.numColumns = JSON.parse(r.value) || 1;
