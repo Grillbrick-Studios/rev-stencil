@@ -110,6 +110,10 @@ export const Fonts: Font[] = [
     label: 'Apple Chancery',
   },
   {
+    value: 'Papyrus, cursive',
+    label: 'Papyrus',
+  },
+  {
     label: 'Bradley Hand',
     value: '"Bradley Hand", cursive',
   },
@@ -118,8 +122,8 @@ export const Fonts: Font[] = [
     label: 'Brush Script',
   },
   {
-    value: '"Chalkboard SE", Chalkboard, cursive',
-    label: 'Chalkboard',
+    value: 'Chalkduster, Chalkboard, cursive',
+    label: 'Chalkduster',
   },
   {
     value: '"Comic Sans MS", cursive',
