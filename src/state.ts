@@ -167,7 +167,7 @@ onChange('forceDarkMode', value => {
  */
 Storage.get({ key: 'heading' }).then(r => {
   try {
-    state.heading = JSON.parse(r.value) || 'REV';
+    state.heading = r.value || 'REV';
   } catch (_) {
     state.heading = 'REV';
   }
