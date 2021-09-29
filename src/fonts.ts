@@ -56,20 +56,20 @@ export const Fonts: Font[] = [
     label: 'Bangers',
   },
   // Dancing Script
-  {
-    value: '"Dancing Script", cursive',
-    label: 'Dancing Script',
-  },
-  // Great Vibes
-  {
-    value: '"Great Vibes", cursive',
-    label: 'Great Vibes',
-  },
-  // Pinyon Script
-  {
-    value: '"Pinyon Script", cursive',
-    label: 'Pinyon Script',
-  },
+  //{
+  //value: '"Dancing Script", cursive',
+  //label: 'Dancing Script',
+  //},
+  //// Great Vibes
+  //{
+  //value: '"Great Vibes", cursive',
+  //label: 'Great Vibes',
+  //},
+  //// Pinyon Script
+  //{
+  //value: '"Pinyon Script", cursive',
+  //label: 'Pinyon Script',
+  //},
   // Rye
   {
     value: 'Rye, cursive',
@@ -81,57 +81,37 @@ export const Fonts: Font[] = [
     label: 'Sacramento',
   },
   // Fira Code
-  {
-    value: '"Fira Code", monospace',
-    label: 'Fira Code',
-  },
+  //{
+  //value: '"Fira Code", monospace',
+  //label: 'Fira Code',
+  //},
   // Source *
-  {
-    value: '"Source Code Pro", monospace',
-    label: 'Source Code Pro',
-  },
-  {
-    value: '"Source Sans Pro", sans-serif',
-    label: 'Source Sans Pro',
-  },
-  {
-    value: '"Source Serif Pro", serif',
-    label: 'Source Serif Pro',
-  },
+  //{
+  //value: '"Source Code Pro", monospace',
+  //label: 'Source Code Pro',
+  //},
+  //{
+  //value: '"Source Sans Pro", sans-serif',
+  //label: 'Source Sans Pro',
+  //},
+  //{
+  //value: '"Source Serif Pro", serif',
+  //label: 'Source Serif Pro',
+  //},
   // Xanh Mono
-  {
-    value: '"Xanh Mono", monospace',
-    label: 'Xanh Mono',
-  },
+  //{
+  //value: '"Xanh Mono", monospace',
+  //label: 'Xanh Mono',
+  //},
   {
     heading: 'MacOS/iOS Fonts',
     headingStyle: 'cursive',
-    value: '"Apple Chancery", cursive',
-    label: 'Apple Chancery',
-  },
-  {
     value: 'Papyrus, cursive',
     label: 'Papyrus',
   },
   {
-    label: 'Bradley Hand',
-    value: '"Bradley Hand", cursive',
-  },
-  {
-    value: '"Brush Script MT", cursive',
-    label: 'Brush Script',
-  },
-  {
     value: 'Chalkduster, Chalkboard, cursive',
     label: 'Chalkduster',
-  },
-  {
-    value: '"Comic Sans MS", cursive',
-    label: 'Comic Sans',
-  },
-  {
-    value: 'Luminari, cursive',
-    label: 'Luminari',
   },
   {
     value: '"Marker Felt", cursive',
@@ -140,34 +120,6 @@ export const Fonts: Font[] = [
   {
     value: 'Noteworthy, cursive',
     label: 'Noteworthy',
-  },
-  {
-    value: 'SignPainter, cursive',
-    label: 'Sign Painter',
-  },
-  {
-    value: '"Snell Roundhand", cursive',
-    label: 'Snell Roundhand',
-  },
-  {
-    value: 'Trattatello, cursive',
-    label: 'Trattatello',
-  },
-  {
-    value: '"Savoye LET", cursive',
-    label: 'Savoye',
-  },
-  {
-    value: 'Herculanum, fantasy',
-    label: 'Herculanum',
-  },
-  {
-    value: '"Party LET", fantasy',
-    label: 'Party',
-  },
-  {
-    value: '"Andale Mono", monospace',
-    label: 'Andale Mono',
   },
   {
     value: 'Zapfino, cursive',
