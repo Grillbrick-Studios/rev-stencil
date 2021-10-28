@@ -197,7 +197,6 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
     });
 
     return verses.join('\n');
-    /**/
   }
 
   dumpRaw(book: string, chapter: number): string {

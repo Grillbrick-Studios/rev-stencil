@@ -55,8 +55,8 @@ export class OptionScreen {
     this.fontFamily = state.fontFamily;
     this.numColumns = state.numColumns;
 
-    //this.onFontSizeChange(this.fontSize);
-    //this.onFontFamilyChange(this.fontFamily);
+    this.onFontSizeChange(this.fontSize);
+    this.onFontFamilyChange(this.fontFamily);
   }
 
   viewModeChange(ev: CustomEvent<SelectChangeEventDetail>) {
