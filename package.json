@@ -7,9 +7,6 @@
   "files": [
     "dist/"
   ],
-  "workspaces": [
-    "./electron"
-  ],
   "scripts": {
     "build": "stencil build && stencil build",
     "run:ios": "cap run ios",
