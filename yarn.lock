@@ -606,14 +606,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ionic/core@npm:^5.3.2":
-  version: 5.7.0
-  resolution: "@ionic/core@npm:5.7.0"
+"@ionic/core@npm:next":
+  version: 6.0.0-rc.1
+  resolution: "@ionic/core@npm:6.0.0-rc.1"
   dependencies:
-    "@stencil/core": ^2.4.0
-    ionicons: ^5.5.3
+    "@stencil/core": ^2.6.0
+    ionicons: ^5.5.1
     tslib: ^2.1.0
-  checksum: 6e67483411ea21e84450b14337ae71b8daea111c94240ae759b5ab39dfd275e4d4b16ebcddea43cd226ec91c437d1e8a349f34837ec6dbf0fd77fc325760e6dd
+  checksum: 6361e96a986e5d42f293ec4b5cd4f0fe4a119b9160efd83b8a5f3a06ba3c20384a8186fb21d6bfc83ff83712f6b277bf84b80281e5905986e66ea7cbdaf10fdf
   languageName: node
   linkType: hard
 
@@ -957,12 +957,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^2.4.0, @stencil/core@npm:^2.5.0, @stencil/core@npm:^2.7.0":
+"@stencil/core@npm:^2.5.0":
   version: 2.8.0
   resolution: "@stencil/core@npm:2.8.0"
   bin:
     stencil: bin/stencil
   checksum: b3e99b00fd508878641d71f5e97c8d4f9b1b1aebdb2258539153d61a86c47d6a37849f16f39bf45d0f5aa6eee1fb5af2b195855099c7a3246c7d8281f57b918c
+  languageName: node
+  linkType: hard
+
+"@stencil/core@npm:^2.6.0, @stencil/core@npm:latest":
+  version: 2.9.0
+  resolution: "@stencil/core@npm:2.9.0"
+  bin:
+    stencil: bin/stencil
+  checksum: aa513b0242ea4677fad5156186216bf398902ff7217634e451a29fb86d190cc152b414ef9308cc05d13fa3f1deb516cd4cc3eabd1e78a3d72b0d212b9aed1142
   languageName: node
   linkType: hard
 
@@ -2927,7 +2936,7 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"ionicons@npm:^5.5.3":
+"ionicons@npm:^5.5.1":
   version: 5.5.3
   resolution: "ionicons@npm:5.5.3"
   dependencies:
@@ -4964,8 +4973,8 @@ fsevents@^2.1.2:
     "@capacitor/keyboard": 1.0.2
     "@capacitor/status-bar": 1.0.2
     "@capacitor/storage": ^1.0.3
-    "@ionic/core": ^5.3.2
-    "@stencil/core": ^2.7.0
+    "@ionic/core": next
+    "@stencil/core": latest
     "@stencil/store": ^1.4.1
     "@types/jest": ^26.0.24
     jest: ^26.6.3
