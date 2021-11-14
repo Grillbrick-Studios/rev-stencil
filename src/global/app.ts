@@ -7,7 +7,7 @@ const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 toggleDarkTheme(prefersDark.matches);
 
 // Listen for changes to the prefers-color-scheme media query
-prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches));
+prefersDark.addEventListener('load', _ => toggleDarkTheme(prefersDark.matches));
 
 export default () => {
   setupConfig({
