@@ -1,6 +1,6 @@
 import { Component, h, Host, State, Watch } from '@stencil/core';
 import { scrollTop } from '../../helpers/utils';
-import { Appendices, Bible, BiblePath, Commentary, Resource } from '../../models';
+import { Bible, BiblePath, Resource } from '../../models';
 import { state, onChange, isSmall } from '../../state';
 
 @Component({
@@ -11,8 +11,6 @@ export class AppRoot {
   @State() showOptions: boolean = false;
   @State() resource?: Resource;
   @State() bible: Bible;
-  @State() commentary: Commentary;
-  @State() appendix: Appendices;
 
   get isSmall(): boolean {
     return isSmall();
@@ -44,9 +42,9 @@ export class AppRoot {
       case Resource.Bible:
         return path !== this.bible.nextChapter(path);
       case Resource.Commentary:
-        return path !== this.commentary.next(path);
+        return path !== this.bible.commentaries.next(path);
       case Resource.Appendix:
-        return path.book !== this.appendix.next(path.book);
+        return path.book !== this.bible.appendices.next(path.book);
     }
   }
 
@@ -61,9 +59,9 @@ export class AppRoot {
       case Resource.Bible:
         return path !== this.bible.prevChapter(path);
       case Resource.Commentary:
-        return path !== this.commentary.prev(path);
+        return path !== this.bible.commentaries.prev(path);
       case Resource.Appendix:
-        return path.book !== this.appendix.prev(path.book);
+        return path.book !== this.bible.appendices.prev(path.book);
     }
   }
 
@@ -82,14 +80,14 @@ export class AppRoot {
         return;
       case Resource.Commentary:
         path.verse = state.verse;
-        path = this.commentary.next(path);
+        path = this.bible.commentaries.next(path);
         state.book = path.book;
         state.chapter = path.chapter;
         state.verse = path.verse;
         scrollTop();
         return;
       case Resource.Appendix:
-        state.book = this.appendix.next(path.book);
+        state.book = this.bible.appendices.next(path.book);
         scrollTop();
         return;
     }
@@ -110,21 +108,21 @@ export class AppRoot {
         return;
       case Resource.Commentary:
         path.verse = state.verse;
-        path = this.commentary.prev(path);
+        path = this.bible.commentaries.prev(path);
         state.book = path.book;
         state.chapter = path.chapter;
         state.verse = path.verse;
         scrollTop();
         return;
       case Resource.Appendix:
-        state.book = this.appendix.prev(path.book);
+        state.book = this.bible.appendices.prev(path.book);
         scrollTop();
         return;
     }
   }
 
   render() {
-    if (!this.bible || !this.commentary || !this.appendix)
+    if (!this.bible)
       return (
         <Host>
           <ion-content>
@@ -132,16 +130,6 @@ export class AppRoot {
               <ion-title>Bible Loaded!</ion-title>
             ) : (
               Bible.onReady().then(b => (this.bible = b)) && [<ion-title>Loading Bible...</ion-title>, <ion-progress-bar type="indeterminate" />]
-            )}
-            {this.commentary ? (
-              <ion-title>Commentary Loaded!</ion-title>
-            ) : (
-              Commentary.onReady().then(c => (this.commentary = c)) && [<ion-title>Loading Commentary...</ion-title>, <ion-progress-bar type="indeterminate" />]
-            )}
-            {this.appendix ? (
-              <ion-title>Appendices Loaded!</ion-title>
-            ) : (
-              Appendices.onReady().then(a => (this.appendix = a)) && [<ion-title>Loading Appendices...</ion-title>, <ion-progress-bar type="indeterminate" />]
             )}
           </ion-content>
         </Host>
@@ -186,7 +174,7 @@ export class AppRoot {
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding" id="root">
-            <content-view resource={this.resource} bible={this.bible} commentary={this.commentary} appendix={this.appendix} />
+            <content-view resource={this.resource} bible={this.bible} />
             <span
               style={{
                 display: 'inline-block',

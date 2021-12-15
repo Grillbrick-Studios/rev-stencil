@@ -1,12 +1,14 @@
-import { iData, iSerializeData, Asynclock, BiblePath, stripStyle, remoteHasNewer } from './common';
-import { iVerse, Style, Verse, ViewMode } from './verse';
+import { iSerializeData, Asynclock, BiblePath, stripStyle, remoteHasNewer } from './common';
+import { importVerse, iVerse, Style, Verse, ViewMode } from './verse';
 import { writeFile, readFile } from './filesystem';
-
-export const URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=201';
+import { Appendices } from './appendices';
+import { Commentary, iCommentaryJson, COMMENTARY_URL } from './commentary';
+import { iAppendicesJson, APPENDICES_URL, iAppendices } from './appendices';
+export const BIBLE_URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=201';
 
 export interface iBibleJson {
   // eslint-disable-next-line camelcase
-  REV_Bible: iVerse[];
+  REV_Bible: importVerse[];
   updated?: Date;
 }
 
@@ -15,87 +17,91 @@ export interface ViewOptions {
   linkCommentary?: boolean;
 }
 
-export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
-  private static verses: Verse[];
-  private static updated: Date;
-  private static lock: Asynclock = new Asynclock();
-  private static remoteDate: Date;
+export class Bible {
+  verses: Verse[];
+  appendices: Appendices;
+  updated: Date;
+  static lock: Asynclock = new Asynclock();
+  remoteDate: Date;
 
-  public static get data(): iVerse[] {
-    return Bible.verses.map(v => v.unwrap());
+  get commentaries(): Commentary {
+    return new Commentary(this.verses);
   }
 
-  public get updated(): Date {
-    return Bible.updated;
-  }
-
-  public static async save() {
+  public async save() {
     const data: iSerializeData<iVerse> = {
-      data: Bible.data,
-      updated: Bible.updated,
+      data: this.verses,
+      updated: this.updated,
     };
 
     await writeFile(data, 'Bible');
+
+    const appendices: iSerializeData<iAppendices> = {
+      data: this.appendices.data,
+      updated: this.updated,
+    };
+
+    await writeFile(appendices, 'Appendices');
   }
 
-  public static async load(): Promise<boolean> {
+  public static async load(): Promise<Bible> {
     try {
       const bibleData: iSerializeData<iVerse> = await readFile('Bible');
-      Bible.verses = bibleData.data.map(v => new Verse(v));
-      Bible.updated = new Date(bibleData.updated);
-      const [newer, remoteDate] = await remoteHasNewer(Bible.updated);
-      Bible.remoteDate = remoteDate;
-      if (newer) return false;
-      return true;
+      const verses = bibleData.data.map(v => new Verse(v));
+      const appendicesData: iSerializeData<iAppendices> = await readFile('Appendices');
+      const updated = new Date(bibleData.updated);
+      const [newer, _] = await remoteHasNewer(updated);
+      if (newer) return;
+      return new Bible(verses, appendicesData.data, updated);
     } catch (e) {
       console.error(`Error loading bible from disk: ${e}`);
-      return false;
+      return;
     }
   }
 
-  public static set data(verses: iVerse[]) {
-    Bible.verses = verses.map(v => new Verse(v));
+  constructor(verses: iVerse[], appendices: iAppendices[], updated: Date) {
+    this.verses = verses.map(v => new Verse(v));
+    this.appendices = new Appendices(appendices);
+    this.updated = updated;
   }
 
-  public get data(): iVerse[] {
-    return Bible.verses;
-  }
-
-  constructor(verses: iVerse[]) {
-    Bible.verses = verses.map(v => new Verse(v));
-  }
-
-  private static async fetch() {
-    const bible: iBibleJson = await fetch(URL).then(res => res.json());
-    Bible.verses = bible.REV_Bible.map(v => new Verse(v));
-    Bible.updated = Bible.remoteDate;
-    Bible.save();
+  private static async fetch(): Promise<Bible> {
+    const bible: iBibleJson = await fetch(BIBLE_URL).then(res => res.json());
+    const commentary: iCommentaryJson = await fetch(COMMENTARY_URL).then(res => res.json());
+    const appendicesJson: iAppendicesJson = await fetch(APPENDICES_URL).then(res => res.json());
+    const verses = bible.REV_Bible.map(v =>
+      Verse.fromOldVerse(v, commentary.REV_Commentary.filter(c => c.book === v.book && c.chapter === v.chapter.toString() && c.verse === v.verse.toString())[0]?.commentary || ''),
+    );
+    const [_, remoteDate] = await remoteHasNewer(new Date());
+    const updated = remoteDate;
+    let data = new Bible(verses, appendicesJson.REV_Appendices, updated);
+    data.save();
+    return data;
   }
 
   static async onReady(): Promise<Bible> {
     await this.lock.promise;
     this.lock.enable();
     try {
-      if (Bible.verses) return new Bible(Bible.verses);
-      else if (await Bible.load()) return new Bible(Bible.verses);
-      else await Bible.fetch();
+      let bible = await Bible.load();
+      if (bible !== null) return bible;
+      else return await Bible.fetch();
     } catch (e) {
       console.error(e);
     } finally {
       this.lock.disable();
     }
-    return new Bible(Bible.data);
   }
 
   getBooks(filter: string = ''): string[] {
-    const booksArray = Bible.verses.map(v => v.book).filter(b => b.startsWith(filter));
+    const booksArray = this.verses.map(v => v.book).filter(b => b.startsWith(filter));
     const bookSet = new Set(booksArray);
     //return new Array(...bookSet.keys());
     return Array.from(bookSet);
   }
 
   getChapters(book: string): number[] {
-    const chaptersArray = Bible.verses.filter(v => v.book === book).map(v => v.chapter);
+    const chaptersArray = this.verses.filter(v => v.book === book).map(v => v.path.chapter);
     const chapterSet = new Set(chaptersArray);
     return Array.from(chapterSet);
   }
@@ -133,13 +139,13 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
       switch (viewMode) {
         case ViewMode.Paragraph:
         case ViewMode.Reading:
-          if (styleChange || spanDepth === 0 || v.paragraph) {
+          if (styleChange || spanDepth === 0 || v.style.paragraph) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
               if (spanDepth > 0) {
                 preverse += '</span>';
                 spanDepth -= 1;
               }
-              preverse += `<span class="${styleClass(v.style)}">`;
+              preverse += `<span class="${styleClass(v.style.style)}">`;
               spanDepth += 1;
             } else if (verse.indexOf('[hpbegin]') > -1 || verse.indexOf('[listbegin]') > -1) {
               if (spanDepth > 0) {
@@ -147,7 +153,7 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
                 midverse += '</span>';
                 spanDepth -= 1;
               }
-              midverse += `<span class="${styleClass(v.style)}">`;
+              midverse += `<span class="${styleClass(v.style.style)}">`;
               spanDepth += 1;
             } else {
               if (spanDepth > 0) {
@@ -219,12 +225,12 @@ export class Bible implements iData<iVerse>, iSerializeData<iVerse> {
   }
 
   getVerses(book: string, chapter: number, verse?: number): Verse[] {
-    if (verse) return Bible.verses.filter(v => v.book === book && v.chapter === chapter && v.verse === verse);
-    return Bible.verses.filter(v => v.book === book && v.chapter === chapter);
+    if (verse) return this.verses.filter(v => v.book === book && v.path.chapter === chapter && v.path.verse === verse);
+    return this.verses.filter(v => v.book === book && v.path.chapter === chapter);
   }
 
   getVerseNumbers(book: string, chapter: number): number[] {
-    return this.getVerses(book, chapter).map(v => v.verse);
+    return this.getVerses(book, chapter).map(v => v.path.verse);
   }
 
   numVerses(book: string, chapter: number): number {

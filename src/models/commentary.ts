@@ -1,7 +1,7 @@
-import { iData, Asynclock, iSerializeData, BiblePath, remoteHasNewer } from './common';
-import { writeFile, readFile } from './filesystem';
+import { BiblePath } from './common';
+import { iVerse } from './verse';
 
-const URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=202';
+export const COMMENTARY_URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=202';
 
 export interface iCommentary {
   book: string;
@@ -17,99 +17,42 @@ export interface iStringCommentary {
   commentary: string;
 }
 
-interface iCommentaryJson {
+export interface iCommentaryJson {
   REV_Commentary: iStringCommentary[];
   updated?: Date;
 }
 
-export class Commentary implements iData<iCommentary> {
-  private static _data: iCommentary[];
-  private static updated: Date;
-  private static lock = new Asynclock();
-  private static remoteDate: Date;
+export class Commentary {
+  private _data: iVerse[];
 
-  private static async save() {
-    const data: iSerializeData<iCommentary> = {
-      data: Commentary._data,
-      updated: Commentary.updated,
-    };
-
-    await writeFile(data, 'Commentary');
+  constructor(data: iVerse[]) {
+    this._data = data;
   }
 
-  private static async load(): Promise<boolean> {
-    try {
-      const commentaryData: iSerializeData<iStringCommentary> = await readFile('Commentary');
-      Commentary._data = commentaryData.data.map(c => ({
-        ...c,
-        chapter: parseInt(c.chapter),
-        verse: parseInt(c.verse),
-      }));
-      Commentary.updated = new Date(commentaryData.updated);
-      const [newer, remoteDate] = await remoteHasNewer(Commentary.updated);
-      Commentary.remoteDate = remoteDate;
-      if (newer) return false;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  constructor(data: iCommentary[]) {
-    Commentary._data = data;
-  }
-
-  public get data(): iCommentary[] {
-    return Commentary._data;
-  }
-
-  private static async fetch() {
-    const res = await fetch(URL);
-    const commentary: iCommentaryJson = await res.json();
-    Commentary._data = commentary.REV_Commentary.map(c => ({
-      ...c,
-      chapter: parseInt(c.chapter),
-      verse: parseInt(c.verse),
-    }));
-    Commentary.updated = Commentary.remoteDate;
-    Commentary.save();
-  }
-
-  static async onReady(): Promise<Commentary> {
-    await this.lock.promise;
-    this.lock.enable();
-    try {
-      if (Commentary._data) return new Commentary(Commentary._data);
-      else if (await Commentary.load()) return new Commentary(Commentary._data);
-      else await Commentary.fetch();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.lock.disable();
-    }
-    return new Commentary(Commentary._data);
+  public get data(): iVerse[] {
+    return this._data;
   }
 
   getBooks(): string[] {
-    const booksArray = Commentary._data.map(v => v.book);
+    const booksArray = this._data.map(v => v.path.book);
     const bookSet = new Set(booksArray);
     return Array.from(bookSet);
   }
 
   getChapters(book: string): number[] {
-    const chapterArray = Commentary._data.filter(v => v.book === book).map(v => v.chapter);
+    const chapterArray = this._data.filter(v => v.path.book === book && v.texts.commentary.length > 0).map(v => v.path.chapter);
     const chapterSet = new Set(chapterArray);
     return Array.from(chapterSet);
   }
 
   getVerses(book: string, chapter: number): number[] {
-    const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter).map(v => v.verse);
+    const verseArray = this._data.filter(v => v.path.book === book && v.path.chapter === chapter && v.texts.commentary.length > 0).map(v => v.path.verse);
     const verseSet = new Set(verseArray);
     return Array.from(verseSet);
   }
 
   getCommentary(book: string, chapter: number, verse: number): string[] {
-    const verseArray = Commentary._data.filter(v => v.book === book && v.chapter === chapter && v.verse === verse).map(v => v.commentary);
+    const verseArray = this._data.filter(v => v.path.book === book && v.path.chapter === chapter && v.path.verse === verse).map(v => v.texts.commentary);
     return verseArray;
   }
 

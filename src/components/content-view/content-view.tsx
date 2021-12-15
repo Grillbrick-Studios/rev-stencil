@@ -1,6 +1,6 @@
 import { Component, h, Host, Prop } from '@stencil/core';
 import { scrollTop } from '../../helpers/utils';
-import { Appendices, Bible, BiblePath, Commentary, Resource } from '../../models';
+import { Bible, BiblePath, Resource } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -10,8 +10,6 @@ import { state } from '../../state';
 })
 export class ContentView {
   @Prop() bible: Bible;
-  @Prop() commentary: Commentary;
-  @Prop() appendix: Appendices;
 
   hasNext(): boolean {
     let path: BiblePath = {
@@ -24,9 +22,9 @@ export class ContentView {
       case Resource.Bible:
         return path !== this.bible.nextChapter(path);
       case Resource.Commentary:
-        return path !== this.commentary.next(path);
+        return path !== this.bible.commentaries.next(path);
       case Resource.Appendix:
-        return path.book !== this.appendix.next(path.book);
+        return path.book !== this.bible.appendices.next(path.book);
     }
   }
 
@@ -41,9 +39,9 @@ export class ContentView {
       case Resource.Bible:
         return path !== this.bible.prevChapter(path);
       case Resource.Commentary:
-        return path !== this.commentary.prev(path);
+        return path !== this.bible.commentaries.prev(path);
       case Resource.Appendix:
-        return path.book !== this.appendix.prev(path.book);
+        return path.book !== this.bible.appendices.prev(path.book);
     }
   }
 
@@ -62,14 +60,14 @@ export class ContentView {
         return;
       case Resource.Commentary:
         path.verse = state.verse;
-        path = this.commentary.next(path);
+        path = this.bible.commentaries.next(path);
         state.book = path.book;
         state.chapter = path.chapter;
         state.verse = path.verse;
         scrollTop();
         return;
       case Resource.Appendix:
-        state.book = this.appendix.next(path.book);
+        state.book = this.bible.appendices.next(path.book);
         scrollTop();
         return;
     }
@@ -90,14 +88,14 @@ export class ContentView {
         return;
       case Resource.Commentary:
         path.verse = state.verse;
-        path = this.commentary.prev(path);
+        path = this.bible.commentaries.prev(path);
         state.book = path.book;
         state.chapter = path.chapter;
         state.verse = path.verse;
         scrollTop();
         return;
       case Resource.Appendix:
-        state.book = this.appendix.prev(path.book);
+        state.book = this.bible.appendices.prev(path.book);
         scrollTop();
         return;
     }
@@ -131,7 +129,7 @@ export class ContentView {
       case Resource.Appendix:
         return (
           <Host>
-            <appendix-view appendix={this.appendix} />
+            <appendix-view appendix={this.bible.appendices} />
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
@@ -148,7 +146,7 @@ export class ContentView {
       case Resource.Commentary:
         return (
           <Host>
-            <commentary-view commentary={this.commentary} />
+            <commentary-view commentary={this.bible.commentaries} />
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>

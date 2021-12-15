@@ -1,5 +1,18 @@
 import { ViewOptions } from './bible';
-import { Commentary } from './commentary';
+import { iCommentary } from './commentary';
+import { BiblePath } from './common';
+
+export interface importVerse {
+  book: string;
+  chapter: number;
+  verse: number;
+  heading: string;
+  microheading: boolean;
+  paragraph: boolean;
+  style: Style;
+  footnotes: string;
+  versetext: string;
+}
 
 export enum Style {
   // style: 1    This is flowing text, or prose. See most verses in the NT.
@@ -22,16 +35,23 @@ export enum Style {
   ListPreGapNoPostGap,
 }
 
-export interface iVerse {
-  book: string;
-  chapter: number;
-  verse: number;
-  heading: string;
-  microheading: boolean;
+export interface VerseStyling {
   paragraph: boolean;
+  microheading: boolean;
   style: Style;
-  footnotes: string;
-  versetext: string;
+}
+
+export interface Texts {
+  heading: string;
+  verse: string;
+  footnotes: string[];
+  commentary: string;
+}
+
+export interface iVerse {
+  path: BiblePath;
+  style: VerseStyling;
+  texts: Texts;
 }
 
 export enum ViewMode {
@@ -40,59 +60,68 @@ export enum ViewMode {
   Reading,
 }
 
-let commentary: Commentary;
-
-Commentary.onReady().then(c => (commentary = c));
-
 export class Verse implements iVerse {
+  static fromOldVerse(data: importVerse, commentary: string): Verse {
+    return new Verse({
+      path: {
+        book: data.book,
+        chapter: data.chapter,
+        verse: data.verse,
+      },
+      style: {
+        paragraph: data.paragraph,
+        microheading: data.microheading,
+        style: data.style,
+      },
+      texts: {
+        heading: data.heading,
+        verse: data.versetext,
+        footnotes: data.footnotes.split(';'),
+        commentary,
+      },
+    });
+  }
+
+  addCommentary(data: iCommentary) {
+    if (data.book === this.path.book && data.chapter === this.path.chapter && data.verse === this.path.verse) {
+      this.texts.commentary = data.commentary;
+    }
+  }
+
   constructor(data: iVerse) {
-    this.book = data.book;
-    this.chapter = data.chapter;
-    this.verse = data.verse;
-    this.heading = data.heading;
-    this.microheading = data.microheading;
-    this.paragraph = data.paragraph;
+    this.path = data.path;
     this.style = data.style;
-    this.footnotes = data.footnotes;
-    this.versetext = data.versetext;
+    this.texts = data.texts;
+  }
+
+  get book(): string {
+    return this.path.book;
   }
 
   get hasCommentary(): boolean {
-    return commentary.getVerses(this.book, this.chapter).indexOf(this.verse) >= 0;
+    return this.texts.commentary.length > 0;
   }
 
-  book: string;
-  chapter: number;
-  verse: number;
-  heading: string;
-  microheading: boolean;
-  paragraph: boolean;
-  style: number;
-  footnotes: string;
-  versetext: string;
+  path: BiblePath;
+  style: VerseStyling;
+  texts: Texts;
 
   public unwrap(): iVerse {
-    const { book, chapter, verse, heading, microheading, paragraph, style, footnotes, versetext } = this;
+    const { path, style, texts } = this;
     return {
-      book,
-      chapter,
-      verse,
-      heading,
-      microheading,
-      paragraph,
+      path,
       style,
-      footnotes,
-      versetext,
+      texts,
     };
   }
 
   public getHeading(): string {
-    if (!this.heading) return '';
+    if (!this.texts.heading) return '';
 
-    const heading = this.heading.replace(/\[br\]/g, '<br />');
+    const heading = this.texts.heading.replace(/\[br\]/g, '<br />');
     // wrap the heading in appropriate tags and add the microheading if it
     // exists.
-    return `<${this.microheading ? 'p class="microheading"' : 'p class="heading"'}>${heading}</p>`;
+    return `<${this.style.microheading ? 'p class="microheading"' : 'p class="heading"'}>${heading}</p>`;
   }
 
   // simply add the commentaryLink to the verse
@@ -103,20 +132,23 @@ export class Verse implements iVerse {
     },
   ): string {
     // First get the heading and versetext
-    let { versetext } = this;
+    let {
+      texts: { verse },
+    } = this;
 
     if (viewMode === ViewMode.Reading) {
-      return versetext;
+      return verse;
     }
 
     // Generate a verse number link to commentary
-    const commentaryLink = this.hasCommentary && linkCommentary ? `<sup><commentary-link verse=${this.verse}/></sup>` : `<sup>${this.verse}</sup>`;
+    const path = this.path as BiblePath;
+    const commentaryLink = this.hasCommentary && linkCommentary ? `<sup><commentary-link verse=${path.verse}/></sup>` : `<sup>${path.verse}</sup>`;
 
-    return `${commentaryLink} ${versetext}`;
+    return `${commentaryLink} ${verse}`;
   }
 
   public isPoetry(): boolean {
-    switch (this.style) {
+    switch (this.style.style) {
       case Style.Poetry:
       case Style.PoetryPreGap:
       case Style.PoetryNoPostGap:

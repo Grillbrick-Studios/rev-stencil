@@ -1,7 +1,4 @@
-import { iData, Asynclock, iSerializeData, remoteHasNewer } from './common';
-import { writeFile, readFile } from './filesystem';
-
-const URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=203';
+export const APPENDICES_URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=203';
 
 export interface iAppendices {
   title: string;
@@ -13,81 +10,24 @@ export interface iAppendicesJson {
   updated?: Date;
 }
 
-export class Appendices implements iData<iAppendices> {
-  private static _data: iAppendices[];
-  private static updated: Date;
-  private static lock = new Asynclock();
-  private static remoteDate: Date;
-
-  public static async save() {
-    const data: iSerializeData<iAppendices> = {
-      data: Appendices.data,
-      updated: Appendices.updated,
-    };
-
-    await writeFile(data, 'Appendices');
-  }
-
-  public static async load(): Promise<boolean> {
-    try {
-      const appendixData: iSerializeData<iAppendices> = await readFile('Appendices');
-      Appendices._data = appendixData.data;
-      Appendices.updated = new Date(appendixData.updated);
-      const [newer, remoteDate] = await remoteHasNewer(Appendices.updated);
-      Appendices.remoteDate = remoteDate;
-      if (newer) return false;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  public static set data(d: iAppendices[]) {
-    Appendices._data = d;
-  }
-
-  public static get data(): iAppendices[] {
-    return Appendices._data;
-  }
-
-  public get data(): iAppendices[] {
-    return Appendices._data;
-  }
+export class Appendices {
+  private _data: iAppendices[];
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor(data: iAppendices[]) {
-    Appendices.data = data;
+    this._data = data;
   }
 
-  private static async fetch() {
-    const res = await fetch(URL);
-    const commentary = await res.json();
-    Appendices._data = commentary.REV_Appendices;
-    Appendices.updated = Appendices.remoteDate;
-    Appendices.save();
-  }
-
-  static async onReady(): Promise<Appendices> {
-    await this.lock.promise;
-    this.lock.enable();
-    try {
-      if (Appendices.data) return new Appendices(Appendices.data);
-      else if (await Appendices.load()) return new Appendices(Appendices._data);
-      else await Appendices.fetch();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.lock.disable();
-    }
-    return new Appendices(Appendices.data);
+  get data(): iAppendices[] {
+    return this._data;
   }
 
   getTitles(): string[] {
-    return Appendices._data.map(a => a.title);
+    return this._data.map(a => a.title);
   }
 
   getAppendix(title: string): string {
-    return Appendices._data.filter(a => a.title === title)[0].appendix;
+    return this._data.filter(a => a.title === title)[0].appendix;
   }
 
   next(title: string): string {

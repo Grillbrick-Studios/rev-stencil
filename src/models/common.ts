@@ -20,10 +20,6 @@ export async function remoteHasNewer(localDate: Date): Promise<[boolean, Date]> 
   }
 }
 
-export interface iData<T> {
-  data: T[];
-}
-
 export interface iSerializeData<T> {
   data: T[];
   updated: Date;
