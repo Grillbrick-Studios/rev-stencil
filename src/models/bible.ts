@@ -66,9 +66,13 @@ export class Bible {
   }
 
   private static async fetch(): Promise<Bible> {
+    console.log('Fetching bible...');
     const bible: iBibleJson = await fetch(BIBLE_URL).then(res => res.json());
+    console.log('Fetching commentary...');
     const commentary: iCommentaryJson = await fetch(COMMENTARY_URL).then(res => res.json());
+    console.log('Fetching appendices...');
     const appendicesJson: iAppendicesJson = await fetch(APPENDICES_URL).then(res => res.json());
+    console.log('All data fetched!');
     const verses = bible.REV_Bible.map(v =>
       Verse.fromOldVerse(v, commentary.REV_Commentary.filter(c => c.book === v.book && c.chapter === v.chapter.toString() && c.verse === v.verse.toString())[0]?.commentary || ''),
     );
@@ -84,7 +88,7 @@ export class Bible {
     this.lock.enable();
     try {
       let bible = await Bible.load();
-      if (bible !== null) return bible;
+      if (bible) return bible;
       else return await Bible.fetch();
     } catch (e) {
       console.error(e);
