@@ -22,10 +22,6 @@ export class CommentaryView {
       return (
         <Host>
           <ion-list>
-            <ion-chip onClick={() => (state.book = undefined)}>
-              <ion-label>{state.resource}</ion-label>
-              <ion-icon name="close-circle" onClick={() => (state.resource = undefined)} />
-            </ion-chip>
             {state.book && (
               <ion-chip onClick={() => (state.chapter = undefined)}>
                 <ion-label>{state.book}</ion-label>

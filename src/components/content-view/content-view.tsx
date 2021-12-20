@@ -18,7 +18,7 @@ export class ContentView {
       verse: state.verse,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         return path !== this.bible.nextChapter(path);
       case Resource.Commentary:
@@ -35,7 +35,7 @@ export class ContentView {
       verse: state.verse,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         return path !== this.bible.prevChapter(path);
       case Resource.Commentary:
@@ -51,7 +51,7 @@ export class ContentView {
       chapter: state.chapter || 1,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         path = this.bible.nextChapter(path);
         state.book = path.book;
@@ -77,9 +77,10 @@ export class ContentView {
     let path: BiblePath = {
       book: state.book || 'Revelation',
       chapter: state.chapter || 22,
+      verse: state.verse,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         path = this.bible.prevChapter(path);
         state.book = path.book;
@@ -102,30 +103,19 @@ export class ContentView {
   }
 
   render() {
+    let path: BiblePath = {
+      book: state.book,
+      chapter: state.chapter,
+      verse: state.verse,
+    };
+
     if (state.showOptions)
       return (
         <Host>
           <option-screen />
         </Host>
       );
-    switch (state.resource) {
-      case Resource.Bible:
-        return (
-          <Host>
-            <chapter-view bible={this.bible} />
-            <div class="top-heading">
-              <ion-buttons slot="start" class="flexbase">
-                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
-                  <ion-icon size="large" name="chevron-back" />
-                </ion-button>
-                <ion-button onClick={() => scrollTop()}>Top</ion-button>
-                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
-                  <ion-icon size="large" name="chevron-forward" />
-                </ion-button>
-              </ion-buttons>
-            </div>
-          </Host>
-        );
+    switch (this.bible.Resource(path)) {
       case Resource.Appendix:
         return (
           <Host>
@@ -160,21 +150,22 @@ export class ContentView {
             </div>
           </Host>
         );
+      case Resource.Bible:
       default:
         return (
           <Host>
-            <ion-title class="title"> Select resource.</ion-title>
-            <ion-list>
-              <ion-item>
-                <ion-button onClick={() => (state.resource = Resource.Bible)}>Bible</ion-button>
-              </ion-item>
-              <ion-item>
-                <ion-button onClick={() => (state.resource = Resource.Commentary)}>Commentary</ion-button>
-              </ion-item>
-              <ion-item>
-                <ion-button onClick={() => (state.resource = Resource.Appendix)}>Appendices</ion-button>
-              </ion-item>
-            </ion-list>
+            <chapter-view bible={this.bible} />
+            <div class="top-heading">
+              <ion-buttons slot="start" class="flexbase">
+                <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
+                  <ion-icon size="large" name="chevron-back" />
+                </ion-button>
+                <ion-button onClick={() => scrollTop()}>Top</ion-button>
+                <ion-button disabled={!this.hasNext()} onClick={() => this.next()}>
+                  <ion-icon size="large" name="chevron-forward" />
+                </ion-button>
+              </ion-buttons>
+            </div>
           </Host>
         );
     }

@@ -23,11 +23,6 @@ export class AppendixView {
         <Host>
           <ion-title class="title"> Select Appendix</ion-title>
           <ion-list>
-            <ion-chip onClick={() => (state.resource = undefined)}>
-              <ion-label>{state.resource}</ion-label>
-              <ion-icon name="close-circle" />
-            </ion-chip>
-            <br />
             {this.appendix.getTitles().map(a => [
               <ion-button
                 onClick={() => {
@@ -43,6 +38,11 @@ export class AppendixView {
 
     return (
       <Host>
+        <ion-chip onClick={() => (state.book = undefined)}>
+          <ion-label>{state.book}</ion-label>
+          <ion-icon name="close-circle" />
+        </ion-chip>
+        <br />
         <p class="content" innerHTML={this.appendix.getAppendix(state.book)}></p>
       </Host>
     );

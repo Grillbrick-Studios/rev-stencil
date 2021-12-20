@@ -1,6 +1,6 @@
 import { Storage } from '@capacitor/storage';
 import { createStore } from '@stencil/store';
-import { Font, Resource, ViewMode } from './models';
+import { Font, ViewMode } from './models';
 import { Fonts } from './fonts';
 import { scrollTop } from './helpers/utils';
 
@@ -19,7 +19,6 @@ export function isSmall(cb?: (value: boolean) => void): boolean {
 }
 
 interface iStore {
-  resource?: Resource;
   book?: string;
   chapter?: number;
   verse?: number;
@@ -114,13 +113,6 @@ onChange('showOptions', _ => {
   scrollTop();
 });
 
-onChange('resource', value => {
-  if (!value) {
-    state.heading = undefined;
-    state.book = undefined;
-  }
-});
-
 onChange('book', value => {
   if (!value) {
     state.heading = undefined;
@@ -198,13 +190,6 @@ Storage.get({ key: 'fontSize' }).then(r => {
     state.fontSize = JSON.parse(r.value) || DEFAULT_FONT_SIZE;
   } catch (_) {
     state.fontSize = DEFAULT_FONT_SIZE;
-  }
-});
-Storage.get({ key: 'resource' }).then(r => {
-  try {
-    state.resource = JSON.parse(r.value);
-  } catch (_) {
-    state.resource = undefined;
   }
 });
 Storage.get({ key: 'book' }).then(r => {

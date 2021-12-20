@@ -1,5 +1,4 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { Resource } from '../../models';
 import { state } from '../../state';
 
 @Component({
@@ -18,7 +17,6 @@ export class CommentaryLink {
             // does nothing on the options screen
             if (state.showOptions) return;
             state.verse = this.verse;
-            state.resource = Resource.Commentary;
           }}
         >
           {this.verse}

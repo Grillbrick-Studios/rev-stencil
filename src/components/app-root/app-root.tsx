@@ -26,7 +26,6 @@ export class AppRoot {
   }
 
   connectedCallback() {
-    state.resource = this.resource ? this.resource : state.resource;
     this.showOptions = state.showOptions;
     onChange('showOptions', value => (this.showOptions = value));
   }
@@ -38,7 +37,7 @@ export class AppRoot {
       verse: state.verse,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         return path !== this.bible.nextChapter(path);
       case Resource.Commentary:
@@ -55,7 +54,7 @@ export class AppRoot {
       verse: state.verse,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         return path !== this.bible.prevChapter(path);
       case Resource.Commentary:
@@ -71,7 +70,7 @@ export class AppRoot {
       chapter: state.chapter || 1,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         path = this.bible.nextChapter(path);
         state.book = path.book;
@@ -99,7 +98,7 @@ export class AppRoot {
       chapter: state.chapter || 22,
     };
 
-    switch (state.resource) {
+    switch (this.bible.Resource(path)) {
       case Resource.Bible:
         path = this.bible.prevChapter(path);
         state.book = path.book;
@@ -143,12 +142,12 @@ export class AppRoot {
           <ion-header>
             <ion-toolbar class="flexbase">
               <ion-buttons slot="start">
-                <ion-button disabled={state.resource === undefined} onClick={() => goBack()}>
+                <ion-button disabled={state.book === undefined} onClick={() => goBack()}>
                   <ion-icon size={size} name="caret-back" />
                 </ion-button>
                 <ion-button
                   onClick={() => {
-                    state.resource = undefined;
+                    state.book = undefined;
                   }}
                 >
                   <ion-icon size={size} name="home-outline" />
@@ -192,9 +191,7 @@ export class AppRoot {
 }
 
 function goBack() {
-  if (state.resource === Resource.Commentary) state.resource = Resource.Bible;
   if (state.verse) return (state.verse = undefined);
   if (state.chapter) return (state.chapter = undefined);
   if (state.book) return (state.book = undefined);
-  state.resource = undefined;
 }

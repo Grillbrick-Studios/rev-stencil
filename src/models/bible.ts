@@ -1,4 +1,4 @@
-import { iSerializeData, Asynclock, BiblePath, stripStyle, remoteHasNewer } from './common';
+import { iSerializeData, Asynclock, BiblePath, stripStyle, remoteHasNewer, Resource } from './common';
 import { importVerse, iVerse, Style, Verse, ViewMode } from './verse';
 import { writeFile, readFile } from './filesystem';
 import { Appendices } from './appendices';
@@ -98,14 +98,14 @@ export class Bible {
   }
 
   getBooks(filter: string = ''): string[] {
-    const booksArray = this.verses.map(v => v.book).filter(b => b.startsWith(filter));
+    const booksArray = this.verses.map(v => v.path.book).filter(b => b.startsWith(filter));
     const bookSet = new Set(booksArray);
     //return new Array(...bookSet.keys());
     return Array.from(bookSet);
   }
 
   getChapters(book: string): number[] {
-    const chaptersArray = this.verses.filter(v => v.book === book).map(v => v.path.chapter);
+    const chaptersArray = this.verses.filter(v => v.path.book === book).map(v => v.path.chapter);
     const chapterSet = new Set(chaptersArray);
     return Array.from(chapterSet);
   }
@@ -120,7 +120,7 @@ export class Bible {
   ): string {
     //return this.dumpRaw(book, chapter);
     let spanDepth = 0;
-    const verses = this.getVerses(book, chapter).map((v, i, a) => {
+    const verses = this.getVerses(book, chapter).map(v => {
       let verse = v.raw({
         viewMode,
         linkCommentary,
@@ -129,11 +129,6 @@ export class Bible {
       // This is a flag for adding the heading to the top.
       let addHeading = false;
 
-      // Get the previous verse
-      const pv = a[i > 0 ? i - 1 : i];
-      // check for a style change
-      let styleChange =
-        pv.style !== v.style || verse.indexOf('[hpbegin]') > -1 || verse.indexOf('[listbegin]') > -1 || verse.indexOf('[hpend]') > -1 || verse.indexOf('[listend]') > -1;
       // if there is no [mvh] tag but there is a heading - note that we need to
       // add the heading
       if (verse.indexOf('[mvh]') === -1) addHeading = true;
@@ -143,7 +138,7 @@ export class Bible {
       switch (viewMode) {
         case ViewMode.Paragraph:
         case ViewMode.Reading:
-          if (styleChange || spanDepth === 0 || v.style.paragraph) {
+          if (v.style.paragraph) {
             if (verse.indexOf('[hpbegin]') === -1 && verse.indexOf('[listbegin]') === -1 && verse.indexOf('[hpend]') === -1 && verse.indexOf('[listend]') === -1) {
               if (spanDepth > 0) {
                 preverse += '</span>';
@@ -170,22 +165,22 @@ export class Bible {
               spanDepth -= 1;
             }
           }
-          verse = verse?.replace(/\[hpbegin\]/g, midverse);
-          verse = verse?.replace(/\[hpend\]/g, midverse);
-          verse = verse?.replace(/\[listbegin\]/g, midverse);
-          verse = verse?.replace(/\[listend\]/g, midverse);
+          verse = verse.replace(/\[hpbegin\]/g, midverse);
+          verse = verse.replace(/\[hpend\]/g, midverse);
+          verse = verse.replace(/\[listbegin\]/g, midverse);
+          verse = verse.replace(/\[listend\]/g, midverse);
 
-          verse = verse?.replace(/\[hp\]/g, '<br />');
-          verse = verse?.replace(/\[li\]/g, '<br />');
-          verse = verse?.replace(/\[lb\]/g, '<br />');
-          verse = verse?.replace(/\[br\]/g, '<br />');
-          //verse = verse?.replace(/\[fn\]/g, `<fn>${v.footnotes}</fn>`);
+          verse = verse.replace(/\[hp\]/g, '<br />');
+          verse = verse.replace(/\[li\]/g, '<br />');
+          verse = verse.replace(/\[lb\]/g, '<br />');
+          verse = verse.replace(/\[br\]/g, '<br />');
+          //verse = verse?.replace(/\[fn\]/g, `<fn>${v.texts.footnotes}</fn>`);
           // TODO: Add Footnotes here.
-          verse = verse?.replace(/\[fn\]/g, '<fn></fn>');
-          verse = verse?.replace(/\[pg\]/g, '<p></p>');
+          verse = verse.replace(/\[fn\]/g, '<fn></fn>');
+          verse = verse.replace(/\[pg\]/g, '<p></p>');
           // block quote ?
-          verse = verse?.replace(/\[bq\]/g, '<p class="bq">');
-          verse = verse?.replace(/\[\/bq\]/g, '</p>');
+          verse = verse.replace(/\[bq\]/g, '<p class="bq">');
+          verse = verse.replace(/\[\/bq\]/g, '</p>');
           // FINALLY replace the brackets for questionable text.
           verse = stripStyle(verse);
 
@@ -229,8 +224,8 @@ export class Bible {
   }
 
   getVerses(book: string, chapter: number, verse?: number): Verse[] {
-    if (verse) return this.verses.filter(v => v.book === book && v.path.chapter === chapter && v.path.verse === verse);
-    return this.verses.filter(v => v.book === book && v.path.chapter === chapter);
+    if (verse) return this.verses.filter(v => v.path.book === book && v.path.chapter === chapter && v.path.verse === verse);
+    return this.verses.filter(v => v.path.book === book && v.path.chapter === chapter);
   }
 
   getVerseNumbers(book: string, chapter: number): number[] {
@@ -281,6 +276,12 @@ export class Bible {
         };
       } else return path;
     }
+  }
+
+  Resource(path: BiblePath): Resource {
+    if (path.book && (path.book.startsWith('Appendix') || path.book.startsWith('Biblio'))) return Resource.Appendix;
+    if (path.verse) return Resource.Commentary;
+    return Resource.Bible;
   }
 }
 

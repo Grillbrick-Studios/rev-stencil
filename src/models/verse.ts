@@ -7,8 +7,8 @@ export interface importVerse {
   chapter: number;
   verse: number;
   heading: string;
-  microheading: boolean;
-  paragraph: boolean;
+  microheading: number;
+  paragraph: number;
   style: Style;
   footnotes: string;
   versetext: string;
@@ -69,8 +69,8 @@ export class Verse implements iVerse {
         verse: data.verse,
       },
       style: {
-        paragraph: data.paragraph,
-        microheading: data.microheading,
+        paragraph: data.paragraph !== 0,
+        microheading: data.microheading !== 0,
         style: data.style,
       },
       texts: {
