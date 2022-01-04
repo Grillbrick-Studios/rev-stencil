@@ -136,7 +136,7 @@ export class ContentView {
       case Resource.Commentary:
         return (
           <Host>
-            <commentary-view commentary={this.bible.commentaries} />
+            <commentary-view bible={this.bible} />
             <div class="top-heading">
               <ion-buttons slot="start" class="flexbase">
                 <ion-button disabled={!this.hasPrev()} onClick={() => this.prev()}>
