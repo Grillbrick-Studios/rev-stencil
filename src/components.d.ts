@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Appendices, Bible, Commentary, Font } from "./models";
+import { Appendices, Bible, Font } from "./models";
 export namespace Components {
     interface AppRoot {
     }
@@ -19,7 +19,7 @@ export namespace Components {
         "verse": number;
     }
     interface CommentaryView {
-        "commentary": Commentary;
+        "bible": Bible;
     }
     interface ContentView {
         "bible": Bible;
@@ -102,7 +102,7 @@ declare namespace LocalJSX {
         "verse"?: number;
     }
     interface CommentaryView {
-        "commentary"?: Commentary;
+        "bible"?: Bible;
     }
     interface ContentView {
         "bible"?: Bible;
