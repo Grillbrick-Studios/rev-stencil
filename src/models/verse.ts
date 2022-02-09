@@ -7,7 +7,8 @@ export interface importVerse {
   chapter: number;
   verse: number;
   heading: string;
-  microheading: number;
+  // microheading: number;
+  superscript: string;
   paragraph: number;
   style: Style;
   footnotes: string;
