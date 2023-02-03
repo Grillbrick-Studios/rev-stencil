@@ -5,7 +5,14 @@ that can easily be ported to multiple operating systems and used offline for
 reading the REV bible found [here](https://www.revisedenglishversion.com).
 Currently we need a lot of work on the styling of the app, and customization.
 
-# Features to implement
+This app is currently being hosted on [Digital Ocean](https://rev-offline-8go5g.ondigitalocean.app/).
+
+## Currently Shelved
+
+This project is currently shelved.
+I intend to resurrect this project using [Svelte](https://svelte.dev/). That will be another project however.
+
+## Features to implement
 
 - Improve styling of scripture verses.
 - Add custom themes.
