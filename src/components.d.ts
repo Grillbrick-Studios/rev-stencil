@@ -6,6 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Appendices, Bible, Font } from "./models";
+export { Appendices, Bible, Font } from "./models";
 export namespace Components {
     interface AppRoot {
     }
@@ -28,6 +29,10 @@ export namespace Components {
     }
     interface OptionScreen {
     }
+}
+export interface FontPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLFontPickerElement;
 }
 declare global {
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
@@ -66,7 +71,18 @@ declare global {
         prototype: HTMLContentViewElement;
         new (): HTMLContentViewElement;
     };
+    interface HTMLFontPickerElementEventMap {
+        "fontChange": Font;
+    }
     interface HTMLFontPickerElement extends Components.FontPicker, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLFontPickerElementEventMap>(type: K, listener: (this: HTMLFontPickerElement, ev: FontPickerCustomEvent<HTMLFontPickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLFontPickerElementEventMap>(type: K, listener: (this: HTMLFontPickerElement, ev: FontPickerCustomEvent<HTMLFontPickerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLFontPickerElement: {
         prototype: HTMLFontPickerElement;
@@ -108,7 +124,7 @@ declare namespace LocalJSX {
         "bible"?: Bible;
     }
     interface FontPicker {
-        "onFontChange"?: (event: CustomEvent<Font>) => void;
+        "onFontChange"?: (event: FontPickerCustomEvent<Font>) => void;
     }
     interface OptionScreen {
     }
