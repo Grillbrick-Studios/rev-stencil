@@ -1,7 +1,7 @@
 import { BiblePath } from './common';
 import { iVerse } from './verse';
 
-export const COMMENTARY_URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=202';
+export const COMMENTARY_URL = 'https://revbible.com/jsondload.php?fil=202';
 
 export interface iCommentary {
   book: string;
