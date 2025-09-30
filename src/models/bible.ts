@@ -4,7 +4,7 @@ import { writeFile, readFile } from './filesystem';
 import { Appendices } from './appendices';
 import { Commentary, iCommentaryJson, COMMENTARY_URL } from './commentary';
 import { iAppendicesJson, APPENDICES_URL, iAppendices } from './appendices';
-export const BIBLE_URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=201';
+export const BIBLE_URL = 'https://revbible.com/jsondload.php?fil=201';
 
 export interface iBibleJson {
   // eslint-disable-next-line camelcase
