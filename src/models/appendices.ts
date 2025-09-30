@@ -1,4 +1,4 @@
-export const APPENDICES_URL = 'https://www.revisedenglishversion.com/jsondload.php?fil=203';
+export const APPENDICES_URL = 'https://revbible.com/jsondload.php?fil=203';
 
 export interface iAppendices {
   title: string;
